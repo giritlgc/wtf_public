@@ -1,0 +1,69 @@
+{
+  "project_info": {
+    "project_number": "348244485262",
+    "firebase_url": "https://login-60e23.firebaseio.com",
+    "project_id": "login-60e23",
+    "storage_bucket": "login-60e23.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:348244485262:android:0350ac10d5f8a690b6d5df",
+        "android_client_info": {
+          "package_name": "com.example.login"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "348244485262-73nug5tn8gnfdm3mgvqjhfgderj3a2h6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD9gg2FA_3UwuTs2jyopMImGL76_mkUbP0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "348244485262-73nug5tn8gnfdm3mgvqjhfgderj3a2h6.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:348244485262:android:e5f6ce960bfcae67b6d5df",
+        "android_client_info": {
+          "package_name": "com.thelivegreenco.knowyourfood"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "348244485262-73nug5tn8gnfdm3mgvqjhfgderj3a2h6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD9gg2FA_3UwuTs2jyopMImGL76_mkUbP0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "348244485262-73nug5tn8gnfdm3mgvqjhfgderj3a2h6.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
