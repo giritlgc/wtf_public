@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:knowyourfood/additives.dart';
 import 'package:path/path.dart' as Path;
 
 
@@ -19,13 +20,18 @@ class _SearchPageState extends State<SearchPage>
   File _image;
   String _uploadedFileURL;
 
-
   final databaseReference = FirebaseFirestore.instance;
+
+  TextEditingController _textController = new TextEditingController();
+
+  FocusNode _textFocus = new FocusNode();
 
   @override
   void initState() {
     super.initState();
     _controller = AnimationController(vsync: this);
+    // _textController.addListener(onChange); 
+    _textFocus.addListener(onChange);
   }
 
   @override
@@ -121,14 +127,49 @@ void _openCamera(BuildContext context) async {
   }
 
 
+void onChange(){
+  // String text = _textController.text;
+  bool hasFocus = _textFocus.hasFocus;
+  //do your text transforming
+  if(!hasFocus){
+    print("Redirecting to additive page");
+    Navigator.of(context).push(MaterialPageRoute(builder: (context) => AdditivePage()));
+
+  }
+  // _textController.selection = new TextSelection(
+  //                               baseOffset: text.length, 
+  //                               extentOffset: text.length
+  //                         );
+}
+
   @override
   Widget build(BuildContext context) {
     
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Know Your Food'),
-        backgroundColor: Colors.green, 
-       ),
+      appBar:PreferredSize(
+          preferredSize: Size.fromHeight(95.0),
+          child: AppBar(
+           automaticallyImplyLeading: false,
+           flexibleSpace: Container(),
+           centerTitle: true,
+      title: Padding(
+            padding: const EdgeInsets.only(top:30.0),
+        child: Row(
+            // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: <Widget>[
+          Text("Know Your Food.",
+          style: TextStyle(
+           fontSize: 32,
+           fontWeight: FontWeight.bold,  
+          ),
+          )
+        ],
+      ),
+     ),
+     
+    backgroundColor: Colors.green, 
+    ),
+   ),
       body: Container(
         padding:  EdgeInsets.only(top: 40.0),
         margin: EdgeInsets.all(30.0),
@@ -150,6 +191,8 @@ void _openCamera(BuildContext context) async {
 
               ),
               child:TextFormField(
+                // controller: _textController,
+                focusNode: _textFocus,
                 decoration: InputDecoration(
                   border: InputBorder.none,
                    hintText:"Search",

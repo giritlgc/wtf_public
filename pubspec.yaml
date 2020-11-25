@@ -28,6 +28,8 @@ dependencies:
   firebase_storage: ^4.0.1
   cloud_firestore: ^0.14.2
   firebase_core: ^0.5.0+1
+  google_fonts: ^1.1.1
+  
 
 
   # The following adds the Cupertino Icons font to your application.
@@ -43,6 +45,10 @@ dev_dependencies:
 
 # The following section is specific to Flutter.
 flutter:
+  fonts:
+    - family: Colby
+      fonts:
+        - asset: fonts/Colby-Condensed-Bold.ttf
 
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in

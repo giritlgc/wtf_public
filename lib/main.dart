@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'search_page.dart';
 
 
+
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
@@ -14,6 +15,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
         title: 'Know Your Food',
+        theme: ThemeData(fontFamily: 'Colby'),
         home: SearchPage());
   }
 }
