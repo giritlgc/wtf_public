@@ -1,10 +1,12 @@
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:dio/dio.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:knowyourfood/additives.dart';
+import 'package:knowyourfood/loader.dart';
 import 'package:path/path.dart' as Path;
 
 
@@ -19,7 +21,7 @@ class _SearchPageState extends State<SearchPage>
 
   File _image;
   String _uploadedFileURL;
-
+  bool loading = false;
   final databaseReference = FirebaseFirestore.instance;
 
   TextEditingController _textController = new TextEditingController();
@@ -30,7 +32,7 @@ class _SearchPageState extends State<SearchPage>
   void initState() {
     super.initState();
     _controller = AnimationController(vsync: this);
-    // _textController.addListener(onChange); 
+
     _textFocus.addListener(onChange);
   }
 
@@ -69,66 +71,62 @@ Future<void> _showSelectionDialog(BuildContext context) {
   }
 
 void _openGallery(BuildContext context) async {
+    
     File picture = await ImagePicker.pickImage(source: ImageSource.gallery);
     this.setState(() {
       _image = picture;
     });
-    StorageReference storageReference = FirebaseStorage.instance    
-       .ref()    
-       .child('productImages/${Path.basename(_image.path)}}');    
-   StorageUploadTask uploadTask = storageReference.putFile(_image);    
-   await uploadTask.onComplete;    
-   print('File Uploaded');    
-   storageReference.getDownloadURL().then((fileURL) async {    
-     setState(() {    
-       _uploadedFileURL = fileURL;    
-     });
-    await databaseReference.collection("productsData")
-      .add({
-        'UID': 'AaJeAuvlH9Zyb04IxH53PIfaxGm2',
-        'imageUrl': fileURL,
-        'timeStamp': DateTime.now()
-      });
-    Navigator.of(context).pop();
-    print('Record saved!');     
-   }); 
+  
+  Dio dio = new Dio();
+  var uploadURL = "http://192.168.42.29:3000/api/image/";
+  String fileName = _image.path.split('/').last;
+  FormData formdata = new FormData.fromMap({
+        "image":
+            await MultipartFile.fromFile(_image.path, filename:fileName),
+    });
+  dio.post(uploadURL, data: formdata, options: Options(
+  method: 'POST',
+  responseType: ResponseType.json // or ResponseType.JSON
+  ))
+  .then((response) => {
+        print(response),
+        Navigator.pop(context),
+        Navigator.of(context).push(MaterialPageRoute(builder: (context) => AdditivePage()))
+
+  })
+  .catchError((error) => print(error));
+  
   }
 
 void _openCamera(BuildContext context) async {
+  
     File picture = await ImagePicker.pickImage(source: ImageSource.camera);
     this.setState(() {
       _image = picture;
     });
-    StorageReference storageReference = FirebaseStorage.instance    
-       .ref()    
-       .child('productImages/${Path.basename(_image.path)}}');    
-   StorageUploadTask uploadTask = storageReference.putFile(_image);    
-   await uploadTask.onComplete;    
-   print('File Uploaded');    
-   storageReference.getDownloadURL().then((fileURL) {    
-     setState(() {    
-       _uploadedFileURL = fileURL; 
-       print(_uploadedFileURL);   
-     });
-     storageReference.getDownloadURL().then((fileURL) async {    
-     setState(() {    
-       _uploadedFileURL = fileURL;    
-     });
-    await databaseReference.collection("productsData")
-      .add({
-        'UID': "AaJeAuvlH9Zyb04IxH53PIfaxGm2",
-        'imageUrl': fileURL,
-        'timeStamp': DateTime.now()
-      });
-    Navigator.of(context).pop();
-    print('Record saved!');    
-   });     
-   }); 
+     Dio dio = new Dio();
+  var uploadURL = "http://192.168.42.29:3000/api/image/";
+  String fileName = _image.path.split('/').last;
+  FormData formdata = new FormData.fromMap({
+        "image":
+            await MultipartFile.fromFile(_image.path, filename:fileName),
+    });
+  dio.post(uploadURL, data: formdata, options: Options(
+  method: 'POST',
+  responseType: ResponseType.json // or ResponseType.JSON
+  ))
+  .then((response) => {
+        print(response),
+        Navigator.pop(context),
+        Navigator.of(context).push(MaterialPageRoute(builder: (context) => AdditivePage()))
+  })
+  .catchError((error) => print(error));
+    
   }
 
 
 void onChange(){
-  // String text = _textController.text;
+  String text = _textController.text;
   bool hasFocus = _textFocus.hasFocus;
   //do your text transforming
   if(!hasFocus){
@@ -136,11 +134,9 @@ void onChange(){
     Navigator.of(context).push(MaterialPageRoute(builder: (context) => AdditivePage()));
 
   }
-  // _textController.selection = new TextSelection(
-  //                               baseOffset: text.length, 
-  //                               extentOffset: text.length
-  //                         );
+  print(text);
 }
+
 
   @override
   Widget build(BuildContext context) {
@@ -155,7 +151,6 @@ void onChange(){
       title: Padding(
             padding: const EdgeInsets.only(top:30.0),
         child: Row(
-            // mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
           Text("Know Your Food.",
           style: TextStyle(
@@ -191,7 +186,7 @@ void onChange(){
 
               ),
               child:TextFormField(
-                // controller: _textController,
+                controller: _textController,
                 focusNode: _textFocus,
                 decoration: InputDecoration(
                   border: InputBorder.none,
