@@ -152,7 +152,7 @@ void onChange(){
   String text = _textController.text;
   bool hasFocus = _textFocus.hasFocus;
   //do your text transforming
-  if(!hasFocus){
+  if(!hasFocus && text!=""){
     print("Redirecting to additive page");
     Navigator.of(context).push(MaterialPageRoute(builder: (context) => AdditivePage()));
 

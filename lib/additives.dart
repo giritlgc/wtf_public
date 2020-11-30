@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:knowyourfood/additive_detail.dart';
 
 
 class AdditivePage extends StatefulWidget {
@@ -129,7 +129,7 @@ class _AdditivePageState extends State<AdditivePage> {
           ),
         Expanded(
           child:ListView(
-            children:buildList(widget.dataList),
+            children:buildList(context,widget.dataList),
           )
         ),
          Container(
@@ -197,7 +197,7 @@ class _AdditivePageState extends State<AdditivePage> {
 
 
 
- List<Widget> buildList(dataList){
+ List<Widget> buildList(context,dataList){
    var row;
     List<Widget> list = [Container(
          padding: EdgeInsets.all(20),
@@ -212,7 +212,11 @@ class _AdditivePageState extends State<AdditivePage> {
    var f=0;
    for(var i=0;i<dataList.length;i++){
      if(f==0){
-       row = Container(
+       row =GestureDetector(
+        onTap: (){
+          Navigator.of(context).push(MaterialPageRoute(builder: (context) => AdditiveDetail(additive:dataList[i])));
+        },
+        child: Container(
          padding: EdgeInsets.all(20),
          color: Colors.green[50],
          child: Text(dataList[i],
@@ -220,10 +224,15 @@ class _AdditivePageState extends State<AdditivePage> {
            fontSize:16,
            color:Colors.black
          ),),
+       )
        );
      f=1;
      }else{
-       row = Container(
+       row =GestureDetector(
+        onTap: (){
+          Navigator.of(context).push(MaterialPageRoute(builder: (context) => AdditiveDetail(additive:dataList[i])));
+        },
+        child: Container(
          padding: EdgeInsets.all(20),
          color: Colors.green[100],
          child: Text(dataList[i],
@@ -231,6 +240,7 @@ class _AdditivePageState extends State<AdditivePage> {
            fontSize:16,
            color:Colors.black
          ),),
+       )
        );
      f=0;
      }
