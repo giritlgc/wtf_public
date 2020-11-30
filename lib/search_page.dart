@@ -74,6 +74,10 @@ void _openGallery(BuildContext context) async {
     this.setState(() {
       _image = picture;
     });
+
+    if(_image==null){
+      return;
+    }
   setState(() {
     loading = true;
   });
@@ -115,6 +119,9 @@ void _openCamera(BuildContext context) async {
       _image = picture;
     });
 
+    if(_image==null){
+      return;
+    }
   setState(() {
     loading = true;
   });
