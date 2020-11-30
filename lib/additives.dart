@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 
 
@@ -10,7 +12,72 @@ class AdditivePage extends StatefulWidget {
 
 class _AdditivePageState extends State<AdditivePage> {
 
- 
+ final databaseReference = FirebaseFirestore.instance;
+ bool _valid = true;
+
+ TextEditingController _textController = new TextEditingController();
+  FocusNode _textFocus = new FocusNode();
+
+  @override
+  void initState() {
+    super.initState();
+
+    _textFocus.addListener(onChange);
+  }
+
+  Future<void> onChange() async {
+    String text = _textController.text;
+    bool hasFocus = _textFocus.hasFocus;
+    //do your text transforming
+    if(!hasFocus && _valid){
+      print(text);
+      await databaseReference.collection("emailData")
+        .add({
+          'email':text,
+          'timeStamp': DateTime.now()
+        }).then((response) {
+      showAlertDialog(context, "Successfully submitted");
+    }).timeout(Duration(seconds:10)).catchError((error) {
+      print(error);
+    });
+      _textController.text = '';
+    }
+  }
+
+
+  bool validateEmail(String value) {
+  Pattern pattern =
+      r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
+  RegExp regex = new RegExp(pattern);
+  return (!regex.hasMatch(value)) ? false : true;
+}
+
+
+ showAlertDialog(BuildContext context, String message) {  
+  // Create button  
+  Widget okButton = FlatButton(  
+    child: Text("OK"),  
+    onPressed: () {  
+      Navigator.of(context).pop();  
+    },  
+  );  
+  
+  
+  // show the dialog  
+  showDialog(  
+    context: context,  
+    builder: (BuildContext context) { 
+      return AlertDialog(  
+    title: Text("Email"),  
+    content: Text(message),  
+    actions: [  
+      okButton,  
+    ],  
+  );  
+    },  
+  );  
+}  
+
 
   @override
   Widget build(BuildContext context) {
@@ -30,6 +97,12 @@ class _AdditivePageState extends State<AdditivePage> {
            onPressed: ()=>{
              Navigator.pop(context)
            },),
+           Image.asset(            
+                'images/charaka.png',
+                width: 40,
+                height: 40,            
+                fit: BoxFit.cover,            
+            ),
           Text("Know Your Food.",
           style: TextStyle(
            fontSize: 32,
@@ -58,7 +131,64 @@ class _AdditivePageState extends State<AdditivePage> {
           child:ListView(
             children:buildList(widget.dataList),
           )
-        )
+        ),
+         Container(
+           child: Text("For further information",
+           style:  TextStyle(
+                     color: Colors.black,
+                     fontSize: 16,
+                   ),
+           ),
+         ),
+         Container(
+              margin: EdgeInsets.symmetric(horizontal:30.0,vertical:2.0),
+              decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius:BorderRadius.all(Radius.circular(20.0)),
+             
+
+              ),
+              child:TextFormField(
+                controller: _textController,
+                focusNode: _textFocus,
+                decoration:_valid? InputDecoration(
+                  border: InputBorder.none,
+                   hintText:"Please enter email",
+                   hintStyle: TextStyle(
+                     color: Colors.orange,
+                     fontSize: 16,
+                   ),
+                   icon: Icon(Icons.email,color: Colors.black)
+
+                ):
+                InputDecoration(
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(25.0),
+                    borderSide: BorderSide(
+                    color: Colors.red,
+                  ),
+                  ),
+                   labelText:"invalid email",
+                   labelStyle: TextStyle(
+                     color: Colors.red,
+                     fontSize: 12
+                   ),
+                   hintStyle: TextStyle(
+                     color: Colors.orange,
+                     fontSize: 16,
+                   ),
+                   icon: Icon(Icons.email,color: Colors.black)
+
+                ),
+                onChanged: (text){
+                  setState(() {
+                    _valid = validateEmail(text);
+                  });
+  
+                },
+              )
+            ),
+            
         ]
       )      
     );

@@ -1,10 +1,9 @@
 import 'dart:io';
-
-
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:knowyourfood/additives.dart';
+import 'package:knowyourfood/loader.dart';
 
 
 
@@ -18,7 +17,7 @@ class _SearchPageState extends State<SearchPage>
   AnimationController _controller;
 
   File _image;
-  String _uploadedFileURL;
+  // String _uploadedFileURL;
   bool loading = false;
 
   TextEditingController _textController = new TextEditingController();
@@ -42,7 +41,7 @@ class _SearchPageState extends State<SearchPage>
 Future<void> _showSelectionDialog(BuildContext context) {
     return showDialog(
         context: context,
-        builder: (BuildContext context) {
+        builder: (BuildContext dialogContext) {
           return AlertDialog(
               title: Text("From where do you want to take the photo?"),
               content: SingleChildScrollView(
@@ -52,6 +51,7 @@ Future<void> _showSelectionDialog(BuildContext context) {
                       child: Text("Gallery"),
                       onTap: () {
                         _openGallery(context);
+                        Navigator.pop(context);
                       },
                     ),
                     Padding(padding: EdgeInsets.all(8.0)),
@@ -59,6 +59,7 @@ Future<void> _showSelectionDialog(BuildContext context) {
                       child: Text("Camera"),
                       onTap: () {
                         _openCamera(context);
+                         Navigator.pop(context);
                       },
                     )
                   ],
@@ -73,9 +74,13 @@ void _openGallery(BuildContext context) async {
     this.setState(() {
       _image = picture;
     });
-  
+  setState(() {
+    loading = true;
+  });
+
+
   Dio dio = new Dio();
-  var uploadURL = "http://192.168.42.29:3000/api/image/";
+  var uploadURL = "http://34.123.192.200:8000/api/image/";
   String fileName = _image.path.split('/').last;
   FormData formdata = new FormData.fromMap({
         "image":
@@ -86,12 +91,20 @@ void _openGallery(BuildContext context) async {
   responseType: ResponseType.json // or ResponseType.JSON
   ))
   .then((response) => {
+        setState((){
+          loading = false; 
+        }),
         print(response),
-        Navigator.pop(context),
         Navigator.of(context).push(MaterialPageRoute(builder: (context) => AdditivePage()))
 
   })
-  .catchError((error) => print(error));
+  .catchError((error) => {
+    setState((){
+          loading = false; 
+        }),
+    print(error),
+    showAlertDialog(context,"Please try again")
+    });
   
   }
 
@@ -101,8 +114,13 @@ void _openCamera(BuildContext context) async {
     this.setState(() {
       _image = picture;
     });
+
+  setState(() {
+    loading = true;
+  });
+
      Dio dio = new Dio();
-  var uploadURL = "http://192.168.42.29:3000/api/image/";
+  var uploadURL = "http://34.123.192.200:8000/api/image/";
   String fileName = _image.path.split('/').last;
   FormData formdata = new FormData.fromMap({
         "image":
@@ -113,11 +131,19 @@ void _openCamera(BuildContext context) async {
   responseType: ResponseType.json // or ResponseType.JSON
   ))
   .then((response) => {
+    setState(() {
+    loading = false;
+  }),
         print(response),
-        Navigator.pop(context),
         Navigator.of(context).push(MaterialPageRoute(builder: (context) => AdditivePage()))
   })
-  .catchError((error) => print(error));
+  .catchError((error) => {
+     setState(() {
+    loading = false;
+    }),
+    print(error),
+    showAlertDialog(context,"Please try again")
+    });
     
   }
 
@@ -134,11 +160,36 @@ void onChange(){
   print(text);
 }
 
+ showAlertDialog(BuildContext context, String message) {  
+  // Create button  
+  Widget okButton = FlatButton(  
+    child: Text("OK"),  
+    onPressed: () {  
+      Navigator.of(context).pop();  
+    },  
+  );  
+  
+  
+  // show the dialog  
+  showDialog(  
+    context: context,  
+    builder: (BuildContext context) { 
+      return AlertDialog(  
+    title: Text("Failed!"),  
+    content: Text(message),  
+    actions: [  
+      okButton,  
+    ],  
+  );  
+    },  
+  );  
+}  
+
 
   @override
   Widget build(BuildContext context) {
     
-    return Scaffold(
+    return loading? Loading(): Scaffold(
       appBar:PreferredSize(
           preferredSize: Size.fromHeight(95.0),
           child: AppBar(
@@ -149,6 +200,12 @@ void onChange(){
             padding: const EdgeInsets.only(top:30.0),
         child: Row(
         children: <Widget>[
+          Image.asset(            
+                'images/charaka.png',
+                width: 40,
+                height: 40,            
+                fit: BoxFit.cover,            
+            ),
           Text("Know Your Food.",
           style: TextStyle(
            fontSize: 32,
