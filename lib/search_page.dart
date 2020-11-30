@@ -221,13 +221,13 @@ void onChange(){
    ),
       body: Container(
         padding:  EdgeInsets.only(top: 40.0),
-        margin: EdgeInsets.all(30.0),
+        margin: EdgeInsets.fromLTRB(30.0,25,30,90),
         decoration: BoxDecoration(
-           color: Colors.green[100],
+           color: Colors.lightGreen[200],
           border: Border.all(
             color:Colors.white
           ),
-          borderRadius: BorderRadius.all(Radius.circular(20.0))
+          borderRadius: BorderRadius.all(Radius.circular(40.0))
         ),
         child: Column(
           children: [
@@ -255,11 +255,12 @@ void onChange(){
               )
             ),
             Container(
-              margin: EdgeInsets.only(top: 200),
-              padding: EdgeInsets.only(left:70,right:70),
+              margin: EdgeInsets.fromLTRB(65,200,65,0),
+              // padding: EdgeInsets.only(left:70,right:70),
               decoration: BoxDecoration(),
               child:RaisedButton(
                  color: Colors.green,
+                 shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(15.0)),
                  child: Row(
                    children: [
                      Container(
