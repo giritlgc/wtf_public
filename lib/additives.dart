@@ -4,7 +4,9 @@ import 'package:knowyourfood/additive_detail.dart';
 
 
 class AdditivePage extends StatefulWidget {
-  final dynamic dataList = ["Additive1","Additive2","Additive3","Additive4","Additive5","Additive6","Additive7","Additive8","Additive9"];
+  // final dynamic dataList = ["Additive1","Additive2","Additive3","Additive4","Additive5","Additive6","Additive7","Additive8","Additive9"];
+  final List<String> dataList;
+  AdditivePage({Key key, @required this.dataList}) : super(key: key);
 
   @override
   _AdditivePageState createState() => _AdditivePageState();

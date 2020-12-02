@@ -1,7 +1,9 @@
 import 'dart:io';
+import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:knowyourfood/AdditiveList.dart';
 import 'package:knowyourfood/additives.dart';
 import 'package:knowyourfood/loader.dart';
 
@@ -23,6 +25,8 @@ class _SearchPageState extends State<SearchPage>
   TextEditingController _textController = new TextEditingController();
 
   FocusNode _textFocus = new FocusNode();
+
+  AdditiveList additiveList;
 
   @override
   void initState() {
@@ -98,8 +102,9 @@ void _openGallery(BuildContext context) async {
         setState((){
           loading = false; 
         }),
-        print(response),
-        Navigator.of(context).push(MaterialPageRoute(builder: (context) => AdditivePage()))
+        additiveList = AdditiveList.fromJson(jsonDecode(response.toString())),
+        print(additiveList.ingredients),
+        Navigator.of(context).push(MaterialPageRoute(builder: (context) => AdditivePage(dataList:additiveList.ingredients)))
 
   })
   .catchError((error) => {
@@ -107,7 +112,7 @@ void _openGallery(BuildContext context) async {
           loading = false; 
         }),
     print(error),
-    showAlertDialog(context,"Please try again")
+    showAlertDialog(context,"Sorry, no matches found. Please enter your email below to be updated of any matches from our continuously updated database.")
     });
   
   }
@@ -141,8 +146,9 @@ void _openCamera(BuildContext context) async {
     setState(() {
     loading = false;
   }),
-        print(response),
-        Navigator.of(context).push(MaterialPageRoute(builder: (context) => AdditivePage()))
+        additiveList = AdditiveList.fromJson(jsonDecode(response.toString())),
+        print(additiveList.ingredients),
+        Navigator.of(context).push(MaterialPageRoute(builder: (context) => AdditivePage(dataList:additiveList.ingredients)))
   })
   .catchError((error) => {
      setState(() {
@@ -161,7 +167,7 @@ void onChange(){
   //do your text transforming
   if(!hasFocus && text!=""){
     print("Redirecting to additive page");
-    Navigator.of(context).push(MaterialPageRoute(builder: (context) => AdditivePage()));
+    Navigator.of(context).push(MaterialPageRoute(builder: (context) => AdditivePage(dataList:[text])));
 
   }
   print(text);
@@ -182,7 +188,7 @@ void onChange(){
     context: context,  
     builder: (BuildContext context) { 
       return AlertDialog(  
-    title: Text("Failed!"),  
+    title: Text(""),  
     content: Text(message),  
     actions: [  
       okButton,  
