@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'dart:convert';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -28,12 +29,18 @@ class _SearchPageState extends State<SearchPage>
 
   AdditiveList additiveList;
 
+  bool _valid = true;
+  final databaseReference = FirebaseFirestore.instance;
+  TextEditingController _emailTextController = new TextEditingController();
+  FocusNode _emailTextFocus = new FocusNode();
   @override
   void initState() {
     super.initState();
     _controller = AnimationController(vsync: this);
 
     _textFocus.addListener(onChange);
+
+    _emailTextFocus.addListener(onChangeEmail);
   }
 
   @override
@@ -112,7 +119,7 @@ void _openGallery(BuildContext context) async {
           loading = false; 
         }),
     print(error),
-    showAlertDialog(context,"Sorry, no matches found. Please enter your email below to be updated of any matches from our continuously updated database.")
+    showAlertDialog(context,"Sorry, no matches found! Please share your email to be updated of new matches as we continuously update & enhance our database.")
     });
   
   }
@@ -155,7 +162,7 @@ void _openCamera(BuildContext context) async {
     loading = false;
     }),
     print(error),
-    showAlertDialog(context,"Please try again")
+    showAlertDialog(context,"Sorry, no matches found! Please share your email to be updated of new matches as we continuously update & enhance our database.")
     });
     
   }
@@ -167,7 +174,34 @@ void onChange(){
   //do your text transforming
   if(!hasFocus && text!=""){
     print("Redirecting to additive page");
-    Navigator.of(context).push(MaterialPageRoute(builder: (context) => AdditivePage(dataList:[text])));
+    Dio dio = new Dio();
+    var uploadURL = "http://34.123.192.200:8000/api/search/";
+  
+    dio.post(uploadURL, data: {"name":text}, options: Options(
+    method: 'POST',
+    responseType: ResponseType.json // or ResponseType.JSON
+    ))
+    .then((response) => {
+          setState((){
+            loading = false; 
+          }),
+          additiveList = AdditiveList.fromJson(jsonDecode(response.toString())),
+          print(additiveList.ingredients),
+          if(additiveList.ingredients.length==0){
+            showAlertDialog(context, "Sorry, no matches found! Please share your email to be updated of new matches as we continuously update & enhance our database.") 
+          }else{
+          Navigator.of(context).push(MaterialPageRoute(builder: (context) => AdditivePage(dataList:additiveList.ingredients)))
+          }
+    })
+    .catchError((error) => {
+      setState((){
+            loading = false; 
+          }),
+      print(error),
+      showAlertDialog(context,"Sorry, no matches found! Please share your email to be updated of new matches as we continuously update & enhance our database.")
+      });
+
+  
 
   }
   print(text);
@@ -189,6 +223,96 @@ void onChange(){
     builder: (BuildContext context) { 
       return AlertDialog(  
     title: Text(""),  
+    content: Column (
+      mainAxisSize: MainAxisSize.min,
+      children:[
+        Text(message),
+        Container(
+              margin: EdgeInsets.symmetric(horizontal:2.0,vertical:2.0),
+              decoration: BoxDecoration(
+              color: Colors.grey[100],
+              borderRadius:BorderRadius.all(Radius.circular(20.0)),
+             
+
+              ),
+              child:TextFormField(
+                controller: _emailTextController,
+                focusNode: _emailTextFocus,
+                decoration:InputDecoration(
+                  border: InputBorder.none,
+                   hintText:"Please enter email",
+                   hintStyle: TextStyle(
+                     color: Colors.orange,
+                     fontSize: 16,
+                   ),
+                   icon: Icon(Icons.email,color: Colors.black)
+
+                ),
+                onChanged: (text){
+                  setState(() {
+                    _valid = validateEmail(text);
+                  });
+  
+                },
+              )
+            ),
+            ]
+      ),  
+    actions: [ 
+     okButton,  
+    ],  
+  );  
+    },  
+  );  
+}  
+
+ bool validateEmail(String value) {
+  Pattern pattern =
+      r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
+  RegExp regex = new RegExp(pattern);
+  return (!regex.hasMatch(value)) ? false : true;
+}
+
+ Future<void> onChangeEmail() async {
+    String text = _emailTextController.text;
+    bool hasFocus = _emailTextFocus.hasFocus;
+    //do your text transforming
+    if(!hasFocus && _valid){
+      print(text);
+      await databaseReference.collection("emailData")
+        .add({
+          'email':text,
+          'timeStamp': DateTime.now()
+        }).then((response) {
+      showAlertDialogEmail(context, "Successfully submitted");
+    }).timeout(Duration(seconds:10)).catchError((error) {
+      print(error);
+    });
+    setState(() {
+       _emailTextController.text = '';  
+    });
+     
+    }else if(!hasFocus && !_valid){
+      showAlertDialogEmail(context, "Invalid Email");
+    }
+  }
+
+ showAlertDialogEmail(BuildContext context, String message) {  
+  // Create button  
+  Widget okButton = FlatButton(  
+    child: Text("OK"),  
+    onPressed: () {  
+      Navigator.of(context).pop();  
+    },  
+  );  
+  
+  
+  // show the dialog  
+  showDialog(  
+    context: context,  
+    builder: (BuildContext context) { 
+      return AlertDialog(  
+    title: Text("Email"),  
     content: Text(message),  
     actions: [  
       okButton,  
