@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:device_info/device_info.dart';
 import 'package:flutter/material.dart';
 import 'package:knowyourfood/additive_detail.dart';
 
@@ -18,12 +19,13 @@ class _AdditivePageState extends State<AdditivePage> {
  bool _valid = true;
 
  TextEditingController _textController = new TextEditingController();
-  FocusNode _textFocus = new FocusNode();
+ FocusNode _textFocus = new FocusNode();
+ String deviceId; 
 
   @override
   void initState() {
     super.initState();
-
+    _getId();
     _textFocus.addListener(onChange);
   }
 
@@ -36,6 +38,7 @@ class _AdditivePageState extends State<AdditivePage> {
       await databaseReference.collection("emailData")
         .add({
           'email':text,
+          'deviceId':deviceId,
           'timeStamp': DateTime.now()
         }).then((response) {
       showAlertDialog(context, "Successfully submitted");
@@ -80,6 +83,12 @@ class _AdditivePageState extends State<AdditivePage> {
   );  
 }  
 
+void _getId() async{
+      DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
+     
+        AndroidDeviceInfo androidDeviceInfo = await deviceInfo.androidInfo;
+        deviceId =  androidDeviceInfo.androidId; // unique ID on Android      
+    }
 
   @override
   Widget build(BuildContext context) {
