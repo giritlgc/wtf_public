@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:knowyourfood/custom_app_bar.dart';
 
 
 class AdditiveDetail extends StatefulWidget {
@@ -14,40 +15,8 @@ class _AdditiveDetailState extends State<AdditiveDetail> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-          appBar:PreferredSize(
-          preferredSize: Size.fromHeight(100.0),
-          child: AppBar(
-           automaticallyImplyLeading: false,
-           flexibleSpace: Container(),
-           centerTitle: true,
-      title: Padding(
-            padding: const EdgeInsets.only(top:30.0),
-        child: Row(
-            // mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: <Widget>[
-          IconButton (icon:Icon(Icons.arrow_back),
-           onPressed: ()=>{
-             Navigator.pop(context)
-           },),
-           Image.asset(            
-                'images/charaka.png',
-                width: 40,
-                height: 40,            
-                fit: BoxFit.cover,            
-            ),
-          Text("Know Your Food.",
-          style: TextStyle(
-           fontSize: 32,
-           fontWeight: FontWeight.bold 
-          ),)
-        ],
-      ),
-     ),
-     
-    backgroundColor: Colors.green, 
-    ),
-   ),
-     body:Column(
+          appBar: CustomAppBar2("Know Your Food2"),
+      body:Column(
         children: <Widget>[
           Container(
             margin: EdgeInsets.fromLTRB(30, 40, 30, 40) ,
@@ -55,7 +24,8 @@ class _AdditiveDetailState extends State<AdditiveDetail> {
             style: TextStyle(
               color:Colors.green[900],
               fontSize: 30,
-              fontWeight: FontWeight.w500
+              fontWeight: FontWeight.bold,
+              fontFamily: 'Calibri'
             ),
             ),
           ),
@@ -74,37 +44,42 @@ class _AdditiveDetailState extends State<AdditiveDetail> {
  List<Widget> buildList(dataList){
    var row;
     List<Widget> list = [Container(
-         padding: EdgeInsets.all(20),
+         padding: EdgeInsets.fromLTRB(20,10,0,10),
          color: Colors.green[100],
          child: Text("Functionalities",
          style: TextStyle(
            fontSize:18,
            color:Colors.orange,
-           fontWeight: FontWeight.bold
+           fontWeight: FontWeight.bold,
+           fontFamily: 'Calibri'
          ),),
        )];
    var f=0;
    for(var i=0;i<dataList.length;i++){
      if(f==0){
        row = Container(
-         padding: EdgeInsets.all(20),
+         padding: EdgeInsets.fromLTRB(20,10,0,10),
          color: Colors.green[50],
          child: Text(dataList[i],
          style: TextStyle(
            fontSize:16,
-           color:Colors.black
+           color:Colors.black,
+           fontFamily: 'Calibri',
+           fontWeight: FontWeight.bold,
          ),
          ),
        );
      f=1;
      }else{
        row = Container(
-         padding: EdgeInsets.all(20),
+         padding: EdgeInsets.fromLTRB(20,10,0,10),
          color: Colors.green[100],
          child: Text(dataList[i],
          style: TextStyle(
            fontSize:16,
-           color:Colors.black
+           color:Colors.black,
+           fontFamily: 'Calibri',
+           fontWeight: FontWeight.bold,
          ),),
        );
      f=0;

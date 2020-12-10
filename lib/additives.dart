@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:device_info/device_info.dart';
 import 'package:flutter/material.dart';
 import 'package:knowyourfood/additive_detail.dart';
+import 'package:knowyourfood/custom_app_bar.dart';
 
 
 class AdditivePage extends StatefulWidget {
@@ -93,40 +94,8 @@ void _getId() async{
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-          appBar:PreferredSize(
-          preferredSize: Size.fromHeight(100.0),
-          child: AppBar(
-           automaticallyImplyLeading: false,
-           flexibleSpace: Container(),
-           centerTitle: true,
-      title: Padding(
-            padding: const EdgeInsets.only(top:30.0),
-        child: Row(
-            // mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: <Widget>[
-          IconButton (icon:Icon(Icons.arrow_back),
-           onPressed: ()=>{
-             Navigator.pop(context)
-           },),
-           Image.asset(            
-                'images/charaka.png',
-                width: 40,
-                height: 40,            
-                fit: BoxFit.cover,            
-            ),
-          Text("Know Your Food.",
-          style: TextStyle(
-           fontSize: 32,
-           fontWeight: FontWeight.bold 
-          ),)
-        ],
-      ),
-     ),
-     
-    backgroundColor: Colors.green, 
-    ),
-   ),
-     body:Column(
+          appBar:CustomAppBar2("Know Your Food"),
+        body:Column(
         children: <Widget>[
           Container(
             margin: EdgeInsets.fromLTRB(30, 40, 30, 40) ,
@@ -134,7 +103,8 @@ void _getId() async{
             style: TextStyle(
               color:Colors.green[900],
               fontSize: 30,
-              fontWeight: FontWeight.w500
+              fontWeight: FontWeight.bold,
+              fontFamily: 'Calibri',
             ),
             ),
           ),
@@ -148,6 +118,8 @@ void _getId() async{
            style:  TextStyle(
                      color: Colors.black,
                      fontSize: 16,
+                     fontFamily: 'Calibri',
+                     fontWeight: FontWeight.bold,
                    ),
            ),
          ),
@@ -168,6 +140,8 @@ void _getId() async{
                    hintStyle: TextStyle(
                      color: Colors.orange,
                      fontSize: 16,
+                     fontFamily: 'Calibri',
+                     fontWeight: FontWeight.bold,
                    ),
                    icon: Icon(Icons.email,color: Colors.black)
 
@@ -182,7 +156,9 @@ void _getId() async{
                    labelText:"invalid email",
                    labelStyle: TextStyle(
                      color: Colors.red,
-                     fontSize: 12
+                     fontSize: 12,
+                     fontFamily: 'Calibri',
+                     fontWeight: FontWeight.bold,
                    ),
                    hintStyle: TextStyle(
                      color: Colors.orange,
@@ -211,13 +187,14 @@ void _getId() async{
  List<Widget> buildList(context,dataList){
    var row;
     List<Widget> list = [Container(
-         padding: EdgeInsets.all(20),
+         padding: EdgeInsets.fromLTRB(20,10,0,10),
          color: Colors.green[100],
          child: Text("Additive Name",
          style: TextStyle(
            fontSize:18,
            color:Colors.orange,
-           fontWeight: FontWeight.bold
+           fontWeight: FontWeight.bold,
+           fontFamily: 'Calibri',
          ),),
        )];
    var f=0;
@@ -228,12 +205,14 @@ void _getId() async{
           Navigator.of(context).push(MaterialPageRoute(builder: (context) => AdditiveDetail(additive:dataList[i])));
         },
         child: Container(
-         padding: EdgeInsets.all(20),
+         padding: EdgeInsets.fromLTRB(20,10,0,10),
          color: Colors.green[50],
          child: Text(dataList[i],
          style: TextStyle(
            fontSize:16,
-           color:Colors.black
+           color:Colors.black,
+           fontFamily: 'Calibri',
+           fontWeight: FontWeight.bold,
          ),),
        )
        );
@@ -244,12 +223,14 @@ void _getId() async{
           Navigator.of(context).push(MaterialPageRoute(builder: (context) => AdditiveDetail(additive:dataList[i])));
         },
         child: Container(
-         padding: EdgeInsets.all(20),
+         padding: EdgeInsets.fromLTRB(20,10,0,10),
          color: Colors.green[100],
          child: Text(dataList[i],
          style: TextStyle(
            fontSize:16,
-           color:Colors.black
+           color:Colors.black,
+           fontFamily: 'Calibri',
+           fontWeight: FontWeight.bold,
          ),),
        )
        );

@@ -15,7 +15,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
         title: 'Know Your Food',
-        theme: ThemeData(fontFamily: 'Colby'),
+        theme: ThemeData(),
         home: SearchPage());
   }
 }

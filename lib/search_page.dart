@@ -9,6 +9,7 @@ import 'package:knowyourfood/AdditiveList.dart';
 import 'package:knowyourfood/additives.dart';
 import 'package:knowyourfood/loader.dart';
 
+import 'custom_app_bar.dart';
 
 
 class SearchPage extends StatefulWidget {
@@ -59,12 +60,21 @@ class _SearchPageState extends State<SearchPage>
           context: context,
           builder: (BuildContext dialogContext) {
             return AlertDialog(
-                title: Text("From where do you want to take the photo?"),
+                title: Text("From where do you want to take the photo?",
+                style: TextStyle(
+                  fontFamily: 'Calibri',
+                  fontWeight: FontWeight.bold
+                ),),
                 content: SingleChildScrollView(
                   child: ListBody(
                     children: <Widget>[
                       GestureDetector(
-                        child: Text("Gallery"),
+                        child: Text("Gallery",
+                        style: TextStyle(
+                        fontFamily: 'Calibri',
+                        fontWeight: FontWeight.bold
+                      ),
+                ),
                         onTap: () {
                           _openGallery(context);
                           Navigator.pop(context);
@@ -72,7 +82,11 @@ class _SearchPageState extends State<SearchPage>
                       ),
                       Padding(padding: EdgeInsets.all(8.0)),
                       GestureDetector(
-                        child: Text("Camera"),
+                        child: Text("Camera",
+                        style: TextStyle(
+                        fontFamily: 'Calibri',
+                        fontWeight: FontWeight.bold
+                      ),),
                         onTap: () {
                           _openCamera(context);
                            Navigator.pop(context);
@@ -233,7 +247,12 @@ class _SearchPageState extends State<SearchPage>
       content: Column (
         mainAxisSize: MainAxisSize.min,
         children:[
-          Text(message),
+          Text(message,
+          style: TextStyle(
+            fontFamily:'Calibri',
+            fontWeight: FontWeight.bold
+          ),
+          ),
           Container(
                 margin: EdgeInsets.symmetric(horizontal:2.0,vertical:2.0),
                 decoration: BoxDecoration(
@@ -251,6 +270,7 @@ class _SearchPageState extends State<SearchPage>
                      hintStyle: TextStyle(
                        color: Colors.orange,
                        fontSize: 16,
+                       fontFamily: 'Calibri',
                      ),
                      icon: Icon(Icons.email,color: Colors.black)
   
@@ -335,38 +355,12 @@ class _SearchPageState extends State<SearchPage>
     Widget build(BuildContext context) {
       
       return loading? Loading(): Scaffold(
-        appBar:PreferredSize(
-            preferredSize: Size.fromHeight(95.0),
-            child: AppBar(
-             automaticallyImplyLeading: false,
-             flexibleSpace: Container(),
-             centerTitle: true,
-        title: Padding(
-              padding: const EdgeInsets.only(top:30.0),
-          child: Row(
-          children: <Widget>[
-            Image.asset(            
-                  'images/charaka.png',
-                  width: 40,
-                  height: 40,            
-                  fit: BoxFit.cover,            
-              ),
-            Text("Know Your Food.",
-            style: TextStyle(
-             fontSize: 32,
-             fontWeight: FontWeight.bold,  
-            ),
-            )
-          ],
+        appBar: CustomAppBar(
+          "Know Your Food"
         ),
-       ),
-       
-      backgroundColor: Colors.green, 
-      ),
-     ),
         body: Container(
-          padding:  EdgeInsets.only(top: 40.0),
-          margin: EdgeInsets.fromLTRB(30.0,25,30,90),
+          padding:  EdgeInsets.only(top: 60.0),
+          margin: EdgeInsets.fromLTRB(15.0,50,15,90),
           decoration: BoxDecoration(
              color: Colors.lightGreen[200],
             border: Border.all(
@@ -377,12 +371,12 @@ class _SearchPageState extends State<SearchPage>
           child: Column(
             children: [
               Container(
-                margin: EdgeInsets.symmetric(horizontal:30.0,vertical:2.0),
+                margin: EdgeInsets.symmetric(horizontal:35.0,vertical:2.0),
                 decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius:BorderRadius.all(Radius.circular(20.0)),
-               
-  
+
+                
                 ),
                 child:TextFormField(
                   controller: _textController,
@@ -393,29 +387,45 @@ class _SearchPageState extends State<SearchPage>
                      hintStyle: TextStyle(
                        color: Colors.orange,
                        fontSize: 20,
+                       fontFamily: 'Calibri',
                      ),
-                     icon: Icon(Icons.search,color: Colors.black)
-  
+                     prefixIcon: IconButton(
+                       icon: Icon(
+                       Icons.search,
+                       color: Colors.grey[600],
+                       size: 30,
+                       ),
+                       padding: EdgeInsets.fromLTRB(8, 0, 0, 0),
+                      onPressed: (){},
+                     ),
+                     
                   ),
                 )
               ),
               Container(
-                margin: EdgeInsets.fromLTRB(65,200,65,0),
+                margin: EdgeInsets.fromLTRB(80,150,80,50),
                 // padding: EdgeInsets.only(left:70,right:70),
                 decoration: BoxDecoration(),
                 child:RaisedButton(
-                   color: Colors.green,
+                   color: Color(0xff73a632),
+                   padding:EdgeInsets.fromLTRB(0,10,0,10) ,
                    shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(15.0)),
                    child: Row(
+                     mainAxisAlignment: MainAxisAlignment.center ,
                      children: [
                        Container(
-                         child: Icon(Icons.camera_alt),
+                         child: Icon(
+                           Icons.camera_alt,
+                           size: 30,
+                           ),
                        ),
                        Container(
                          child: Text(' Scan',
                          style: TextStyle(
-                           fontSize: 40,
-                           color: Colors.white
+                           fontSize: 24,
+                           fontFamily: 'Calibri',
+                           color: Colors.white,
+                           fontWeight: FontWeight.bold
                          ),
                          ),
                        )
