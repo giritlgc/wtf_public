@@ -63,8 +63,7 @@ class _SearchPageState extends State<SearchPage>
             return AlertDialog(
                 title: Text("From where do you want to take the photo?",
                 style: TextStyle(
-                  fontFamily: 'Calibri',
-                  fontWeight: FontWeight.bold
+                  fontFamily: 'PlutoCondMedium',
                 ),),
                 content: SingleChildScrollView(
                   child: ListBody(
@@ -72,8 +71,7 @@ class _SearchPageState extends State<SearchPage>
                       GestureDetector(
                         child: Text("Gallery",
                         style: TextStyle(
-                        fontFamily: 'Calibri',
-                        fontWeight: FontWeight.bold
+                        fontFamily: 'PlutoCondMedium',
                       ),
                 ),
                         onTap: () {
@@ -85,8 +83,7 @@ class _SearchPageState extends State<SearchPage>
                       GestureDetector(
                         child: Text("Camera",
                         style: TextStyle(
-                        fontFamily: 'Calibri',
-                        fontWeight: FontWeight.bold
+                        fontFamily: 'PlutoCondMedium'
                       ),),
                         onTap: () {
                           _openCamera(context);
@@ -250,7 +247,7 @@ class _SearchPageState extends State<SearchPage>
         children:[
           Text(message,
           style: TextStyle(
-            fontFamily:'Calibri',
+            fontFamily:'PlutoCondMedium',
             fontWeight: FontWeight.bold
           ),
           ),
@@ -271,7 +268,7 @@ class _SearchPageState extends State<SearchPage>
                      hintStyle: TextStyle(
                        color: HexColor('#e58149'),
                        fontSize: 16,
-                       fontFamily: 'Calibri',
+                       fontFamily: 'PlutoCondMedium',
                      ),
                      icon: Icon(Icons.email,color: Colors.black)
   
@@ -372,10 +369,11 @@ class _SearchPageState extends State<SearchPage>
           child: Column(
             children: [
               Container(
+                height:38,
                 margin: EdgeInsets.symmetric(horizontal:35.0,vertical:2.0),
                 decoration: BoxDecoration(
                 color: Colors.white,
-                borderRadius:BorderRadius.all(Radius.circular(20.0)),
+                borderRadius:BorderRadius.all(Radius.circular(15.0)),
 
                 
                 ),
@@ -383,22 +381,24 @@ class _SearchPageState extends State<SearchPage>
                   controller: _textController,
                   focusNode: _textFocus,
                   decoration: InputDecoration(
+                    contentPadding: EdgeInsets.only(top:4),
                     border: InputBorder.none,
                      hintText:"Search",
                      hintStyle: TextStyle(
                        color: HexColor('#e58149'),
-                       fontSize: 20,
+                       fontSize: 18,
                        fontFamily: 'PlutoCondRegular',
                      ),
-                     prefixIcon: IconButton(
-                       icon: Icon(
-                       Icons.search,
-                       color: Colors.grey[600],
-                       size: 30,
-                       ),
-                       padding: EdgeInsets.fromLTRB(8, 0, 0, 0),
-                      onPressed: (){},
-                     ),
+                     prefixIcon: Padding(
+                padding: const EdgeInsets.all(9.0),
+                child: Image.asset(
+                  'images/loupe.png',
+                  width: 10,
+                  height: 10,
+                  fit: BoxFit.contain,
+                  color: HexColor('#716663'),
+                ),
+              ),
                      
                   ),
                 )
