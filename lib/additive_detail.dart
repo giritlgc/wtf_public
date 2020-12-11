@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hexcolor/hexcolor.dart';
 import 'package:knowyourfood/custom_app_bar.dart';
 
 
@@ -22,10 +23,9 @@ class _AdditiveDetailState extends State<AdditiveDetail> {
             margin: EdgeInsets.fromLTRB(30, 40, 30, 40) ,
             child: Text(widget.additive,
             style: TextStyle(
-              color:Colors.green[900],
+              color: HexColor('#72a633'),
               fontSize: 30,
-              fontWeight: FontWeight.bold,
-              fontFamily: 'Calibri'
+              fontFamily: 'PlutoCondMedium'
             ),
             ),
           ),
@@ -45,13 +45,12 @@ class _AdditiveDetailState extends State<AdditiveDetail> {
    var row;
     List<Widget> list = [Container(
          padding: EdgeInsets.fromLTRB(20,10,0,10),
-         color: Colors.green[100],
+         color: HexColor('#d1e0bc'),
          child: Text("Functionalities",
          style: TextStyle(
            fontSize:18,
-           color:Colors.orange,
-           fontWeight: FontWeight.bold,
-           fontFamily: 'Calibri'
+           color:HexColor('#e58149'),
+           fontFamily: 'PlutoCondMedium'
          ),),
        )];
    var f=0;
@@ -59,13 +58,12 @@ class _AdditiveDetailState extends State<AdditiveDetail> {
      if(f==0){
        row = Container(
          padding: EdgeInsets.fromLTRB(20,10,0,10),
-         color: Colors.green[50],
+         color: HexColor('#ebf3e3'),
          child: Text(dataList[i],
          style: TextStyle(
            fontSize:16,
-           color:Colors.black,
-           fontFamily: 'Calibri',
-           fontWeight: FontWeight.bold,
+           color:HexColor('#635950'),
+           fontFamily: 'PlutoCondMedium',
          ),
          ),
        );
@@ -73,13 +71,12 @@ class _AdditiveDetailState extends State<AdditiveDetail> {
      }else{
        row = Container(
          padding: EdgeInsets.fromLTRB(20,10,0,10),
-         color: Colors.green[100],
+         color: HexColor('#d1e0bc'),
          child: Text(dataList[i],
          style: TextStyle(
            fontSize:16,
-           color:Colors.black,
-           fontFamily: 'Calibri',
-           fontWeight: FontWeight.bold,
+           color:HexColor('#635950'),
+           fontFamily: 'PlutoCondMedium',
          ),),
        );
      f=0;

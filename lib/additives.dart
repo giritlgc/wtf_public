@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:device_info/device_info.dart';
 import 'package:flutter/material.dart';
+import 'package:hexcolor/hexcolor.dart';
 import 'package:knowyourfood/additive_detail.dart';
 import 'package:knowyourfood/custom_app_bar.dart';
 
@@ -101,10 +102,9 @@ void _getId() async{
             margin: EdgeInsets.fromLTRB(30, 40, 30, 40) ,
             child: Text("Additives present",
             style: TextStyle(
-              color:Colors.green[900],
+              color: HexColor('#72a633'),
               fontSize: 30,
-              fontWeight: FontWeight.bold,
-              fontFamily: 'Calibri',
+              fontFamily: 'PlutoCondMedium',
             ),
             ),
           ),
@@ -116,10 +116,9 @@ void _getId() async{
          Container(
            child: Text("For further information",
            style:  TextStyle(
-                     color: Colors.black,
+                     color: HexColor('#635950'),
                      fontSize: 16,
-                     fontFamily: 'Calibri',
-                     fontWeight: FontWeight.bold,
+                     fontFamily: 'PlutoCondMedium',
                    ),
            ),
          ),
@@ -138,12 +137,11 @@ void _getId() async{
                   border: InputBorder.none,
                    hintText:"Please enter email",
                    hintStyle: TextStyle(
-                     color: Colors.orange,
+                     color: HexColor('#e58149'),
                      fontSize: 16,
-                     fontFamily: 'Calibri',
-                     fontWeight: FontWeight.bold,
+                     fontFamily: 'PlutoCondMedium',
                    ),
-                   icon: Icon(Icons.email,color: Colors.black)
+                   icon: Icon(Icons.email,color: HexColor('#635950'))
 
                 ):
                 InputDecoration(
@@ -157,14 +155,13 @@ void _getId() async{
                    labelStyle: TextStyle(
                      color: Colors.red,
                      fontSize: 12,
-                     fontFamily: 'Calibri',
-                     fontWeight: FontWeight.bold,
+                     fontFamily: 'PlutoCondMedium',
                    ),
                    hintStyle: TextStyle(
-                     color: Colors.orange,
+                     color: HexColor('#e58149'),
                      fontSize: 16,
                    ),
-                   icon: Icon(Icons.email,color: Colors.black)
+                   icon: Icon(Icons.email,color: HexColor('#635950'))
 
                 ),
                 onChanged: (text){
@@ -188,13 +185,12 @@ void _getId() async{
    var row;
     List<Widget> list = [Container(
          padding: EdgeInsets.fromLTRB(20,10,0,10),
-         color: Colors.green[100],
+         color: HexColor('#d1e0bc'),
          child: Text("Additive Name",
          style: TextStyle(
            fontSize:18,
-           color:Colors.orange,
-           fontWeight: FontWeight.bold,
-           fontFamily: 'Calibri',
+           color:HexColor('#e58149'),
+           fontFamily: 'PlutoCondMedium',
          ),),
        )];
    var f=0;
@@ -206,13 +202,12 @@ void _getId() async{
         },
         child: Container(
          padding: EdgeInsets.fromLTRB(20,10,0,10),
-         color: Colors.green[50],
+         color: HexColor('#ebf3e3'),
          child: Text(dataList[i],
          style: TextStyle(
            fontSize:16,
-           color:Colors.black,
-           fontFamily: 'Calibri',
-           fontWeight: FontWeight.bold,
+           color:HexColor('#635950'),
+           fontFamily: 'PlutoCondMedium',
          ),),
        )
        );
@@ -224,13 +219,12 @@ void _getId() async{
         },
         child: Container(
          padding: EdgeInsets.fromLTRB(20,10,0,10),
-         color: Colors.green[100],
+         color: HexColor('#d1e0bc'),
          child: Text(dataList[i],
          style: TextStyle(
            fontSize:16,
-           color:Colors.black,
-           fontFamily: 'Calibri',
-           fontWeight: FontWeight.bold,
+           color:HexColor('#635950'),
+           fontFamily: 'PlutoCondMedium',
          ),),
        )
        );

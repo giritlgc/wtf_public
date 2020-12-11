@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:device_info/device_info.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:hexcolor/hexcolor.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:knowyourfood/AdditiveList.dart';
 import 'package:knowyourfood/additives.dart';
@@ -268,7 +269,7 @@ class _SearchPageState extends State<SearchPage>
                     border: InputBorder.none,
                      hintText:"Please enter email",
                      hintStyle: TextStyle(
-                       color: Colors.orange,
+                       color: HexColor('#e58149'),
                        fontSize: 16,
                        fontFamily: 'Calibri',
                      ),
@@ -362,7 +363,7 @@ class _SearchPageState extends State<SearchPage>
           padding:  EdgeInsets.only(top: 60.0),
           margin: EdgeInsets.fromLTRB(15.0,50,15,90),
           decoration: BoxDecoration(
-             color: Colors.lightGreen[200],
+             color: HexColor('#d1e0bc'),
             border: Border.all(
               color:Colors.white
             ),
@@ -385,9 +386,9 @@ class _SearchPageState extends State<SearchPage>
                     border: InputBorder.none,
                      hintText:"Search",
                      hintStyle: TextStyle(
-                       color: Colors.orange,
+                       color: HexColor('#e58149'),
                        fontSize: 20,
-                       fontFamily: 'Calibri',
+                       fontFamily: 'PlutoCondRegular',
                      ),
                      prefixIcon: IconButton(
                        icon: Icon(
@@ -406,26 +407,28 @@ class _SearchPageState extends State<SearchPage>
                 margin: EdgeInsets.fromLTRB(80,150,80,50),
                 // padding: EdgeInsets.only(left:70,right:70),
                 decoration: BoxDecoration(),
-                child:RaisedButton(
-                   color: Color(0xff73a632),
+                child:FlatButton(
+                   color: HexColor('#72a633'),
                    padding:EdgeInsets.fromLTRB(0,10,0,10) ,
                    shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(15.0)),
                    child: Row(
                      mainAxisAlignment: MainAxisAlignment.center ,
                      children: [
                        Container(
-                         child: Icon(
-                           Icons.camera_alt,
-                           size: 30,
-                           ),
+                         child: Image.asset(            
+                            'images/camera.png',
+                            width: 30,
+                            height: 30,            
+                            fit: BoxFit.cover,
+                            color: HexColor('#435839')           
+                        ),
                        ),
                        Container(
                          child: Text(' Scan',
                          style: TextStyle(
-                           fontSize: 24,
-                           fontFamily: 'Calibri',
+                           fontSize: 20,
+                           fontFamily: 'PlutoCondMedium',
                            color: Colors.white,
-                           fontWeight: FontWeight.bold
                          ),
                          ),
                        )

@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:hexcolor/hexcolor.dart';
 
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget{
-  final _preferredSize =110.0;
+  final _preferredSize =125.0;
   
-  String title;
+  final String title;
 
   CustomAppBar(this.title);
 
@@ -15,7 +16,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget{
       alignment: Alignment.center,
       padding: EdgeInsets.only(top:20.0),
       decoration: BoxDecoration(
-        color: Color(0xff73a632)
+        color: HexColor('#72a633')
       ),
       child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -31,7 +32,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget{
           style: TextStyle(
            fontSize: 40,
            fontWeight: FontWeight.bold,
-           fontFamily: 'Colby' ,
+           fontFamily: 'ColbyCompressed' ,
            color: Colors.white
           ),)
         ],
@@ -48,7 +49,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget{
 class CustomAppBar2 extends StatelessWidget implements PreferredSizeWidget{
   final _preferredSize =110.0;
   
-  String title;
+  final String title;
 
   CustomAppBar2(this.title);
 
@@ -76,9 +77,9 @@ class CustomAppBar2 extends StatelessWidget implements PreferredSizeWidget{
             ),
           Text("Know Your Food.",
           style: TextStyle(
-           fontSize: 40,
+           fontSize: 45,
            fontWeight: FontWeight.bold,
-           fontFamily: 'Colby' ,
+           fontFamily: 'ColbyCompressed' ,
            color: Colors.white
           ),)
         ],
