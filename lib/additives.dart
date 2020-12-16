@@ -35,7 +35,7 @@ class _AdditivePageState extends State<AdditivePage> {
     String text = _textController.text;
     bool hasFocus = _textFocus.hasFocus;
     //do your text transforming
-    if(!hasFocus && _valid){
+    if(!hasFocus && _valid && text!=""){
       print(text);
       await databaseReference.collection("emailData")
         .add({
@@ -76,7 +76,11 @@ class _AdditivePageState extends State<AdditivePage> {
     builder: (BuildContext context) { 
       return AlertDialog(  
     title: Text("Email"),  
-    content: Text(message),  
+    content: Text(message,
+    style: TextStyle(
+      fontFamily: 'PlutoCondRegular'
+    ),
+    ),  
     actions: [  
       okButton,  
     ],  

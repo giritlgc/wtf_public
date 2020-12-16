@@ -302,7 +302,7 @@ class _SearchPageState extends State<SearchPage>
       String text = _emailTextController.text;
       bool hasFocus = _emailTextFocus.hasFocus;
       //do your text transforming
-      if(!hasFocus && _valid){
+      if(!hasFocus && _valid && text!=""){
         print(text);
         await databaseReference.collection("emailData")
           .add({
@@ -339,7 +339,11 @@ class _SearchPageState extends State<SearchPage>
       builder: (BuildContext context) { 
         return AlertDialog(  
       title: Text("Email"),  
-      content: Text(message),  
+      content: Text(message,
+      style: TextStyle(
+        fontFamily: 'PlutoCondRegular'
+      ),
+      ),  
       actions: [  
         okButton,  
       ],  
@@ -348,6 +352,41 @@ class _SearchPageState extends State<SearchPage>
     );  
   }  
   
+  void _submit(){
+    String text = _textController.text;
+    if(text!=""){
+      print("Redirecting to additive page");
+      Dio dio = new Dio();
+      var uploadURL = "http://34.123.192.200:8000/api/search/";
+  
+      dio.post(uploadURL, data: {"name":text,"deviceId":deviceId}, options: Options(
+      method: 'POST',
+      responseType: ResponseType.json // or ResponseType.JSON
+      ))
+      .then((response) => {
+            setState((){
+              loading = false; 
+            }),
+            additiveList = AdditiveList.fromJson(jsonDecode(response.toString())),
+            print(additiveList.ingredients),
+            if(additiveList.ingredients.length==0){
+              showAlertDialog(context, "Sorry, no matches found! Please share your email to be updated of new matches as we continuously update & enhance our database.") 
+            }else{
+            Navigator.of(context).push(MaterialPageRoute(builder: (context) => AdditivePage(dataList:additiveList.ingredients)))
+            }
+      })
+      .catchError((error) => {
+        setState((){
+              loading = false; 
+            }),
+        print(error),
+        showAlertDialog(context,"Sorry, no matches found! Please share your email to be updated of new matches as we continuously update & enhance our database.")
+        });
+  
+    
+  
+    }
+  }
   
     @override
     Widget build(BuildContext context) {
@@ -370,16 +409,21 @@ class _SearchPageState extends State<SearchPage>
             children: [
               Container(
                 height:38,
-                margin: EdgeInsets.symmetric(horizontal:35.0,vertical:2.0),
-                decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius:BorderRadius.all(Radius.circular(15.0)),
-
-                
-                ),
-                child:TextFormField(
+                    margin: EdgeInsets.symmetric(horizontal:35.0,vertical:2.0),
+                    decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius:BorderRadius.all(Radius.circular(15.0)),
+                    ),
+                   child: Row(
+                children: <Widget>[
+                  Container(
+                   
+                    
+                    child: SizedBox(
+                      width: 200,
+                      child:TextFormField(
                   controller: _textController,
-                  focusNode: _textFocus,
+                  // focusNode: _textFocus,
                   decoration: InputDecoration(
                     contentPadding: EdgeInsets.only(top:4),
                     border: InputBorder.none,
@@ -402,6 +446,28 @@ class _SearchPageState extends State<SearchPage>
                      
                   ),
                 )
+              
+                    ),
+                  ),
+                   Container(
+                         padding: EdgeInsets.only(left:15),
+                         child: InkWell(
+                         onTap: () {
+                           _showSelectionDialog(context);
+                         },
+                         child:Image.asset(            
+                            'images/camera.png',
+                            width: 30,
+                            height: 30,            
+                            fit: BoxFit.cover,
+                            color: HexColor('#435839')          
+                        ),
+                         )
+                        
+                       ),
+                ],
+              ),
+              
               ),
               Container(
                 margin: EdgeInsets.fromLTRB(80,150,80,50),
@@ -414,17 +480,9 @@ class _SearchPageState extends State<SearchPage>
                    child: Row(
                      mainAxisAlignment: MainAxisAlignment.center ,
                      children: [
+
                        Container(
-                         child: Image.asset(            
-                            'images/camera.png',
-                            width: 30,
-                            height: 30,            
-                            fit: BoxFit.cover,
-                            color: HexColor('#435839')           
-                        ),
-                       ),
-                       Container(
-                         child: Text(' Scan',
+                         child: Text('Submit',
                          style: TextStyle(
                            fontSize: 20,
                            fontFamily: 'PlutoCondMedium',
@@ -435,7 +493,7 @@ class _SearchPageState extends State<SearchPage>
                      ],
                    ),
                   onPressed:() =>{
-                      _showSelectionDialog(context)
+                      _submit()
                   },  
                 )
               )
