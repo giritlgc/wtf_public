@@ -1,5 +1,9 @@
+import 'dart:convert';
+
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
+import 'package:knowyourfood/FunctionalityList.dart';
 import 'package:knowyourfood/custom_app_bar.dart';
 
 
@@ -7,12 +11,39 @@ class AdditiveDetail extends StatefulWidget {
   final String additive;
   AdditiveDetail({Key key, @required this.additive}) : super(key: key);
   
-  final dynamic dataList = ["Functionality1","Functionality2","Functionality3","Functionality4","Functionality5","Functionality6","Functionality7","Functionality8","Functionality9"];
   @override
   _AdditiveDetailState createState() => _AdditiveDetailState();
 }
 
 class _AdditiveDetailState extends State<AdditiveDetail> {
+
+  FunctionalityList functionalityList;
+  var dataList = [];
+
+  @override
+  void initState() {
+    super.initState();
+    
+    Dio dio = new Dio();
+    var uploadURL = "http://34.123.192.200:8000/api/functionality/";
+    dio.post(uploadURL, data: {"name":widget.additive}, options: Options(
+      method: 'POST',
+      responseType: ResponseType.json // or ResponseType.JSON
+      ))
+      .then((response) => {
+            print(response),
+            functionalityList = FunctionalityList.fromJson(jsonDecode(response.toString())),
+            print(functionalityList.functionalities),
+            setState((){
+              dataList = functionalityList.functionalities; 
+          }),
+      })
+      .catchError((error) => {        
+        print(error)
+        });
+  
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -31,7 +62,7 @@ class _AdditiveDetailState extends State<AdditiveDetail> {
           ),
         Expanded(
           child:ListView(
-            children:buildList(widget.dataList),
+            children:buildList(dataList),
           )
         ),
           ]
