@@ -352,9 +352,12 @@ class _SearchPageState extends State<SearchPage>
     );  
   }  
   
-  void _submit(){
+  void _submit(){    
     String text = _textController.text;
     if(text!=""){
+       setState(() {
+      loading = true;
+      });
       print("Redirecting to additive page");
       Dio dio = new Dio();
       var uploadURL = "http://34.123.192.200:8000/api/search/";
@@ -395,7 +398,8 @@ class _SearchPageState extends State<SearchPage>
         appBar: CustomAppBar(
           "Know Your Food"
         ),
-        body: Container(
+        body: ListView(
+          children:[Container(
           padding:  EdgeInsets.only(top: 60.0),
           margin: EdgeInsets.fromLTRB(15.0,50,15,90),
           decoration: BoxDecoration(
@@ -500,6 +504,7 @@ class _SearchPageState extends State<SearchPage>
             ],
           ),
         )
+          ])
       );
     }
   
