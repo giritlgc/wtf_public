@@ -60,12 +60,12 @@ class CustomAppBar2 extends StatelessWidget implements PreferredSizeWidget{
       alignment: Alignment.center,
       padding: EdgeInsets.only(top:20.0),
       decoration: BoxDecoration(
-        color: Color(0xff73a632)
+        color: HexColor('#72a633')
       ),
       child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-          IconButton (icon:Icon(Icons.arrow_back),
+          IconButton (icon:Icon(Icons.arrow_back,color:Colors.white),
            onPressed: ()=>{
              Navigator.pop(context)
            },),

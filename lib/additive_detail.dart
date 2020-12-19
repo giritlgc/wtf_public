@@ -49,9 +49,10 @@ class _AdditiveDetailState extends State<AdditiveDetail> {
     return Scaffold(
           appBar: CustomAppBar2("Know Your Food2"),
       body:Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Container(
-            margin: EdgeInsets.fromLTRB(30, 40, 30, 40) ,
+            margin: EdgeInsets.fromLTRB(20, 40, 20, 40) ,
             child: Text(widget.additive,
             style: TextStyle(
               color: HexColor('#72a633'),
