@@ -22,7 +22,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget{
             // mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
            IconButton (icon:Icon(Icons.arrow_back,color:HexColor('#72a633')),
-           iconSize: 40,
+           iconSize: 30,
            onPressed: ()=>{
              //do nothing
            },),
@@ -53,7 +53,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget{
 }
 
 class CustomAppBar2 extends StatelessWidget implements PreferredSizeWidget{
-  final _preferredSize =110.0;
+  final _preferredSize =125.0;
   
   final String title;
 
@@ -71,7 +71,8 @@ class CustomAppBar2 extends StatelessWidget implements PreferredSizeWidget{
       child: Row(
             // mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-          IconButton (icon:Icon(Icons.arrow_back,color:Colors.white,size:40),
+          IconButton (icon:Icon(Icons.arrow_back,color:Colors.white),
+           iconSize: 30,
            onPressed: ()=>{
              Navigator.pop(context)
            },),
