@@ -18,29 +18,32 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget{
       decoration: BoxDecoration(
         color: HexColor('#72a633')
       ),
-      child: Row(
+      child: Stack(
             // mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-           IconButton (icon:Icon(Icons.arrow_back,color:HexColor('#72a633')),
-           iconSize: 30,
-           onPressed: ()=>{
-             //do nothing
-           },),
-           Spacer(),
-           Image.asset(            
+           Align(
+            alignment: Alignment.center,
+            child:Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+             children: [
+               Image.asset(            
                 'images/charaka.png',
                 width: 60,
                 height: 60,            
                 fit: BoxFit.cover,            
-            ),
-          Text("Know Your Food.",
-          style: TextStyle(
-           fontSize: 40,
-           fontWeight: FontWeight.bold,
-           fontFamily: 'ColbyCompressed' ,
-           color: Colors.white
-          ),),
-          Spacer()
+              ),
+              Text("Know Your Food.",
+              style: TextStyle(
+              fontSize: 40,
+              fontWeight: FontWeight.bold,
+              fontFamily: 'ColbyCompressed' ,
+              color: Colors.white
+              ),
+              ),
+          
+             ],
+           )
+           )
         ],
       ),
     
@@ -68,29 +71,40 @@ class CustomAppBar2 extends StatelessWidget implements PreferredSizeWidget{
       decoration: BoxDecoration(
         color: HexColor('#72a633')
       ),
-      child: Row(
+      child: Stack(
             // mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-          IconButton (icon:Icon(Icons.arrow_back,color:Colors.white),
-           iconSize: 30,
-           onPressed: ()=>{
-             Navigator.pop(context)
-           },),
-           Spacer(),
-           Image.asset(            
+          Align(
+            alignment: Alignment(-1, 0),
+            child:  IconButton (icon:Icon(Icons.arrow_back,color:Colors.white),
+              iconSize: 30,
+              onPressed: ()=>{
+                Navigator.pop(context)
+              },
+            ),
+          ),
+         
+          Align(
+            alignment:Alignment.center,
+            child:Row(
+              mainAxisAlignment:MainAxisAlignment.center,
+              children:[
+                Image.asset(            
                 'images/charaka.png',
                 width: 60,
                 height: 60,            
                 fit: BoxFit.cover,            
             ),
-          Text("Know Your Food.",
-          style: TextStyle(
-           fontSize: 40,
-           fontWeight: FontWeight.bold,
-           fontFamily: 'ColbyCompressed' ,
-           color: Colors.white
-          ),),
-          Spacer()
+                Text("Know Your Food.",
+                style: TextStyle(
+                fontSize: 40,
+                fontWeight: FontWeight.bold,
+                fontFamily: 'ColbyCompressed' ,
+                color: Colors.white
+                ),)
+              ]
+            )
+          ) 
         ],
       ),
     
