@@ -419,10 +419,11 @@ class _SearchPageState extends State<SearchPage>
                     borderRadius:BorderRadius.all(Radius.circular(15.0)),
                     ),
                    child: Row(
+                     mainAxisAlignment:MainAxisAlignment.spaceBetween, 
                 children: <Widget>[
                   Container(
                    
-                    
+                   
                     child: SizedBox(
                       width: 200,
                       child:TextFormField(
@@ -454,7 +455,7 @@ class _SearchPageState extends State<SearchPage>
                     ),
                   ),
                    Container(
-                         padding: EdgeInsets.only(left:15),
+                         padding: EdgeInsets.only(right:15),
                          child: InkWell(
                          onTap: () {
                            _showSelectionDialog(context);
