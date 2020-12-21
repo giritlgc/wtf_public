@@ -27,7 +27,7 @@ class Buffering extends StatelessWidget {
       color: HexColor('#ebf3e3'),
       child: Center(
         child:SpinKitCircle(
-          color:Colors.white,
+          color:HexColor('#72a633'),
           size:50.0
         )
       ),

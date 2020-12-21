@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:knowyourfood/FunctionalityList.dart';
 import 'package:knowyourfood/custom_app_bar.dart';
+import 'package:knowyourfood/loader.dart';
 
 
 class AdditiveDetail extends StatefulWidget {
@@ -19,11 +20,12 @@ class _AdditiveDetailState extends State<AdditiveDetail> {
 
   FunctionalityList functionalityList;
   var dataList = [];
+  
 
   @override
   void initState() {
     super.initState();
-    
+    buffering = true;
     Dio dio = new Dio();
     var uploadURL = "http://34.123.192.200:8000/api/functionality/";
     dio.post(uploadURL, data: {"name":widget.additive}, options: Options(
@@ -35,6 +37,7 @@ class _AdditiveDetailState extends State<AdditiveDetail> {
             functionalityList = FunctionalityList.fromJson(jsonDecode(response.toString())),
             print(functionalityList.functionalities),
             setState((){
+              buffering = false;
               dataList = functionalityList.functionalities; 
           }),
       })
@@ -47,7 +50,7 @@ class _AdditiveDetailState extends State<AdditiveDetail> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-          appBar: CustomAppBar2("Know Your Food2"),
+          appBar: CustomAppBar2("Know Your Food."),
       body:Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
@@ -72,6 +75,8 @@ class _AdditiveDetailState extends State<AdditiveDetail> {
   
   }
 }
+
+bool buffering = true;
 
  List<Widget> buildList(dataList){
    var row;
@@ -115,5 +120,11 @@ class _AdditiveDetailState extends State<AdditiveDetail> {
      }
       list.add(row);
    }
+    if(buffering){
+        list.add(Container(
+          color: HexColor('#ebf3e3'),
+         child: Buffering()
+        ));
+      }
    return list;
  } 
