@@ -51,9 +51,9 @@ class _ChangePasswordState extends State<ChangePassword> {
     return Material(
       child: Container(
         color: HexColor('#e9ce3f'),
-        child: Column(children: [
+        child: ListView(children:[Column(children: [
           Padding(
-            padding: EdgeInsets.only(top: 52),
+            padding: EdgeInsets.only(top: 28),
             child: Text(
               "Know Your Food.",
               style: TextStyle(
@@ -73,7 +73,7 @@ class _ChangePasswordState extends State<ChangePassword> {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Padding(
-                    padding: EdgeInsets.fromLTRB(0, 60, 0, 0),
+                    padding: EdgeInsets.fromLTRB(0, 62, 0, 0),
                     child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
@@ -81,13 +81,13 @@ class _ChangePasswordState extends State<ChangePassword> {
                             "Trouble Logging In?",
                             style: TextStyle(
                               color: HexColor('#72a633'),
-                              fontSize: 28,
+                              fontSize: 26,
                               fontFamily: 'PlutoCondMedium',
                             ),
                           ),
                         ])),
                 Padding(
-                    padding: EdgeInsets.fromLTRB(0, 20, 0, 0),
+                    padding: EdgeInsets.fromLTRB(0, 15, 0, 0),
                     child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
@@ -115,10 +115,9 @@ class _ChangePasswordState extends State<ChangePassword> {
                           ),
                         ])),
                 Padding(
-                  padding: EdgeInsets.only(top: 20),
+                  padding: EdgeInsets.only(top: 32),
                   child: Container(
                       height: 35,
-                      padding: EdgeInsets.fromLTRB(15, 16, 0, 0),
                       margin:
                           EdgeInsets.symmetric(horizontal: 42.0, vertical: 2.0),
                       decoration: _valid_email
@@ -135,29 +134,14 @@ class _ChangePasswordState extends State<ChangePassword> {
                             ),
                       child: TextFormField(
                         controller: _textController,
-                        decoration: _valid_email
-                            ? InputDecoration(
+                        decoration:InputDecoration(
+                                contentPadding: EdgeInsets.fromLTRB(15,0,0,10),
                                 border: InputBorder.none,
                                 hintText: "Email",
                                 hintStyle: TextStyle(
                                   color: HexColor('#e58149'),
                                   fontSize: 18,
                                   fontFamily: 'PlutoCondRegular',
-                                ),
-                              )
-                            : InputDecoration(
-                                border: InputBorder.none,
-                                hintText: "Email",
-                                hintStyle: TextStyle(
-                                  color: HexColor('#e58149'),
-                                  fontSize: 18,
-                                  fontFamily: 'PlutoCondRegular',
-                                ),
-                                labelText: "invalid email",
-                                labelStyle: TextStyle(
-                                  color: Colors.red,
-                                  fontSize: 16,
-                                  fontFamily: 'PlutoCondMedium',
                                 ),
                               ),
                         onChanged: (value) {
@@ -169,7 +153,7 @@ class _ChangePasswordState extends State<ChangePassword> {
                       )),
                 ),
                 Container(
-                    margin: EdgeInsets.fromLTRB(80, 150, 80, 50),
+                    margin: EdgeInsets.fromLTRB(80, 32, 80, 50),
                     // padding: EdgeInsets.only(left:70,right:70),
                     decoration: BoxDecoration(),
                     child: FlatButton(
@@ -223,7 +207,7 @@ class _ChangePasswordState extends State<ChangePassword> {
               ],
             ),
           )
-        ]),
+        ]),])
       ),
     );
   }

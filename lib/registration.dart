@@ -60,9 +60,9 @@ class _RegistrationState extends State<Registration> {
     return Material(
       child: Container(
         color: HexColor('#e9ce3f'),
-        child: Column(children: [
+        child: SingleChildScrollView(child:Column(children: [
           Padding(
-            padding: EdgeInsets.only(top: 52),
+            padding: EdgeInsets.only(top: 28),
             child: Text(
               "Know Your Food.",
               style: TextStyle(
@@ -113,7 +113,6 @@ class _RegistrationState extends State<Registration> {
                         padding: EdgeInsets.only(top: 20),
                         child: Container(
                             height: 35,
-                            padding: EdgeInsets.fromLTRB(15, 16, 0, 0),
                             margin: EdgeInsets.symmetric(
                                 horizontal: 42.0, vertical: 2.0),
                             decoration: _valid_firstname
@@ -129,8 +128,9 @@ class _RegistrationState extends State<Registration> {
                                     border: Border.all(color: Colors.red)),
                             child: TextFormField(
                               decoration: InputDecoration(
+                                contentPadding: EdgeInsets.fromLTRB(15,0,0,10),
                                 border: InputBorder.none,
-                                hintText: "First name",
+                                hintText: "First Name",
                                 hintStyle: TextStyle(
                                   color: HexColor('#e58149'),
                                   fontSize: 18,
@@ -158,7 +158,6 @@ class _RegistrationState extends State<Registration> {
                         padding: EdgeInsets.only(top: 20),
                         child: Container(
                             height: 35,
-                            padding: EdgeInsets.fromLTRB(15, 16, 0, 0),
                             margin: EdgeInsets.symmetric(
                                 horizontal: 42.0, vertical: 2.0),
                             decoration: _valid_surname
@@ -174,8 +173,9 @@ class _RegistrationState extends State<Registration> {
                                     border: Border.all(color: Colors.red)),
                             child: TextFormField(
                               decoration: InputDecoration(
+                                contentPadding: EdgeInsets.fromLTRB(15,0,0,10),
                                 border: InputBorder.none,
-                                hintText: "Surname",
+                                hintText: "Last Name",
                                 hintStyle: TextStyle(
                                   color: HexColor('#e58149'),
                                   fontSize: 18,
@@ -203,7 +203,6 @@ class _RegistrationState extends State<Registration> {
                         padding: EdgeInsets.only(top: 20),
                         child: Container(
                             height: 35,
-                            padding: EdgeInsets.fromLTRB(15, 16, 0, 0),
                             margin: EdgeInsets.symmetric(
                                 horizontal: 42.0, vertical: 2.0),
                             decoration: _valid_email
@@ -219,29 +218,14 @@ class _RegistrationState extends State<Registration> {
                                     border: Border.all(color: Colors.red),
                                   ),
                             child: TextFormField(
-                              decoration: _valid_email
-                                  ? InputDecoration(
+                              decoration: InputDecoration(
+                                      contentPadding: EdgeInsets.fromLTRB(15,0,0,10),
                                       border: InputBorder.none,
                                       hintText: "Email",
                                       hintStyle: TextStyle(
                                         color: HexColor('#e58149'),
                                         fontSize: 18,
                                         fontFamily: 'PlutoCondRegular',
-                                      ),
-                                    )
-                                  : InputDecoration(
-                                      border: InputBorder.none,
-                                      hintText: "Email",
-                                      hintStyle: TextStyle(
-                                        color: HexColor('#e58149'),
-                                        fontSize: 18,
-                                        fontFamily: 'PlutoCondRegular',
-                                      ),
-                                      labelText: "invalid email",
-                                      labelStyle: TextStyle(
-                                        color: Colors.red,
-                                        fontSize: 16,
-                                        fontFamily: 'PlutoCondMedium',
                                       ),
                                     ),
                               onChanged: (value) {
@@ -265,7 +249,6 @@ class _RegistrationState extends State<Registration> {
                         padding: EdgeInsets.only(top: 20),
                         child: Container(
                             height: 35,
-                            padding: EdgeInsets.fromLTRB(15, 16, 0, 0),
                             margin: EdgeInsets.symmetric(
                                 horizontal: 42.0, vertical: 2.0),
                             decoration: _valid_password
@@ -282,6 +265,7 @@ class _RegistrationState extends State<Registration> {
                             child: TextFormField(
                               obscureText: true,
                               decoration: InputDecoration(
+                                contentPadding: EdgeInsets.fromLTRB(15,0,0,10),
                                 border: InputBorder.none,
                                 hintText: "Password",
                                 hintStyle: TextStyle(
@@ -341,8 +325,8 @@ class _RegistrationState extends State<Registration> {
                                     {
                                       FirebaseAuth.instance
                                           .createUserWithEmailAndPassword(
-                                              email: _email,
-                                              password: _password)
+                                              email: _email.trim(),
+                                              password: _password.trim())
                                           .then((currentUser) =>
                                               Navigator.of(context).push(MaterialPageRoute(builder: (context) => Login())))
                                           .catchError((error) {
@@ -352,12 +336,15 @@ class _RegistrationState extends State<Registration> {
                                     }
                                 }
                             },
-                          ))
+                          )),
+                          SizedBox(
+                        height: MediaQuery.of(context).viewInsets.bottom,
+                      ),
                     ]))
               ],
             ),
           )
-        ]),
+        ]))
       ),
     );
   }

@@ -51,11 +51,13 @@ class _LoginState extends State<Login> {
     return Material(
         child: Stack(
       children: [
-        Container(
+         Align(alignment: Alignment(0, 0),
+
+        child:ListView(children:[Container(
           color: HexColor('#e9ce3f'),
           child: Column(children: [
             Padding(
-              padding: EdgeInsets.only(top: 52),
+              padding: EdgeInsets.only(top: 28),
               child: Text(
                 "Know Your Food.",
                 style: TextStyle(
@@ -66,7 +68,7 @@ class _LoginState extends State<Login> {
               ),
             ),
             Container(
-                margin: EdgeInsets.fromLTRB(15, 35, 15, 0),
+                margin: EdgeInsets.fromLTRB(15, 35, 15, 130),
                 decoration: BoxDecoration(
                     color: Colors.white,
                     border: Border.all(color: Colors.white),
@@ -83,7 +85,7 @@ class _LoginState extends State<Login> {
                                     MainAxisAlignment.spaceEvenly,
                                 children: [
                                   Text(
-                                    "UserName",
+                                    "Email         ",
                                     style: TextStyle(
                                       color: HexColor('#e58149'),
                                       fontSize: 22,
@@ -92,7 +94,6 @@ class _LoginState extends State<Login> {
                                   ),
                                   Container(
                                     height: 35,
-                                    padding: EdgeInsets.fromLTRB(10, 0, 0, 5),
                                     decoration: valid_username ? BoxDecoration(
                                       color: HexColor('#edeef0'),
                                       borderRadius: BorderRadius.all(
@@ -105,9 +106,10 @@ class _LoginState extends State<Login> {
                                       border: Border.all(color: Colors.red),
                                     ),
                                     child: SizedBox(
-                                        width: 165,
+                                        width: 175,
                                         child: TextFormField(
                                           decoration: InputDecoration(
+                                            contentPadding: EdgeInsets.fromLTRB(8,0,0,15),
                                             border: InputBorder.none,
                                           ),
                                           onChanged: (value) {
@@ -144,7 +146,6 @@ class _LoginState extends State<Login> {
                                   ),
                                   Container(
                                     height: 35,
-                                    padding: EdgeInsets.fromLTRB(10, 0, 0, 5),
                                     decoration: valid_password ? BoxDecoration(
                                       color: HexColor('#edeef0'),
                                       borderRadius: BorderRadius.all(
@@ -157,10 +158,11 @@ class _LoginState extends State<Login> {
                                       border: Border.all(color: Colors.red),
                                     ),
                                     child: SizedBox(
-                                        width: 165,
+                                        width: 175,
                                         child: TextFormField(
                                           obscureText: true,
                                           decoration: InputDecoration(
+                                            contentPadding: EdgeInsets.fromLTRB(8,0,0,15),
                                             border: InputBorder.none,
                                           ),
                                           onChanged: (value) {
@@ -210,7 +212,7 @@ class _LoginState extends State<Login> {
                                   {
                                     if (_formKey.currentState.validate()) {
                                       if(username.isNotEmpty && password.isNotEmpty){
-                                        FirebaseAuth.instance.signInWithEmailAndPassword(email: username, password: password)
+                                        FirebaseAuth.instance.signInWithEmailAndPassword(email: username.trim(), password: password.trim())
                                         .then((user) =>  Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) =>
                                                          SearchPage()), (Route<dynamic> route) => false),)
                                         .catchError((error){
@@ -239,7 +241,7 @@ class _LoginState extends State<Login> {
                           
                         ),
                         Container(
-                          padding: EdgeInsets.only(bottom: 50),
+                          padding: EdgeInsets.only(bottom: 40),
                           child: InkWell(
                             child:Text(
                             'Sign Up',
@@ -259,6 +261,7 @@ class _LoginState extends State<Login> {
                     )))
           ]),
         ),
+        ])),
          Align(alignment: Alignment(0, 0.82),
 
         child:Container(
@@ -266,11 +269,11 @@ class _LoginState extends State<Login> {
             color: HexColor('#e58149'),
             borderRadius: BorderRadius.all(Radius.circular(100))
           ),
-          padding: EdgeInsets.all(15),
+          padding: EdgeInsets.all(17),
            child:Image.asset(            
                             'images/grocery_bag.png',
-                            width: 70,
-                            height: 70,                      
+                            width: 65,
+                            height: 65,                      
                         ),
         ))
       ],
