@@ -3,14 +3,18 @@ import 'dart:convert';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:device_info/device_info.dart';
 import 'package:dio/dio.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:knowyourfood/AdditiveList.dart';
+import 'package:knowyourfood/List.dart';
 import 'package:knowyourfood/additives.dart';
 import 'package:knowyourfood/loader.dart';
+import 'package:knowyourfood/registration.dart';
 
 import 'custom_app_bar.dart';
+import 'login.dart';
 
 
 class SearchPage extends StatefulWidget {
@@ -33,11 +37,15 @@ class _SearchPageState extends State<SearchPage>
     FocusNode _textFocus = new FocusNode();
   
     AdditiveList additiveList;
+    AdditiveNameList additiveNameList;
+
   
     bool _valid = true;
     final databaseReference = FirebaseFirestore.instance;
     TextEditingController _emailTextController = new TextEditingController();
     FocusNode _emailTextFocus = new FocusNode();
+    bool loggedIn = FirebaseAuth.instance.currentUser!=null;
+
     @override
     void initState() {
       super.initState();
@@ -281,7 +289,21 @@ class _SearchPageState extends State<SearchPage>
                   },
                 )
               ),
-              ]
+          RaisedButton(
+            child: Text("Register",
+              style: TextStyle(
+                fontFamily:'PlutoCondMedium',
+                fontWeight: FontWeight.bold,
+                 fontSize: 16
+              ),
+            ), 
+            textColor: Colors.white,
+            color:  HexColor('#e58149'),
+            onPressed: (){
+              Navigator.of(context).push(MaterialPageRoute(builder: (context) => Registration()));
+            }
+            )
+          ]
         ),  
       actions: [ 
        okButton,  
@@ -362,7 +384,7 @@ class _SearchPageState extends State<SearchPage>
       Dio dio = new Dio();
       var uploadURL = "http://34.123.192.200:8000/api/search/";
   
-      dio.post(uploadURL, data: {"name":text,"deviceId":deviceId}, options: Options(
+      dio.post(uploadURL, data: {"name":text.trim(),"deviceId":deviceId}, options: Options(
       method: 'POST',
       responseType: ResponseType.json // or ResponseType.JSON
       ))
@@ -391,6 +413,78 @@ class _SearchPageState extends State<SearchPage>
     }
   }
   
+  
+decisionAlertDialog(BuildContext context) {
+
+  // set up the button
+  Widget yes = FlatButton(
+    child: Text("Yes"),
+    onPressed: () { 
+      
+      FirebaseAuth.instance.signOut().then((value) => {
+        Navigator.of(context).pop(),
+        setState(() {
+          loggedIn = false;
+        })
+      });
+    },
+  );
+
+   Widget no = FlatButton(
+    child: Text("No"),
+    onPressed: () { 
+      Navigator.of(context).pop();
+    },
+  );
+
+  // set up the AlertDialog
+  AlertDialog alert = AlertDialog(
+    title: Text("Logout!"),
+    content: Text("Do you want to logout?"),
+    actions: [
+      yes,
+      no
+    ],
+  );
+
+  // show the dialog
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return alert;
+    },
+  );
+}
+
+  // ignore: missing_return
+  Future<List> getSuggestions(String pattern) async {
+    if(pattern!=""){
+      Dio dio = new Dio();
+      var uploadURL = "http://34.123.192.200:8000/api/additiveNameSuggestions/";
+      List lis;
+      await  dio.post(uploadURL, data: {"name":pattern.trim(),"deviceId":deviceId}, options: Options(
+            method: 'POST',
+            responseType: ResponseType.json // or ResponseType.JSON
+            ))
+            .then((response) => {
+                  print(response),
+                  additiveNameList = AdditiveNameList.fromJson(jsonDecode(response.toString())),
+                  print(additiveNameList.additiveNames),
+                  if(additiveNameList.additiveNames.length!=0){
+                  lis = [],
+              for(var i=0;i<additiveNameList.additiveNames.length;i++){
+                lis.add({'name':additiveNameList.additiveNames[i]})
+              }
+            }
+      })
+      .catchError((error) => {
+        print(error),
+        });
+      print(lis);  
+      return lis;
+    }
+  }
+
     @override
     Widget build(BuildContext context) {
       
@@ -399,7 +493,28 @@ class _SearchPageState extends State<SearchPage>
           "Know Your Food"
         ),
         body: ListView(
-          children:[Container(
+          children:[
+          loggedIn ? InkWell(
+                child:Icon(
+                  Icons.logout,
+                  color: Colors.black,
+                  size: 40.0,
+                ),
+                onTap: (){
+                  decisionAlertDialog(context);
+                },
+              ):
+               InkWell(
+                child:Icon(
+                  Icons.login,
+                  color: Colors.black,
+                  size: 40.0,
+                ),
+                onTap: (){
+                  Navigator.of(context).push(MaterialPageRoute(builder: (context) => Login()));
+                },
+              ),
+          Container(
           padding:  EdgeInsets.only(top: 60.0),
           margin: EdgeInsets.fromLTRB(15.0,50,15,90),
           decoration: BoxDecoration(
@@ -421,39 +536,55 @@ class _SearchPageState extends State<SearchPage>
                    child: Row(
                      mainAxisAlignment:MainAxisAlignment.spaceBetween, 
                 children: <Widget>[
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(9,9,0,9),
+                    child: Image.asset(
+                      'images/loupe.png',
+                      width: 30,
+                      height: 30,
+                      fit: BoxFit.contain,
+                      color: HexColor('#716663'),
+                    ),
+                  ),
                   Container(
                    
                    
                     child: SizedBox(
-                      width: 200,
-                      child:TextFormField(
-                  controller: _textController,
-                  // focusNode: _textFocus,
-                  decoration: InputDecoration(
-                    contentPadding: EdgeInsets.only(top:4),
-                    border: InputBorder.none,
-                     hintText:"Search",
-                     hintStyle: TextStyle(
-                       color: HexColor('#e58149'),
-                       fontSize: 18,
-                       fontFamily: 'PlutoCondRegular',
-                     ),
-                     prefixIcon: Padding(
-                padding: const EdgeInsets.all(9.0),
-                child: Image.asset(
-                  'images/loupe.png',
-                  width: 10,
-                  height: 10,
-                  fit: BoxFit.contain,
-                  color: HexColor('#716663'),
-                ),
-              ),
-                     
-                  ),
-                )
-              
+                      width: 160,
+                      child:TypeAheadField(
+                        textFieldConfiguration: TextFieldConfiguration(
+                            controller: _textController,
+                            decoration: InputDecoration(
+                                contentPadding: EdgeInsets.fromLTRB(0,1,0,8),
+                                border:InputBorder.none,
+                                hintText: 'Search',
+                                hintStyle: TextStyle(
+                                  color: HexColor('#e58149'),
+                                  fontSize: 18,
+                                  fontFamily: 'PlutoCondRegular',
+                                  fontWeight: FontWeight.w200,
+                                ),
+                              ),
+                          ),
+                          suggestionsCallback: (pattern) async {
+                            // Here you can call http call 
+                            print(pattern);
+                            return await getSuggestions(pattern);
+                          },
+                          itemBuilder: (context, suggestion) {
+                            print(suggestion);
+                            return ListTile(
+                              title: Text(suggestion['name']),
+                            );
+                          },
+                          onSuggestionSelected: (suggestion) {
+                            // This when someone click the items
+                            print(suggestion);
+                            _textController.text = suggestion['name'];
+                          },
+                        ),
+                      )
                     ),
-                  ),
                    Container(
                          padding: EdgeInsets.only(right:15),
                          child: InkWell(
@@ -473,7 +604,7 @@ class _SearchPageState extends State<SearchPage>
                 ],
               ),
               
-              ),
+              ),             
               Container(
                 margin: EdgeInsets.fromLTRB(80,150,80,50),
                 // padding: EdgeInsets.only(left:70,right:70),
