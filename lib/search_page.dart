@@ -10,6 +10,7 @@ import 'package:hexcolor/hexcolor.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:knowyourfood/List.dart';
 import 'package:knowyourfood/additives.dart';
+import 'package:knowyourfood/image_ocrtext.dart';
 import 'package:knowyourfood/loader.dart';
 import 'package:knowyourfood/registration.dart';
 
@@ -38,7 +39,7 @@ class _SearchPageState extends State<SearchPage>
   
     AdditiveList additiveList;
     AdditiveNameList additiveNameList;
-
+    RecognisedText ocrText;
   
     bool _valid = true;
     final databaseReference = FirebaseFirestore.instance;
@@ -120,24 +121,25 @@ class _SearchPageState extends State<SearchPage>
   
   
     Dio dio = new Dio();
-    var uploadURL = "http://34.123.192.200:8000/api/image/";
+    var uploadURL = "http://34.123.192.200:8000/api/getRecognisedText/";
     String fileName = _image.path.split('/').last;
     FormData formdata = new FormData.fromMap({
           "image":
               await MultipartFile.fromFile(_image.path, filename:fileName),
           "deviceId":deviceId    
       });
-    dio.post(uploadURL, data: formdata, options: Options(
-    method: 'POST',
-    responseType: ResponseType.json // or ResponseType.JSON
-    ))
-    .then((response) => {
-          setState((){
-            loading = false; 
-          }),
-          additiveList = AdditiveList.fromJson(jsonDecode(response.toString())),
-          print(additiveList.ingredients),
-          Navigator.of(context).push(MaterialPageRoute(builder: (context) => AdditivePage(dataList:additiveList.ingredients)))
+        dio.post(uploadURL, data: formdata, options: Options(
+        method: 'POST',
+        responseType: ResponseType.json // or ResponseType.JSON
+        ))
+        .then((response) => {
+              setState((){
+                loading = false; 
+              }),
+              ocrText = RecognisedText.fromJson(jsonDecode(response.toString())),
+          // print(additiveList.ingredients),
+          // Navigator.of(context).push(MaterialPageRoute(builder: (context) => AdditivePage(dataList:additiveList.ingredients)))
+          Navigator.of(context).push(MaterialPageRoute(builder: (context) => ShowOCRText(_image, ocrText.recognisedText)))
   
     })
     .catchError((error) => {
@@ -165,7 +167,7 @@ class _SearchPageState extends State<SearchPage>
     });
   
        Dio dio = new Dio();
-    var uploadURL = "http://34.123.192.200:8000/api/image/";
+    var uploadURL = "http://34.123.192.200:8000/api/getRecognisedText/";
     String fileName = _image.path.split('/').last;
     FormData formdata = new FormData.fromMap({
           "image":
@@ -180,9 +182,10 @@ class _SearchPageState extends State<SearchPage>
       setState(() {
       loading = false;
     }),
-          additiveList = AdditiveList.fromJson(jsonDecode(response.toString())),
-          print(additiveList.ingredients),
-          Navigator.of(context).push(MaterialPageRoute(builder: (context) => AdditivePage(dataList:additiveList.ingredients)))
+     ocrText = RecognisedText.fromJson(jsonDecode(response.toString())),
+          // additiveList = AdditiveList.fromJson(jsonDecode(response.toString())),
+          // print(additiveList.ingredients),
+          Navigator.of(context).push(MaterialPageRoute(builder: (context) => ShowOCRText(_image,ocrText)))
     })
     .catchError((error) => {
        setState(() {
@@ -562,20 +565,20 @@ decisionAlertDialog(BuildContext context) {
                                   color: HexColor('#e58149'),
                                   fontSize: 18,
                                   fontFamily: 'PlutoCondRegular',
-                                  fontWeight: FontWeight.w200,
                                 ),
                               ),
                           ),
                           suggestionsCallback: (pattern) async {
                             // Here you can call http call 
-                            print(pattern);
                             return await getSuggestions(pattern);
                           },
                           itemBuilder: (context, suggestion) {
-                            print(suggestion);
-                            return ListTile(
+                            print(MediaQuery.of(context).size.width );
+                            return SizedBox(
+                              width:  MediaQuery.of(context).size.width * 1,
+                              child:ListTile(
                               title: Text(suggestion['name']),
-                            );
+                            ));
                           },
                           onSuggestionSelected: (suggestion) {
                             // This when someone click the items

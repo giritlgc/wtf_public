@@ -30,3 +30,19 @@ class AdditiveNameList {
   }
 }
 
+class RecognisedText {
+  String recognisedText;
+
+  RecognisedText({this.recognisedText});
+
+  RecognisedText.fromJson(Map<String, dynamic> json) {
+    recognisedText = json['recognisedText'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['recognisedText'] = this.recognisedText;
+    return data;
+  }
+}
+
