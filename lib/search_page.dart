@@ -36,7 +36,6 @@ class _SearchPageState extends State<SearchPage>
     TextEditingController _textController = new TextEditingController();
   
     FocusNode _textFocus = new FocusNode();
-    FocusNode _textFocus2 = new FocusNode();
   
     AdditiveList additiveList;
     AdditiveNameList additiveNameList;
@@ -47,7 +46,6 @@ class _SearchPageState extends State<SearchPage>
     TextEditingController _emailTextController = new TextEditingController();
     FocusNode _emailTextFocus = new FocusNode();
     bool loggedIn = FirebaseAuth.instance.currentUser!=null;
-    bool showSearch = false;
 
     @override
     void initState() {
@@ -59,8 +57,6 @@ class _SearchPageState extends State<SearchPage>
       _textFocus.addListener(onChange);
      
       _emailTextFocus.addListener(onChangeEmail);
-
-      _textFocus2.addListener(onChange2);
     }
   
     @override
@@ -202,32 +198,45 @@ class _SearchPageState extends State<SearchPage>
     }
   
   
-  void onChange(){ 
+  void onChange(){
+    String text = _textController.text;
     bool hasFocus = _textFocus.hasFocus;
-    if(hasFocus){
-      setState(() {
-        showSearch = true;
-      });
-    }
-    if(!hasFocus){
-      setState(() {
-        showSearch = false;
-      });
-    }
-  }
-
+    //do your text transforming
+    if(!hasFocus && text!=""){
+      print("Redirecting to additive page");
+      Dio dio = new Dio();
+      var uploadURL = "http://34.123.192.200:8000/api/search/";
+    
+      dio.post(uploadURL, data: {"name":text,"deviceId":deviceId}, options: Options(
+      method: 'POST',
+      responseType: ResponseType.json // or ResponseType.JSON
+      ))
+      .then((response) => {
+            setState((){
+              loading = false; 
+            }),
+            additiveList = AdditiveList.fromJson(jsonDecode(response.toString())),
+            print(additiveList.ingredients),
+            if(additiveList.ingredients.length==0){
+              showAlertDialog(context, "Sorry, no matches found! Please share your email to be updated of new matches as we continuously update & enhance our database.") 
+            }else{
+            Navigator.of(context).push(MaterialPageRoute(builder: (context) => AdditivePage(dataList:additiveList.ingredients)))
+            }
+      })
+      .catchError((error) => {
+        setState((){
+              loading = false; 
+            }),
+        print(error),
+        showAlertDialog(context,"Sorry, no matches found! Please share your email to be updated of new matches as we continuously update & enhance our database.")
+        });
   
-
-
-  void onChange2(){
-    bool hasFocus2 = _textFocus2.hasFocus;
-    if(!hasFocus2){
-      setState(() {
-        showSearch = false;
-      });
+    
+  
     }
+    print(text);
   }
-
+  
    showAlertDialog(BuildContext context, String message) {  
     // Create button  
     Widget okButton = FlatButton(  
@@ -461,6 +470,7 @@ decisionAlertDialog(BuildContext context) {
             responseType: ResponseType.json // or ResponseType.JSON
             ))
             .then((response) => {
+                  print(response),
                   additiveNameList = AdditiveNameList.fromJson(jsonDecode(response.toString())),
                   print(additiveNameList.additiveNames),
                   if(additiveNameList.additiveNames.length!=0){
@@ -472,8 +482,9 @@ decisionAlertDialog(BuildContext context) {
       })
       .catchError((error) => {
         print(error),
-        }); 
-      return lis==null?[]:lis;
+        });
+      print(lis);  
+      return lis;
     }
   }
 
@@ -506,7 +517,7 @@ decisionAlertDialog(BuildContext context) {
                   Navigator.of(context).push(MaterialPageRoute(builder: (context) => Login()));
                 },
               ),
-          !showSearch ? Container(
+          Container(
           padding:  EdgeInsets.only(top: 60.0),
           margin: EdgeInsets.fromLTRB(15.0,50,15,90),
           decoration: BoxDecoration(
@@ -546,7 +557,6 @@ decisionAlertDialog(BuildContext context) {
                       child:TypeAheadField(
                         textFieldConfiguration: TextFieldConfiguration(
                             controller: _textController,
-                            focusNode: _textFocus,
                             decoration: InputDecoration(
                                 contentPadding: EdgeInsets.fromLTRB(0,1,0,8),
                                 border:InputBorder.none,
@@ -558,35 +568,21 @@ decisionAlertDialog(BuildContext context) {
                                 ),
                               ),
                           ),
-                          suggestionsBoxDecoration: SuggestionsBoxDecoration(
-                            constraints: BoxConstraints(
-                              minWidth:210
-                            )
-                          ),
                           suggestionsCallback: (pattern) async {
                             // Here you can call http call 
                             return await getSuggestions(pattern);
                           },
                           itemBuilder: (context, suggestion) {
-                            return Container(
-                                      padding: EdgeInsets.fromLTRB(20,10,0,10),
-                                      
-                                      decoration: BoxDecoration(
-                                        border:Border(bottom: BorderSide(color: Theme.of(context).dividerColor)),
-                                        // color: HexColor('#d1e0bc'),
-                                        color: Colors.white,
-                                      ),
-                                      child: Text(suggestion['name'],
-                                      style: TextStyle(
-                                        fontSize:18,
-                                        // color:HexColor('#e58149'),
-                                        color: Colors.black,
-                                        fontFamily: 'PlutoCondRegular',
-                                      ),),
-                                    );
+                            print(MediaQuery.of(context).size.width );
+                            return SizedBox(
+                              width:  MediaQuery.of(context).size.width * 1,
+                              child:ListTile(
+                              title: Text(suggestion['name']),
+                            ));
                           },
                           onSuggestionSelected: (suggestion) {
                             // This when someone click the items
+                            print(suggestion);
                             _textController.text = suggestion['name'];
                           },
                         ),
@@ -643,104 +639,6 @@ decisionAlertDialog(BuildContext context) {
             ],
           ),
         )
-          :  Material(
-              color:  HexColor('#d1e0bc'),
-              elevation: 20,   
-              child:Container(
-                height:38,
-                    margin: EdgeInsets.symmetric(horizontal:35.0,vertical:2.0),
-                    decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius:BorderRadius.all(Radius.circular(15.0)),
-                    ),
-                   child: Row(
-                     mainAxisAlignment:MainAxisAlignment.spaceBetween, 
-                children: <Widget>[
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(9,9,0,9),
-                    child: Image.asset(
-                      'images/loupe.png',
-                      width: 30,
-                      height: 30,
-                      fit: BoxFit.contain,
-                      color: HexColor('#716663'),
-                    ),
-                  ),
-                  Container(
-                   
-                   
-                    child: SizedBox(
-                      width: 160,
-                      child:TypeAheadField(
-                        textFieldConfiguration: TextFieldConfiguration(
-                            autofocus: true,
-                            controller: _textController,
-                            focusNode: _textFocus2,
-                            decoration: InputDecoration(
-                                contentPadding: EdgeInsets.fromLTRB(0,1,0,8),
-                                border:InputBorder.none,
-                                hintText: 'Search',
-                                hintStyle: TextStyle(
-                                  color: HexColor('#e58149'),
-                                  fontSize: 18,
-                                  fontFamily: 'PlutoCondRegular',
-                                ),
-                              ),
-                          ),
-                          suggestionsBoxDecoration: SuggestionsBoxDecoration(
-                            constraints: BoxConstraints(
-                              minWidth:210
-                            )
-                          ),
-                          suggestionsCallback: (pattern) async {
-                            // Here you can call http call 
-                            return await getSuggestions(pattern);
-                          },
-                          itemBuilder: (context, suggestion) {
-                            return Container(
-                                      padding: EdgeInsets.fromLTRB(20,10,0,10),
-                                      
-                                      decoration: BoxDecoration(
-                                        border:Border(bottom: BorderSide(color: Theme.of(context).dividerColor)),
-                                        // color: HexColor('#d1e0bc'),
-                                        color: Colors.white,
-                                      ),
-                                      child: Text(suggestion['name'],
-                                      style: TextStyle(
-                                        fontSize:18,
-                                        // color:HexColor('#e58149'),
-                                        color: Colors.black,
-                                        fontFamily: 'PlutoCondRegular',
-                                      ),),
-                                    );
-                          },
-                          onSuggestionSelected: (suggestion) {
-                            // This when someone click the items
-                            _textController.text = suggestion['name'];
-                          },
-                        ),
-                      )
-                    ),
-                   Container(
-                         padding: EdgeInsets.only(right:15),
-                         child: InkWell(
-                         onTap: () {
-                           _showSelectionDialog(context);
-                         },
-                         child:Image.asset(            
-                            'images/camera.png',
-                            width: 30,
-                            height: 30,            
-                            fit: BoxFit.cover,
-                            color: HexColor('#435839')          
-                        ),
-                         )
-                        
-                       ),
-                ],
-              ),
-              
-              ) )
           ])
       );
     }
