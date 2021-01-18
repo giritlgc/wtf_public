@@ -1,7 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:device_info/device_info.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
@@ -13,9 +12,9 @@ import 'custom_app_bar.dart';
 import 'loader.dart';
 
 class ShowOCRText extends StatefulWidget {
-  ShowOCRText(this.image, this.text);
-  final File image;
-  var text;
+  ShowOCRText(this._image,this.deviceId);
+  final File _image;
+  final String deviceId;
 
   @override
   _ShowOCRTextState createState() => _ShowOCRTextState();
@@ -27,14 +26,16 @@ class _ShowOCRTextState extends State<ShowOCRText> {
   TextEditingController _editingController;
   String initialText;
   AdditiveNameList additiveNameList;
-  String deviceId;
+  
   bool loading = false;
+  RecognisedText ocrText;
+  bool buffering = true;
 
   @override
   void initState() {
     super.initState();
-    _getId();
-    initialText = widget.text;
+    getRecognisedText(widget._image);
+    initialText = '';
     _editingController = TextEditingController(text: initialText);
   }
 
@@ -42,6 +43,37 @@ class _ShowOCRTextState extends State<ShowOCRText> {
   void dispose() {
     _editingController.dispose();
     super.dispose();
+  }
+
+  void  getRecognisedText(_image) async {
+    Dio dio = new Dio();
+    var uploadURL = "http://34.123.192.200:8000/api/getRecognisedText/";
+    String fileName = _image.path.split('/').last;
+    FormData formdata = new FormData.fromMap({
+          "image":
+              await MultipartFile.fromFile(_image.path, filename:fileName),
+          "deviceId":widget.deviceId    
+      });
+    
+        dio.post(uploadURL, data: formdata, options: Options(
+        method: 'POST',
+        responseType: ResponseType.json // or ResponseType.JSON
+        ))
+        .then((response) => {  
+          ocrText = RecognisedText.fromJson(jsonDecode(response.toString())),
+          setState((){
+            buffering = false;
+            initialText = ocrText.recognisedText;
+            _editingController.text = ocrText.recognisedText;
+          })
+    })
+    .catchError((error) => {
+      print(error),
+      setState((){
+        buffering = false;
+      }),
+      showAlertDialog(context,"Sorry, no matches found! Please share your email to be updated of new matches as we continuously update & enhance our database.")
+      });
   }
 
   Widget _editTitleTextField() {
@@ -84,7 +116,7 @@ class _ShowOCRTextState extends State<ShowOCRText> {
       Dio dio = new Dio();
       var uploadURL = "http://34.123.192.200:8000/api/getAdditiveNames/";
   
-      dio.post(uploadURL, data: {"name":text.trim(),"deviceId":deviceId}, options: Options(
+      dio.post(uploadURL, data: {"name":text.trim(),"deviceId":widget.deviceId}, options: Options(
       method: 'POST',
       responseType: ResponseType.json // or ResponseType.JSON
       ))
@@ -113,13 +145,7 @@ class _ShowOCRTextState extends State<ShowOCRText> {
     }
   }
 
-
-  void _getId() async{
-      DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
-     
-        AndroidDeviceInfo androidDeviceInfo = await deviceInfo.androidInfo;
-        deviceId =  androidDeviceInfo.androidId; // unique ID on Android      
-    }  
+ 
 
   showAlertDialog(BuildContext context, String message) {  
     // Create button  
@@ -190,7 +216,7 @@ class _ShowOCRTextState extends State<ShowOCRText> {
           Container(
             // padding: EdgeInsets.only(top:60),
             margin: EdgeInsets.fromLTRB(15.0, 20, 15, 20),
-            child: Image.file(widget.image),
+            child: Image.file(widget._image),
           ),
           Padding(
             padding: EdgeInsets.fromLTRB(20, 0, 0, 0),
@@ -203,7 +229,7 @@ class _ShowOCRTextState extends State<ShowOCRText> {
               ),
             ),
           ),
-          Stack(
+          buffering?Container(color: Colors.white,child: Buffering()):Stack(
           children: <Widget>[
           Container(
               margin: EdgeInsets.fromLTRB(20, 20, 20, 20),

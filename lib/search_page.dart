@@ -115,41 +115,9 @@ class _SearchPageState extends State<SearchPage>
   
       if(_image==null){
         return;
+      }else{
+         Navigator.of(context).push(MaterialPageRoute(builder: (context) => ShowOCRText(_image,deviceId)));
       }
-    setState(() {
-      loading = 0;
-    });
-  
-  
-    Dio dio = new Dio();
-    var uploadURL = "http://34.123.192.200:8000/api/getRecognisedText/";
-    String fileName = _image.path.split('/').last;
-    FormData formdata = new FormData.fromMap({
-          "image":
-              await MultipartFile.fromFile(_image.path, filename:fileName),
-          "deviceId":deviceId    
-      });
-        dio.post(uploadURL, data: formdata, options: Options(
-        method: 'POST',
-        responseType: ResponseType.json // or ResponseType.JSON
-        ))
-        .then((response) => {
-              setState((){
-                loading = 2;
-              }),
-              ocrText = RecognisedText.fromJson(jsonDecode(response.toString())),
-          // print(additiveList.ingredients),
-          // Navigator.of(context).push(MaterialPageRoute(builder: (context) => AdditivePage(dataList:additiveList.ingredients)))
-          Navigator.of(context).push(MaterialPageRoute(builder: (context) => ShowOCRText(_image, ocrText.recognisedText)))
-  
-    })
-    .catchError((error) => {
-      setState((){
-                loading = 2;
-          }),
-      print(error),
-      showAlertDialog(context,"Sorry, no matches found! Please share your email to be updated of new matches as we continuously update & enhance our database.")
-      });
     
     }
   
@@ -162,39 +130,9 @@ class _SearchPageState extends State<SearchPage>
   
       if(_image==null){
         return;
+      }else{
+        Navigator.of(context).push(MaterialPageRoute(builder: (context) => ShowOCRText(_image,deviceId)));
       }
-    setState(() {
-      loading = 0;
-    });
-  
-       Dio dio = new Dio();
-    var uploadURL = "http://34.123.192.200:8000/api/getRecognisedText/";
-    String fileName = _image.path.split('/').last;
-    FormData formdata = new FormData.fromMap({
-          "image":
-              await MultipartFile.fromFile(_image.path, filename:fileName),
-          "deviceId":deviceId 
-      });
-    dio.post(uploadURL, data: formdata, options: Options(
-    method: 'POST',
-    responseType: ResponseType.json // or ResponseType.JSON
-    ))
-    .then((response) => {
-      setState(() {
-                loading = 2;
-    }),
-     ocrText = RecognisedText.fromJson(jsonDecode(response.toString())),
-          // additiveList = AdditiveList.fromJson(jsonDecode(response.toString())),
-          // print(additiveList.ingredients),
-          Navigator.of(context).push(MaterialPageRoute(builder: (context) => ShowOCRText(_image,ocrText)))
-    })
-    .catchError((error) => {
-       setState(() {
-                loading = 2;
-      }),
-      print(error),
-      showAlertDialog(context,"Sorry, no matches found! Please share your email to be updated of new matches as we continuously update & enhance our database.")
-      });
       
     }
   
@@ -493,7 +431,7 @@ decisionAlertDialog(BuildContext context) {
                   {
                     setState(() {
                       buffering = false;
-                      suggestions = ["No matches found!"];
+                      suggestions = ["No additives found!"];
                     })
             }
       })
@@ -579,7 +517,7 @@ decisionAlertDialog(BuildContext context) {
                 color: HexColor('#72a633'),
                 height: 80,
                 child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       IconButton(
                         icon: Icon(Icons.arrow_back, color: HexColor('#716663')),
@@ -591,10 +529,17 @@ decisionAlertDialog(BuildContext context) {
                         },
         ),
                       SizedBox(
-                        width: 270,
-                        child: Opacity(
-                          opacity: 0.8,
-                            child: TextFormField(
+                        width: 240,
+                        child: Container(
+                          padding: EdgeInsets.only(left:10),
+                          margin: EdgeInsets.symmetric(horizontal:4,vertical:2),
+                          color:  HexColor('#72a633'),
+                          foregroundDecoration: BoxDecoration(
+                            color:Colors.white.withOpacity(0.1),
+                            borderRadius: BorderRadius.all(Radius.circular(18.0))
+                            
+                          ),
+                          child: TextFormField(
                             autofocus: true,
                             controller: _textController,
                             decoration: InputDecoration(
@@ -611,7 +556,7 @@ decisionAlertDialog(BuildContext context) {
                               getSuggestions(value.trim());
                             },
                           ),
-                        ),
+                        )
                       )
                     ])),
         ),
