@@ -38,7 +38,6 @@ class _SearchPageState extends State<SearchPage>
   
     AdditiveList additiveList;
     AdditiveNameList additiveNameList;
-    RecognisedText ocrText;
   
     bool _valid = true;
     final databaseReference = FirebaseFirestore.instance;
@@ -419,6 +418,9 @@ decisionAlertDialog(BuildContext context) {
             ))
             .then((response) => {
                   print(response),
+                  if(pattern!=_textController.text){
+                    getSuggestions(_textController.text)
+                  },
                   additiveNameList = AdditiveNameList.fromJson(jsonDecode(response.toString())),
                   print(additiveNameList.additiveNames),
                 if(additiveNameList.additiveNames.length!=0){
@@ -496,6 +498,20 @@ decisionAlertDialog(BuildContext context) {
     }
     list.add(row);
     }
+  if(dataList.length==1 && dataList[0]=="No additives found!"){
+    return [Container(
+        padding: EdgeInsets.fromLTRB(20, 10, 0, 10),
+        color: HexColor('#d1e0bc'),
+        child: Text(
+          "No additives found!",
+          style: TextStyle(
+            fontSize: 16,
+            color: HexColor('#635950'),
+            fontFamily: 'PlutoCondMedium',
+          ),
+        ),
+      )];
+  }
   return list;
   }
 
@@ -532,24 +548,29 @@ decisionAlertDialog(BuildContext context) {
                         width: 240,
                         child: Container(
                           padding: EdgeInsets.only(left:10),
-                          margin: EdgeInsets.symmetric(horizontal:4,vertical:2),
-                          color:  HexColor('#72a633'),
-                          foregroundDecoration: BoxDecoration(
-                            color:Colors.white.withOpacity(0.1),
+                          margin: EdgeInsets.symmetric(horizontal:4,vertical:4),
+                          
+                          decoration: BoxDecoration(
+                            color:  Colors.white,
                             borderRadius: BorderRadius.all(Radius.circular(18.0))
-                            
                           ),
                           child: TextFormField(
                             autofocus: true,
                             controller: _textController,
                             decoration: InputDecoration(
-                              focusColor: Colors.red,
-                              hintText: "Search for a additive",
+                              hintText: "Search for an additive",
                               hintStyle: TextStyle(
                                 color: HexColor('#716663'),
                                 fontSize: 18,
                                 fontFamily: 'PlutoCondRegular',
                               ),
+                              suffixIcon:_textController.text.length>0? IconButton(
+                                  icon:Icon(Icons.cancel_outlined,
+                                  color:  HexColor('#716663')),
+                                  onPressed: (){  
+                                    _textController.text = "";
+                                  },
+                              ):null,
                               border: InputBorder.none,
                             ),
                             onChanged: (value) {
