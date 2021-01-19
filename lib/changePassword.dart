@@ -24,7 +24,11 @@ class _ChangePasswordState extends State<ChangePassword> {
   showAlertDialog(BuildContext context, String message) {
     // Create button
     Widget okButton = FlatButton(
-      child: Text("OK"),
+      child: Text("OK",
+      style: TextStyle(
+        fontFamily: 'PlutoCondRegular'
+      ),
+      ),
       onPressed: () {
         Navigator.of(context).pop();
       },
@@ -35,8 +39,16 @@ class _ChangePasswordState extends State<ChangePassword> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text("Reset Password!"),
-          content: Text(message),
+          title: Text("Reset Password!",
+          style: TextStyle(
+            fontFamily: 'PlutoCondRegular'
+          ),
+          ),
+          content: Text(message,
+          style: TextStyle(
+            fontFamily: 'PlutoCondRegular'
+          ),
+          ),
           actions: [
             okButton,
           ],

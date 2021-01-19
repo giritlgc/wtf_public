@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
@@ -31,12 +32,18 @@ class _ShowOCRTextState extends State<ShowOCRText> {
   RecognisedText ocrText;
   bool buffering = true;
 
+  TextEditingController _emailTextController = new TextEditingController();
+  FocusNode _emailTextFocus = new FocusNode();
+  bool _valid = true;
+  final databaseReference = FirebaseFirestore.instance;
+
   @override
   void initState() {
     super.initState();
     getRecognisedText(widget._image);
     initialText = '';
     _editingController = TextEditingController(text: initialText);
+    _emailTextFocus.addListener(onChangeEmail);
   }
 
   @override
@@ -81,6 +88,9 @@ class _ShowOCRTextState extends State<ShowOCRText> {
     return Center(
       child: TextField(
         maxLines: 10,
+        decoration: InputDecoration(
+          border: InputBorder.none
+        ),
         onChanged: (newValue){
           setState(() {
             initialText = _editingController.text;
@@ -150,9 +160,16 @@ class _ShowOCRTextState extends State<ShowOCRText> {
   showAlertDialog(BuildContext context, String message) {  
     // Create button  
     Widget okButton = FlatButton(  
-      child: Text("OK"),  
+      child: Text("OK",
+      style: TextStyle(
+        fontFamily: 'PlutoCondRegular'
+      ),
+      ),  
       onPressed: () {  
-        Navigator.of(context).pop();  
+        Navigator.of(context).pop(); 
+        if(!_emailTextFocus.hasFocus && !_valid && _emailTextController.text!=""){
+           showAlertDialogEmail(context, "Invalid Email");
+        }  
       },  
     );  
     
@@ -163,8 +180,11 @@ class _ShowOCRTextState extends State<ShowOCRText> {
       builder: (BuildContext context) { 
         return AlertDialog(  
       title: Text(""),  
-      content: Column (
-        mainAxisSize: MainAxisSize.min,
+      content: Container(
+              height: 200,
+              child: ListView(
+                children: [Column (
+            // mainAxisSize: MainAxisSize.min,
         children:[
           Text(message,
           style: TextStyle(
@@ -172,6 +192,36 @@ class _ShowOCRTextState extends State<ShowOCRText> {
             fontWeight: FontWeight.bold
           ),
           ),
+          Container(
+                margin: EdgeInsets.symmetric(horizontal:2.0,vertical:2.0),
+                decoration: BoxDecoration(
+                color: Colors.grey[100],
+                borderRadius:BorderRadius.all(Radius.circular(20.0)),
+               
+  
+                ),
+                child:TextFormField(
+                  controller: _emailTextController,
+                  focusNode: _emailTextFocus,
+                  decoration:InputDecoration(
+                    border: InputBorder.none,
+                     hintText:"Please enter email",
+                     hintStyle: TextStyle(
+                       color: HexColor('#e58149'),
+                       fontSize: 16,
+                       fontFamily: 'PlutoCondMedium',
+                     ),
+                     icon: Icon(Icons.email,color: Colors.black)
+  
+                  ),
+                  onChanged: (text){
+                    setState(() {
+                      _valid = validateEmail(text);
+                    });
+    
+                  },
+                )
+              ),
           RaisedButton(
             child: Text("Register",
               style: TextStyle(
@@ -187,6 +237,8 @@ class _ShowOCRTextState extends State<ShowOCRText> {
             }
             )
           ]
+            ),]
+        ),
         ),  
       actions: [ 
        okButton,  
@@ -195,12 +247,160 @@ class _ShowOCRTextState extends State<ShowOCRText> {
       },  
     );  
   }  
-  
+
+
+  bool validateEmail(String value) {
+    Pattern pattern =
+        r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
+    RegExp regex = new RegExp(pattern);
+    return (!regex.hasMatch(value)) ? false : true;
+  }
+
+
+   Future<void> onChangeEmail() async {
+      String text = _emailTextController.text;
+      bool hasFocus = _emailTextFocus.hasFocus;
+      //do your text transforming
+      if(!hasFocus && _valid && text!=""){
+        print(text);
+        await databaseReference.collection("emailData")
+          .add({
+            'email':text,
+            'deviceId':widget.deviceId,
+            'timeStamp': DateTime.now()
+          }).then((response) {
+        showAlertDialogEmail(context, "Email successfully submitted");
+      }).timeout(Duration(seconds:10)).catchError((error) {
+        print(error);
+      });
+      setState(() {
+         _emailTextController.text = '';  
+      });
+       
+      }
+    }
+
+
+   showAlertDialogEmail(BuildContext context, String message) {  
+    // Create button  
+    Widget okButton = FlatButton(  
+      child: Text("OK",
+      style: TextStyle(
+        fontFamily: 'PlutoCondRegular'
+      ),
+      ),  
+      onPressed: () {  
+        Navigator.of(context).pop(); 
+      },  
+    );  
+    
+    
+    // show the dialog  
+    showDialog(  
+      context: context,  
+      builder: (BuildContext context) { 
+        return AlertDialog(  
+      title: Text(""),  
+      content: Text(message,
+      style: TextStyle(
+        fontFamily: 'PlutoCondRegular'
+      ),
+      ),  
+      actions: [  
+        okButton,  
+      ],  
+    );  
+      },  
+    );  
+  }  
+
+
 
   @override
   Widget build(BuildContext context) {
-    return  loading? Loading(): Scaffold(
-        appBar: CustomAppBar("Know Your Food"),
+    return  loading? Loading(): _isEditingText ? Material(
+            child: Column(children: [
+          Material(
+            elevation: 20.0,
+          shadowColor:HexColor('#72a633'),
+                      child: Container(
+                padding: EdgeInsets.fromLTRB(40, 30, 0 ,0 ),
+                color: HexColor('#72a633'),
+                height: 80,
+                child: Row(
+                    // mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      Center(
+                        child:Text(
+                          "Edit text",
+                          style: TextStyle(
+                          fontSize: 24,
+                          fontWeight: FontWeight.bold,
+                          fontFamily: 'ColbyCompressed' ,
+                          color: Colors.white
+                          )
+                        )
+                      )
+                    ])),
+        ),
+        Padding(
+          padding: EdgeInsets.only(top:10),
+                  child: Stack(
+            children: <Widget>[
+            Container(
+                margin: EdgeInsets.fromLTRB(20, 20, 20, 20),
+                padding: EdgeInsets.fromLTRB(10,30,10,10),
+                decoration: BoxDecoration(
+                    border: Border.all(color: HexColor('#d1e0bc'), width: 10),
+                    
+                    borderRadius: BorderRadius.all(Radius.circular(20.0))),
+                child: Column(
+                  children:[
+                    Row(),
+                    _editTitleTextField()
+                  ]
+                )),
+            Align(
+              alignment: Alignment(0.95,0),
+              child:_isEditingText? Container(
+                 decoration: BoxDecoration(
+                    color: HexColor('#72a633'),
+                    borderRadius: BorderRadius.all(Radius.circular(100))
+                  ),
+                
+                child:IconButton(
+                icon:Icon(Icons.check),
+                iconSize: 30,
+                color: Colors.white,
+                onPressed: (){
+                  setState(() {
+                    _isEditingText = false;
+                  });
+                },
+                )):
+                 Container(
+                 decoration: BoxDecoration(
+                    color: HexColor('#72a633'),
+                    borderRadius: BorderRadius.all(Radius.circular(100))
+                  ),
+                
+                child:IconButton(
+                icon:Icon(Icons.edit),
+                iconSize: 30,
+                color: Colors.white,
+                onPressed: (){
+                  setState(() {
+                    _isEditingText = true;
+                  });
+                },
+                ))
+            )
+            ]),
+        )
+        ]))
+
+    :Scaffold(
+        appBar: CustomAppBar2("Know Your Food"),
         body: ListView(children: [
           Padding(
             padding: EdgeInsets.fromLTRB(20, 30, 0, 0),
@@ -235,7 +435,7 @@ class _ShowOCRTextState extends State<ShowOCRText> {
               margin: EdgeInsets.fromLTRB(20, 20, 20, 20),
               padding: EdgeInsets.fromLTRB(10,30,10,10),
               decoration: BoxDecoration(
-                  border: Border.all(color: Colors.black, width: 3),
+                  border: Border.all(color: HexColor('#d1e0bc'), width: 10),
                   
                   borderRadius: BorderRadius.all(Radius.circular(20.0))),
               child: Column(
@@ -245,10 +445,10 @@ class _ShowOCRTextState extends State<ShowOCRText> {
                 ]
               )),
           Align(
-            alignment: Alignment(0,0),
+            alignment: Alignment(0.95,0),
             child:_isEditingText? Container(
                decoration: BoxDecoration(
-                  color: Colors.black,
+                  color: HexColor('#72a633'),
                   borderRadius: BorderRadius.all(Radius.circular(100))
                 ),
               
@@ -264,7 +464,7 @@ class _ShowOCRTextState extends State<ShowOCRText> {
               )):
                Container(
                decoration: BoxDecoration(
-                  color: Colors.black,
+                  color: HexColor('#72a633'),
                   borderRadius: BorderRadius.all(Radius.circular(100))
                 ),
               

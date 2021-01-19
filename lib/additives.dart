@@ -63,7 +63,11 @@ class _AdditivePageState extends State<AdditivePage> {
  showAlertDialog(BuildContext context, String message) {  
   // Create button  
   Widget okButton = FlatButton(  
-    child: Text("OK"),  
+    child: Text("OK",
+    style: TextStyle(
+        fontFamily: 'PlutoCondRegular'
+      ),
+    ),  
     onPressed: () {  
       Navigator.of(context).pop();  
     },  
@@ -75,7 +79,11 @@ class _AdditivePageState extends State<AdditivePage> {
     context: context,  
     builder: (BuildContext context) { 
       return AlertDialog(  
-    title: Text("Email"),  
+    title: Text("Email",
+    style: TextStyle(
+        fontFamily: 'PlutoCondRegular'
+      ),
+    ),  
     content: Text(message,
     style: TextStyle(
       fontFamily: 'PlutoCondRegular'
@@ -119,6 +127,7 @@ void _getId() async{
           )
         ),
          Container(
+           padding: EdgeInsets.only(left:30),
            child: Text("For further information",
            style:  TextStyle(
                      color: HexColor('#635950'),

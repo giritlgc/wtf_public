@@ -25,7 +25,11 @@ class _LoginState extends State<Login> {
   showAlertDialog(BuildContext context, String message) {
     // Create button
     Widget okButton = FlatButton(
-      child: Text("OK"),
+      child: Text("OK",
+      style: TextStyle(
+        fontFamily: 'PlutoCondRegular'
+      ),
+      ),
       onPressed: () {
         Navigator.of(context).pop();
       },
@@ -36,8 +40,16 @@ class _LoginState extends State<Login> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text("Login Failed!"),
-          content: Text(message),
+          title: Text("Login Failed!",
+          style: TextStyle(
+            fontFamily: 'PlutoCondRegular'
+          ),
+          ),
+          content: Text(message,
+          style: TextStyle(
+            fontFamily: 'PlutoCondRegular'
+          ),
+          ),
           actions: [
             okButton,
           ],

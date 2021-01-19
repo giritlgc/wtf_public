@@ -34,7 +34,11 @@ class _RegistrationState extends State<Registration> {
   showAlertDialog(BuildContext context, String message) {
     // Create button
     Widget okButton = FlatButton(
-      child: Text("OK"),
+      child: Text("OK",
+      style: TextStyle(
+        fontFamily: 'PlutoCondRegular'
+      ),
+      ),
       onPressed: () {
         Navigator.of(context).pop();
       },
@@ -45,8 +49,16 @@ class _RegistrationState extends State<Registration> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text("Registration Failed!"),
-          content: Text(message),
+          title: Text("Registration Failed!",
+          style: TextStyle(
+            fontFamily: 'PlutoCondRegular'
+          ),
+          ),
+          content: Text(message,
+          style: TextStyle(
+            fontFamily: 'PlutoCondRegular'
+          ),
+          ),
           actions: [
             okButton,
           ],

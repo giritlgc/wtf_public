@@ -184,9 +184,16 @@ class _SearchPageState extends State<SearchPage>
    showAlertDialog(BuildContext context, String message) {  
     // Create button  
     Widget okButton = FlatButton(  
-      child: Text("OK"),  
+      child: Text("OK",
+      style: TextStyle(
+        fontFamily: 'PlutoCondRegular'
+      ),
+      ),  
       onPressed: () {  
-        Navigator.of(context).pop();  
+         Navigator.of(context).pop();
+         if(!_emailTextFocus.hasFocus && !_valid && _emailTextController.text!=""){
+           showAlertDialogEmail(context, "Invalid Email");
+         }  
       },  
     );  
     
@@ -197,8 +204,11 @@ class _SearchPageState extends State<SearchPage>
       builder: (BuildContext context) { 
         return AlertDialog(  
       title: Text(""),  
-      content: Column (
-        mainAxisSize: MainAxisSize.min,
+      content: Container(
+              height: 200,
+              child: ListView(
+                children: [Column (
+            // mainAxisSize: MainAxisSize.min,
         children:[
           Text(message,
           style: TextStyle(
@@ -251,6 +261,8 @@ class _SearchPageState extends State<SearchPage>
             }
             )
           ]
+            ),]
+        ),
         ),  
       actions: [ 
        okButton,  
@@ -279,7 +291,7 @@ class _SearchPageState extends State<SearchPage>
             'deviceId':deviceId,
             'timeStamp': DateTime.now()
           }).then((response) {
-        showAlertDialogEmail(context, "Successfully submitted");
+        showAlertDialogEmail(context, "Email successfully submitted");
       }).timeout(Duration(seconds:10)).catchError((error) {
         print(error);
       });
@@ -287,15 +299,17 @@ class _SearchPageState extends State<SearchPage>
          _emailTextController.text = '';  
       });
        
-      }else if(!hasFocus && !_valid){
-        showAlertDialogEmail(context, "Invalid Email");
       }
     }
   
    showAlertDialogEmail(BuildContext context, String message) {  
     // Create button  
     Widget okButton = FlatButton(  
-      child: Text("OK"),  
+      child: Text("OK",
+      style: TextStyle(
+        fontFamily: 'PlutoCondRegular'
+      ),
+      ),  
       onPressed: () {  
         Navigator.of(context).pop();  
       },  
@@ -307,7 +321,7 @@ class _SearchPageState extends State<SearchPage>
       context: context,  
       builder: (BuildContext context) { 
         return AlertDialog(  
-      title: Text("Email"),  
+      title: Text(""),  
       content: Text(message,
       style: TextStyle(
         fontFamily: 'PlutoCondRegular'
@@ -357,6 +371,8 @@ class _SearchPageState extends State<SearchPage>
   
     
   
+    }else{
+      showAlertDialogEmail(context, "Please enter additive name");
     }
   }
   
@@ -365,7 +381,11 @@ decisionAlertDialog(BuildContext context) {
 
   // set up the button
   Widget yes = FlatButton(
-    child: Text("Yes"),
+    child: Text("Yes",
+    style: TextStyle(
+        fontFamily: 'PlutoCondRegular'
+      ),
+    ),
     onPressed: () { 
       
       FirebaseAuth.instance.signOut().then((value) => {
@@ -378,7 +398,11 @@ decisionAlertDialog(BuildContext context) {
   );
 
    Widget no = FlatButton(
-    child: Text("No"),
+    child: Text("No",
+    style: TextStyle(
+        fontFamily: 'PlutoCondRegular'
+      ),
+    ),
     onPressed: () { 
       Navigator.of(context).pop();
     },
@@ -387,7 +411,11 @@ decisionAlertDialog(BuildContext context) {
   // set up the AlertDialog
   AlertDialog alert = AlertDialog(
     title: Text("Logout!"),
-    content: Text("Do you want to logout?"),
+    content: Text("Do you want to logout?",
+    style: TextStyle(
+        fontFamily: 'PlutoCondRegular'
+      ),
+    ),
     actions: [
       yes,
       no
@@ -568,7 +596,10 @@ decisionAlertDialog(BuildContext context) {
                                   icon:Icon(Icons.cancel_outlined,
                                   color:  HexColor('#716663')),
                                   onPressed: (){  
+                                    setState(() {
                                     _textController.text = "";
+                                      suggestions = [];
+                                    });
                                   },
                               ):null,
                               border: InputBorder.none,
