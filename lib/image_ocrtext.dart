@@ -31,6 +31,7 @@ class _ShowOCRTextState extends State<ShowOCRText> {
   bool loading = false;
   RecognisedText ocrText;
   bool buffering = true;
+  Error errorMessage;
 
   TextEditingController _emailTextController = new TextEditingController();
   FocusNode _emailTextFocus = new FocusNode();
@@ -75,11 +76,11 @@ class _ShowOCRTextState extends State<ShowOCRText> {
           })
     })
     .catchError((error) => {
-      print(error),
+      errorMessage = Error.fromJson(jsonDecode(error.response.toString())),
       setState((){
         buffering = false;
       }),
-      showAlertDialog(context,"Sorry, no matches found! Please share your email to be updated of new matches as we continuously update & enhance our database.")
+      showAlertDialogEmail(context,errorMessage.message)
       });
   }
 
