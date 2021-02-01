@@ -30,6 +30,13 @@
             {
               "client_id": "348244485262-73nug5tn8gnfdm3mgvqjhfgderj3a2h6.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "348244485262-32hvor20phkrve2m2d2e6g6f0mf1c3jl.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.thelivegreenco.knowyourfood"
+              }
             }
           ]
         }
@@ -43,6 +50,14 @@
         }
       },
       "oauth_client": [
+        {
+          "client_id": "348244485262-7skfbn2v0mkr6knmnj419gaqj6dqtlqj.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.thelivegreenco.knowyourfood",
+            "certificate_hash": "e5fc6be6343e926d1277e236eef00fc1ca605267"
+          }
+        },
         {
           "client_id": "348244485262-73nug5tn8gnfdm3mgvqjhfgderj3a2h6.apps.googleusercontent.com",
           "client_type": 3
@@ -59,6 +74,13 @@
             {
               "client_id": "348244485262-73nug5tn8gnfdm3mgvqjhfgderj3a2h6.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "348244485262-32hvor20phkrve2m2d2e6g6f0mf1c3jl.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.thelivegreenco.knowyourfood"
+              }
             }
           ]
         }

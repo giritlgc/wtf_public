@@ -14,7 +14,6 @@ import 'package:knowyourfood/loader.dart';
 import 'package:knowyourfood/registration.dart';
 
 import 'custom_app_bar.dart';
-import 'login.dart';
 
 
 class SearchPage extends StatefulWidget {
@@ -392,6 +391,7 @@ decisionAlertDialog(BuildContext context) {
         Navigator.of(context).pop(),
         setState(() {
           loggedIn = false;
+          showAlertDialogEmail(context, "User logged out!");
         })
       });
     },
@@ -623,30 +623,9 @@ decisionAlertDialog(BuildContext context) {
         break;
       default:
         return Scaffold(
-            appBar: CustomAppBar("Know Your Food"),
+            // appBar: CustomAppBar("Know Your Food"),
+            appBar: CustomAppBar3(),
             body: ListView(children: [
-              loggedIn
-                  ? InkWell(
-                      child: Icon(
-                  Icons.logout,
-                  color: Colors.black,
-                  size: 40.0,
-                ),
-                      onTap: () {
-                  decisionAlertDialog(context);
-                },
-                    )
-                  : InkWell(
-                      child: Icon(
-                  Icons.login,
-                  color: Colors.black,
-                  size: 40.0,
-                ),
-                      onTap: () {
-                        Navigator.of(context).push(
-                            MaterialPageRoute(builder: (context) => Login()));
-                },
-              ),
           Container(
                 padding: EdgeInsets.only(top: 60.0),
                 margin: EdgeInsets.fromLTRB(15.0, 50, 15, 90),

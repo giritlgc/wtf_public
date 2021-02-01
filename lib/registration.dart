@@ -1,7 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
+import 'package:knowyourfood/Auth.dart';
 import 'package:knowyourfood/login.dart';
+import 'package:knowyourfood/search_page.dart';
 
 class Registration extends StatefulWidget {
   @override
@@ -352,11 +354,45 @@ class _RegistrationState extends State<Registration> {
                           SizedBox(
                         height: MediaQuery.of(context).viewInsets.bottom,
                       ),
+          MaterialButton(
+                    padding: EdgeInsets.only(bottom:0),
+                    elevation: 50,
+                    onPressed: () => googleSignIn().then((value) async {
+                      
+                        if (value) {
+                          Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) =>
+                                                      SearchPage()), (Route<dynamic> route) => false);
+                        }
+                    }),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        border:Border.all(color: Colors.black, width: 1)
+                      ),
+                      child: Image(
+                        image: AssetImage('images/googleSignUp.png'),
+                        width: 200.0,
+                      ),
+                    ),
+                  ),
+          MaterialButton(
+                    padding: EdgeInsets.only(bottom:1),
+                    onPressed: () => signInWithFacebook().then((value) async {
+                      
+                        if (value) {
+                          Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) =>
+                                                      SearchPage()), (Route<dynamic> route) => false);
+                        }
+                    }),
+                    child: Image(
+                      image: AssetImage('images/facebookSingUp.png'),
+                      width: 200.0,
+                    ),
+                  ),
                     ]))
               ],
             ),
           )
-        ]))
+          ]))
       ),
     );
   }
