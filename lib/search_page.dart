@@ -7,6 +7,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:knowyourfood/Auth.dart';
 import 'package:knowyourfood/List.dart';
 import 'package:knowyourfood/additives.dart';
 import 'package:knowyourfood/image_ocrtext.dart';
@@ -15,6 +16,7 @@ import 'package:knowyourfood/registration.dart';
 
 import 'common_widget.dart';
 import 'custom_app_bar.dart';
+import 'login.dart';
 
 
 class SearchPage extends StatefulWidget {
@@ -348,15 +350,19 @@ class _SearchPageState extends State<SearchPage>
 decisionAlertDialog(BuildContext context) {
 
   // set up the button
-  Widget yes = FlatButton(
-    child: Text("Yes",
-    style: TextStyle(
-        fontFamily: 'PlutoCondRegular'
+  Widget yes = RaisedButton(
+    child: Padding(
+      padding: const EdgeInsets.fromLTRB(4,0,4,0),
+      child: Text("Yes",
+      style: TextStyle(
+          fontFamily: 'PlutoCondRegular',
+          color: Colors.white
+        ),
       ),
     ),
+    color:HexColor('#76af2c'),
     onPressed: () { 
-      
-      FirebaseAuth.instance.signOut().then((value) => {
+      signOutUser().whenComplete(() => {
         Navigator.of(context).pop(),
         setState(() {
           loggedIn = false;
@@ -366,25 +372,43 @@ decisionAlertDialog(BuildContext context) {
     },
   );
 
-   Widget no = FlatButton(
-    child: Text("No",
-    style: TextStyle(
-        fontFamily: 'PlutoCondRegular'
+   Widget no = Padding(
+     padding: EdgeInsets.fromLTRB(5,0,15,0),
+     child:RaisedButton(
+    child: Padding(
+      padding: const EdgeInsets.fromLTRB(4,0,4,0),
+      child: Text("No",
+      style: TextStyle(
+          fontFamily: 'PlutoCondRegular',
+          color: Colors.white
+        ),
       ),
     ),
+    color: HexColor("#ecd343"),
     onPressed: () { 
       Navigator.of(context).pop();
     },
-  );
-
+  )
+   );
   // set up the AlertDialog
   AlertDialog alert = AlertDialog(
-    title: Text("Logout!"),
-    content: Text("Do you want to logout?",
-    style: TextStyle(
-        fontFamily: 'PlutoCondRegular'
+    content: RichText(
+      text:TextSpan(     
+      style: TextStyle(
+        fontFamily: 'PlutoCondRegular',
+        fontSize: 16,
+        color: Colors.white
       ),
-    ),
+      children: <TextSpan>[
+        TextSpan(text:'Do you want to '),
+      TextSpan(text:"logout?",
+    style: TextStyle(
+        fontWeight: FontWeight.bold,
+      )),
+      ])),
+    backgroundColor: HexColor("#f38343"),
+    shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(10.0))),
     actions: [
       yes,
       no
@@ -592,12 +616,62 @@ decisionAlertDialog(BuildContext context) {
         break;
       default:
         return Scaffold(
-            // appBar: CustomAppBar("Know Your Food"),
-            appBar: CustomAppBar3(),
+            appBar: CustomAppBar("Know Your Food"),
             body: ListView(children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              loggedIn? Container(
+                padding: EdgeInsets.only(top:30),
+                child: RaisedButton(
+                  child: Text("Logout",
+                    style: TextStyle(
+                      fontFamily: 'PlutoCondRegular',
+                      color: Colors.white,
+                      fontSize: 16
+                    ),
+                  ),
+                  color: HexColor("#f18447"),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.only(
+                      topLeft: const Radius.circular(10.0),
+                      bottomLeft: const Radius.circular(10.0),
+                    )
+                  ),
+                  onPressed: (){
+                    decisionAlertDialog(context);
+                  },
+                ))
+              : Container(
+                padding: EdgeInsets.only(top:30),
+                child: RaisedButton(
+                  child: Text("Login",
+                    style: TextStyle(
+                      fontFamily: 'PlutoCondRegular',
+                      color: Colors.white,
+                      fontSize: 16
+                    ),
+                  ),
+                  color: HexColor("#f18447"),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.only(
+                      topLeft: const Radius.circular(10.0),
+                      bottomLeft: const Radius.circular(10.0),
+                    )
+                  ),
+                  onPressed: (){
+                    Navigator.of(context).push(
+                            MaterialPageRoute(builder: (context) => Login()));
+                  },
+                ),
+                
+
+              )
+            ],
+          ),    
           Container(
                 padding: EdgeInsets.only(top: 60.0),
-                margin: EdgeInsets.fromLTRB(15.0, 50, 15, 90),
+                margin: EdgeInsets.fromLTRB(15.0, 30, 15, 90),
           decoration: BoxDecoration(
              color: HexColor('#d1e0bc'),
                     border: Border.all(color: Colors.white),
