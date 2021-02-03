@@ -317,9 +317,9 @@ class _ShowOCRTextState extends State<ShowOCRText> {
             children: <Widget>[
             Container(
                 margin: EdgeInsets.fromLTRB(20, 20, 20, 20),
-                padding: EdgeInsets.fromLTRB(10,30,10,10),
+                padding: EdgeInsets.fromLTRB(10,0,10,0),
                 decoration: BoxDecoration(
-                    border: Border.all(color: HexColor('#d1e0bc'), width: 10),
+                    border: Border.all(color: HexColor('#d1e0bc'), width: 5),
                     
                     borderRadius: BorderRadius.all(Radius.circular(20.0))),
                 child: Column(
@@ -332,14 +332,14 @@ class _ShowOCRTextState extends State<ShowOCRText> {
               alignment: Alignment(0.95,0),
               child:_isEditingText? Container(
                  decoration: BoxDecoration(
-                    color: HexColor('#72a633'),
+                    color: HexColor('#f0dc47'),
                     borderRadius: BorderRadius.all(Radius.circular(100))
                   ),
                 
                 child:IconButton(
                 icon:Icon(Icons.check),
                 iconSize: 30,
-                color: Colors.white,
+                color: HexColor("#80721d"),
                 onPressed: (){
                   setState(() {
                     _isEditingText = false;
@@ -348,14 +348,14 @@ class _ShowOCRTextState extends State<ShowOCRText> {
                 )):
                  Container(
                  decoration: BoxDecoration(
-                    color: HexColor('#72a633'),
+                    color: HexColor('#f0dc47'),
                     borderRadius: BorderRadius.all(Radius.circular(100))
                   ),
                 
                 child:IconButton(
                 icon:Icon(Icons.edit),
                 iconSize: 30,
-                color: Colors.white,
+                color: HexColor("#80721d"),
                 onPressed: (){
                   setState(() {
                     _isEditingText = true;
@@ -369,41 +369,70 @@ class _ShowOCRTextState extends State<ShowOCRText> {
 
     :Scaffold(
         appBar: CustomAppBar2("Know Your Food"),
-        body: ListView(children: [
-          Padding(
-            padding: EdgeInsets.fromLTRB(20, 30, 0, 0),
-            child: Text(
-              "Image",
-              style: TextStyle(
-                color: HexColor('#72a633'),
-                fontSize: 24,
-                fontFamily: 'PlutoCondMedium',
-              ),
+        body: ListView(children:[
+          Container(
+                margin: EdgeInsets.fromLTRB(15.0, 50, 15, 90),
+          decoration: BoxDecoration(
+            //  color: HexColor('#d1e0bc'),
+                    border: Border.all(color: HexColor('#d1e0bc'),width: 5),
+                    borderRadius: BorderRadius.all(Radius.circular(40.0))),
+          child:
+          Column(
+          children: [
+          Container(
+            child: Row(
+              children: [
+                Padding(
+                  padding: EdgeInsets.fromLTRB(30, 10, 0, 10),
+                  child: Text("Image",
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 24,
+                    fontFamily: 'PlutoCondMedium',
+                  ),
+                  ),
+                )
+              ],
             ),
-          ),
+            decoration: BoxDecoration(
+              color: HexColor('#72a633'),
+              borderRadius: BorderRadius.only(
+                topLeft: const Radius.circular(35.0),
+                topRight: const Radius.circular(35.0),
+              )
+            ),
+          ),  
           Container(
             // padding: EdgeInsets.only(top:60),
             margin: EdgeInsets.fromLTRB(15.0, 20, 15, 20),
             child: Image.file(widget._image),
           ),
-          Padding(
-            padding: EdgeInsets.fromLTRB(20, 0, 0, 0),
-            child: Text(
-              "Recognised Text",
-              style: TextStyle(
-                color: HexColor('#72a633'),
-                fontSize: 24,
-                fontFamily: 'PlutoCondMedium',
-              ),
+          Container(
+            child: Row(
+              children: [
+                Padding(
+                  padding: EdgeInsets.fromLTRB(30, 10, 0, 10),
+                  child: Text("Recognised Text",
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 24,
+                    fontFamily: 'PlutoCondMedium',
+                  ),
+                  ),
+                )
+              ],
             ),
-          ),
+            decoration: BoxDecoration(
+              color: HexColor('#72a633'),
+            ),
+          ),  
           buffering?Container(color: Colors.white,child: Buffering()):Stack(
           children: <Widget>[
           Container(
               margin: EdgeInsets.fromLTRB(20, 20, 20, 20),
-              padding: EdgeInsets.fromLTRB(10,30,10,10),
+              padding: EdgeInsets.fromLTRB(10,10,10,10),
               decoration: BoxDecoration(
-                  border: Border.all(color: HexColor('#d1e0bc'), width: 10),
+                  border: Border.all(color: HexColor('#d1e0bc'), width: 5),
                   
                   borderRadius: BorderRadius.all(Radius.circular(20.0))),
               child: Column(
@@ -412,40 +441,45 @@ class _ShowOCRTextState extends State<ShowOCRText> {
                   _editTitleTextField()
                 ]
               )),
-          Align(
-            alignment: Alignment(0.95,0),
-            child:_isEditingText? Container(
-               decoration: BoxDecoration(
-                  color: HexColor('#72a633'),
-                  borderRadius: BorderRadius.all(Radius.circular(100))
-                ),
-              
-              child:IconButton(
-              icon:Icon(Icons.check),
-              iconSize: 30,
-              color: Colors.white,
-              onPressed: (){
-                setState(() {
-                  _isEditingText = false;
-                });
-              },
-              )):
-               Container(
-               decoration: BoxDecoration(
-                  color: HexColor('#72a633'),
-                  borderRadius: BorderRadius.all(Radius.circular(100))
-                ),
-              
-              child:IconButton(
-              icon:Icon(Icons.edit),
-              iconSize: 30,
-              color: Colors.white,
-              onPressed: (){
-                setState(() {
-                  _isEditingText = true;
-                });
-              },
-              ))
+          Positioned.fill(
+              child: Align(
+              alignment: Alignment(0.95,1),
+              child:_isEditingText? Container(
+                 decoration: BoxDecoration(
+                    color: HexColor('#f0dc47'),
+                    borderRadius: BorderRadius.all(Radius.circular(100))
+                  ),
+                
+                child:Padding(
+                  padding: const EdgeInsets.only(left:8.0),
+                  child: IconButton(
+                  icon:Icon(Icons.check),
+                  iconSize: 30,
+                  color: HexColor("#80721d"),
+                  onPressed: (){
+                    setState(() {
+                      _isEditingText = false;
+                    });
+                  },
+                  ),
+                )):
+                 Container(
+                 decoration: BoxDecoration(
+                    color: HexColor('#f0dc47'),
+                    borderRadius: BorderRadius.all(Radius.circular(100))
+                  ),
+                
+                child:IconButton(
+                icon:Icon(Icons.edit),
+                iconSize: 30,
+                color: HexColor("#80721d"),
+                onPressed: (){
+                  setState(() {
+                    _isEditingText = true;
+                  });
+                },
+                ))
+            ),
           )
           ]),
           Container(
@@ -478,6 +512,6 @@ class _ShowOCRTextState extends State<ShowOCRText> {
                   },  
                 )
               )
-        ]));
+        ]))]));
   }
 }
