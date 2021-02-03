@@ -4,6 +4,7 @@ import 'package:hexcolor/hexcolor.dart';
 import 'package:knowyourfood/Auth.dart';
 import 'package:knowyourfood/login.dart';
 
+import 'common_widget.dart';
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget{
   final _preferredSize =125.0;
@@ -134,37 +135,39 @@ class _CustomAppBar3State extends State<CustomAppBar3> {
   decisionAlertDialog(BuildContext context) {
 
   // set up the button
-  Widget yes = FlatButton(
-    child: Text("Yes",
-    style: TextStyle(
-        fontFamily: 'PlutoCondRegular'
+  Widget yes = RaisedButton(
+    child: Padding(
+      padding: const EdgeInsets.fromLTRB(4,0,4,0),
+      child: Text("Yes",
+      style: TextStyle(
+          fontFamily: 'PlutoCondRegular',
+          color: Colors.white
+        ),
       ),
     ),
+    color:HexColor('#76af2c'),
     onPressed: () { 
-      
-      // FirebaseAuth.instance.signOut().then((value) => {
-      //   Navigator.of(context).pop(),
-      //   setState(() {
-      //     loggedIn = false;
-      //     showAlertDialogEmail(context, "User logged out!");
-      //   })
-      // });
       signOutUser().whenComplete(() => {
         Navigator.of(context).pop(),
         setState(() {
           loggedIn = false;
-          showAlertDialogEmail(context, "User logged out!");
+          showAlert(context, "You have been logged out");
         })
       });
     },
   );
 
-   Widget no = FlatButton(
-    child: Text("No",
-    style: TextStyle(
-        fontFamily: 'PlutoCondRegular'
+   Widget no = RaisedButton(
+    child: Padding(
+      padding: const EdgeInsets.fromLTRB(4,0,4,0),
+      child: Text("No",
+      style: TextStyle(
+          fontFamily: 'PlutoCondRegular',
+          color: Colors.white
+        ),
       ),
     ),
+    color: HexColor("#ecd343"),
     onPressed: () { 
       Navigator.of(context).pop();
     },
@@ -172,12 +175,21 @@ class _CustomAppBar3State extends State<CustomAppBar3> {
 
   // set up the AlertDialog
   AlertDialog alert = AlertDialog(
-    title: Text("Logout!"),
-    content: Text("Do you want to logout?",
-    style: TextStyle(
-        fontFamily: 'PlutoCondRegular'
+    content: RichText(
+      text:TextSpan(     
+      style: TextStyle(
+        fontFamily: 'PlutoCondRegular',
+        fontSize: 16,
+        color: Colors.white
       ),
-    ),
+      children: <TextSpan>[
+        TextSpan(text:'Do you want to '),
+      TextSpan(text:"logout?",
+    style: TextStyle(
+        fontWeight: FontWeight.bold,
+      )),
+      ])),
+    backgroundColor: HexColor("#f38343"),
     actions: [
       yes,
       no
@@ -192,40 +204,6 @@ class _CustomAppBar3State extends State<CustomAppBar3> {
     },
   );
 }
-
-showAlertDialogEmail(BuildContext context, String message) {  
-    // Create button  
-    Widget okButton = FlatButton(  
-      child: Text("OK",
-      style: TextStyle(
-        fontFamily: 'PlutoCondRegular'
-      ),
-      ),  
-      onPressed: () {  
-        Navigator.of(context).pop();  
-      },  
-    );  
-    
-    
-    // show the dialog  
-    showDialog(  
-      context: context,  
-      builder: (BuildContext context) { 
-        return AlertDialog(  
-      title: Text(""),  
-      content: Text(message,
-      style: TextStyle(
-        fontFamily: 'PlutoCondRegular'
-      ),
-      ),  
-      actions: [  
-        okButton,  
-      ],  
-    );  
-      },  
-    );  
-  }  
-  
 
 
   @override

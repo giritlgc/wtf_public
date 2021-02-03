@@ -9,6 +9,7 @@ import 'package:knowyourfood/registration.dart';
 
 import 'List.dart';
 import 'additives.dart';
+import 'common_widget.dart';
 import 'custom_app_bar.dart';
 import 'loader.dart';
 
@@ -80,7 +81,7 @@ class _ShowOCRTextState extends State<ShowOCRText> {
       setState((){
         buffering = false;
       }),
-      showAlertDialogEmail(context,errorMessage.message)
+      showAlert(context,errorMessage.message)
       });
   }
 
@@ -169,7 +170,7 @@ class _ShowOCRTextState extends State<ShowOCRText> {
       onPressed: () {  
         Navigator.of(context).pop(); 
         if(!_emailTextFocus.hasFocus && !_valid && _emailTextController.text!=""){
-           showAlertDialogEmail(context, "Invalid Email");
+           showAlert(context, "The e-mail entered is invalid");
         }  
       },  
     );  
@@ -270,7 +271,7 @@ class _ShowOCRTextState extends State<ShowOCRText> {
             'deviceId':widget.deviceId,
             'timeStamp': DateTime.now()
           }).then((response) {
-        showAlertDialogEmail(context, "Email successfully submitted");
+        showAlert(context, "Your email has been recorded. We will keep you posted of relevant updates!");
       }).timeout(Duration(seconds:10)).catchError((error) {
         print(error);
       });
@@ -280,40 +281,6 @@ class _ShowOCRTextState extends State<ShowOCRText> {
        
       }
     }
-
-
-   showAlertDialogEmail(BuildContext context, String message) {  
-    // Create button  
-    Widget okButton = FlatButton(  
-      child: Text("OK",
-      style: TextStyle(
-        fontFamily: 'PlutoCondRegular'
-      ),
-      ),  
-      onPressed: () {  
-        Navigator.of(context).pop(); 
-      },  
-    );  
-    
-    
-    // show the dialog  
-    showDialog(  
-      context: context,  
-      builder: (BuildContext context) { 
-        return AlertDialog(  
-      title: Text(""),  
-      content: Text(message,
-      style: TextStyle(
-        fontFamily: 'PlutoCondRegular'
-      ),
-      ),  
-      actions: [  
-        okButton,  
-      ],  
-    );  
-      },  
-    );  
-  }  
 
 
 

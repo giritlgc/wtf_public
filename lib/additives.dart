@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:knowyourfood/additive_detail.dart';
 import 'package:knowyourfood/custom_app_bar.dart';
+import 'common_widget.dart';
 
 
 class AdditivePage extends StatefulWidget {
@@ -43,7 +44,7 @@ class _AdditivePageState extends State<AdditivePage> {
           'deviceId':deviceId,
           'timeStamp': DateTime.now()
         }).then((response) {
-      showAlertDialog(context, "Successfully submitted");
+      showAlert(context, "Your email has been recorded. We will keep you posted of relevant updates!");
     }).timeout(Duration(seconds:10)).catchError((error) {
       print(error);
     });
@@ -60,43 +61,7 @@ class _AdditivePageState extends State<AdditivePage> {
 }
 
 
- showAlertDialog(BuildContext context, String message) {  
-  // Create button  
-  Widget okButton = FlatButton(  
-    child: Text("OK",
-    style: TextStyle(
-        fontFamily: 'PlutoCondRegular'
-      ),
-    ),  
-    onPressed: () {  
-      Navigator.of(context).pop();  
-    },  
-  );  
-  
-  
-  // show the dialog  
-  showDialog(  
-    context: context,  
-    builder: (BuildContext context) { 
-      return AlertDialog(  
-    title: Text("Email",
-    style: TextStyle(
-        fontFamily: 'PlutoCondRegular'
-      ),
-    ),  
-    content: Text(message,
-    style: TextStyle(
-      fontFamily: 'PlutoCondRegular'
-    ),
-    ),  
-    actions: [  
-      okButton,  
-    ],  
-  );  
-    },  
-  );  
-}  
-
+ 
 void _getId() async{
       DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
      

@@ -13,6 +13,7 @@ import 'package:knowyourfood/image_ocrtext.dart';
 import 'package:knowyourfood/loader.dart';
 import 'package:knowyourfood/registration.dart';
 
+import 'common_widget.dart';
 import 'custom_app_bar.dart';
 
 
@@ -191,7 +192,7 @@ class _SearchPageState extends State<SearchPage>
       onPressed: () {  
          Navigator.of(context).pop();
          if(!_emailTextFocus.hasFocus && !_valid && _emailTextController.text!=""){
-           showAlertDialogEmail(context, "Invalid Email");
+           showAlert(context, "The e-mail entered is invalid");
          }  
       },  
     );  
@@ -290,7 +291,7 @@ class _SearchPageState extends State<SearchPage>
             'deviceId':deviceId,
             'timeStamp': DateTime.now()
           }).then((response) {
-        showAlertDialogEmail(context, "Email successfully submitted");
+        showAlert(context, "Your email has been recorded. We will keep you posted of relevant updates!");
       }).timeout(Duration(seconds:10)).catchError((error) {
         print(error);
       });
@@ -301,39 +302,7 @@ class _SearchPageState extends State<SearchPage>
       }
     }
   
-   showAlertDialogEmail(BuildContext context, String message) {  
-    // Create button  
-    Widget okButton = FlatButton(  
-      child: Text("OK",
-      style: TextStyle(
-        fontFamily: 'PlutoCondRegular'
-      ),
-      ),  
-      onPressed: () {  
-        Navigator.of(context).pop();  
-      },  
-    );  
-    
-    
-    // show the dialog  
-    showDialog(  
-      context: context,  
-      builder: (BuildContext context) { 
-        return AlertDialog(  
-      title: Text(""),  
-      content: Text(message,
-      style: TextStyle(
-        fontFamily: 'PlutoCondRegular'
-      ),
-      ),  
-      actions: [  
-        okButton,  
-      ],  
-    );  
-      },  
-    );  
-  }  
-  
+
   void _submit(){    
     String text = _textController.text;
     if(text!=""){
@@ -371,7 +340,7 @@ class _SearchPageState extends State<SearchPage>
     
   
     }else{
-      showAlertDialogEmail(context, "Please enter additive name");
+      showAlert(context, "Please try searching again and pick one of the additive names shown.");
     }
   }
   
@@ -391,7 +360,7 @@ decisionAlertDialog(BuildContext context) {
         Navigator.of(context).pop(),
         setState(() {
           loggedIn = false;
-          showAlertDialogEmail(context, "User logged out!");
+          showAlert(context, "You have been logged out");
         })
       });
     },

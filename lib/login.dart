@@ -6,6 +6,8 @@ import 'package:knowyourfood/changePassword.dart';
 import 'package:knowyourfood/registration.dart';
 import 'package:knowyourfood/search_page.dart';
 
+import 'common_widget.dart';
+
 class Login extends StatefulWidget {
   @override
   _LoginState createState() => _LoginState();
@@ -22,42 +24,6 @@ class _LoginState extends State<Login> {
 
   String username ;
   String password ;
-
-  showAlertDialog(BuildContext context, String message) {
-    // Create button
-    Widget okButton = FlatButton(
-      child: Text("OK",
-      style: TextStyle(
-        fontFamily: 'PlutoCondRegular'
-      ),
-      ),
-      onPressed: () {
-        Navigator.of(context).pop();
-      },
-    );
-
-    // show the dialog
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text("Login Failed!",
-          style: TextStyle(
-            fontFamily: 'PlutoCondRegular'
-          ),
-          ),
-          content: Text(message,
-          style: TextStyle(
-            fontFamily: 'PlutoCondRegular'
-          ),
-          ),
-          actions: [
-            okButton,
-          ],
-        );
-      },
-    );
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -230,7 +196,14 @@ class _LoginState extends State<Login> {
                                                     SearchPage()), (Route<dynamic> route) => false),)
                                   .catchError((error){
                                     print('Login Failed!');
-                                    showAlertDialog(context, error.code);
+                                    if (error.code == 'user-not-found'){
+                                      showAlert(context, "Sorry, we could not find a user with email ");
+                                    }else if(error.code == 'wrong-password'){
+                                      showAlert(context, "Sorry, that's not the right password");
+                                    }else{
+                                      showAlert(context, error.code);
+                                    }
+                                    
                                   })  
                                 }
                               }
