@@ -38,6 +38,8 @@ showAlert(BuildContext context, String message) {
       color: Colors.white
     ),
     ), 
+    shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(15.0))),
     actionsPadding: EdgeInsets.fromLTRB(0, 0, 15, 0), 
     actions: [  
       okButton,  
