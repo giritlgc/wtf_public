@@ -210,7 +210,7 @@ class _LoginState extends State<Login> {
                             },
                       )),
                   MaterialButton(
-                    padding: EdgeInsets.only(bottom:0),
+                    padding: EdgeInsets.only(bottom:20),
                     onPressed: () => googleSignIn().then((value) async {
                       
                         if (value) {
@@ -223,20 +223,20 @@ class _LoginState extends State<Login> {
                       width: 200.0,
                     ),
                   ),
-                  MaterialButton(
-                    padding: EdgeInsets.only(bottom:1),
-                    onPressed: () => signInWithFacebook().then((value) async {
+                  // MaterialButton(
+                  //   padding: EdgeInsets.only(bottom:1),
+                  //   onPressed: () => signInWithFacebook().then((value) async {
                       
-                        if (value) {
-                          Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) =>
-                                                      SearchPage()), (Route<dynamic> route) => false);
-                        }
-                    }),
-                    child: Image(
-                      image: AssetImage('images/facebook.png'),
-                      width: 220.0,
-                    ),
-                  ),
+                  //       if (value) {
+                  //         Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) =>
+                  //                                     SearchPage()), (Route<dynamic> route) => false);
+                  //       }
+                  //   }),
+                  //   child: Image(
+                  //     image: AssetImage('images/facebook.png'),
+                  //     width: 220.0,
+                  //   ),
+                  // ),
                   Container(
                     child: InkWell(
                       child: Text(
@@ -273,9 +273,9 @@ class _LoginState extends State<Login> {
                   )
                 ],
               ))),
-              Positioned(
-                top: 490,
-                right: MediaQuery.of(context).size.width*0.35,
+              Positioned.fill(
+                child:Align(
+                  alignment: Alignment(0,0.78),
         child:Container(
           decoration: BoxDecoration(
             color: HexColor('#e58149'),
@@ -288,7 +288,7 @@ class _LoginState extends State<Login> {
                             height: 65,                      
                         ),
         ))
-                      ],
+              )],
             )
           ]),
         ),

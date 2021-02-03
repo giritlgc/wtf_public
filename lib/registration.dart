@@ -348,21 +348,21 @@ class _RegistrationState extends State<Registration> {
                         ),
                       ),
                     ),
-            MaterialButton(
-                      padding: EdgeInsets.only(bottom:20),
-                      onPressed: () => signInWithFacebook().then((value) async {
+            // MaterialButton(
+            //           padding: EdgeInsets.only(bottom:20),
+            //           onPressed: () => signInWithFacebook().then((value) async {
                         
-                          if (value) {
-                            Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) =>
-                                                        SearchPage()), (Route<dynamic> route) => false);
-                          }
-                      }),
-                      child: Image(
-                        image: AssetImage('images/facebookSingUp.png'),
-                        width: 205.0,
-                        height: 40,
-                      ),
-                    ),
+            //               if (value) {
+            //                 Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) =>
+            //                                             SearchPage()), (Route<dynamic> route) => false);
+            //               }
+            //           }),
+            //           child: Image(
+            //             image: AssetImage('images/facebookSingUp.png'),
+            //             width: 205.0,
+            //             height: 40,
+            //           ),
+            //         ),
               Container(
                     padding: EdgeInsets.only(bottom: 40),
                     child: InkWell(
@@ -385,9 +385,9 @@ class _RegistrationState extends State<Registration> {
                 ],
               ),
             ),
-            Positioned(
-                top: 630,
-                right: MediaQuery.of(context).size.width*0.35,
+            Positioned.fill(
+                child:Align(
+                  alignment: Alignment(0,0.82),
         child:Container(
           decoration: BoxDecoration(
             color: HexColor('#e58149'),
@@ -400,7 +400,7 @@ class _RegistrationState extends State<Registration> {
                             height: 65,                      
                         ),
         ))
-            ]
+            )]
           )
           ]))
       ),

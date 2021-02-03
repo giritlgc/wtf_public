@@ -205,9 +205,9 @@ class _ChangePasswordState extends State<ChangePassword> {
                 ],
               ),
             ),
-            Positioned(
-                top: 400,
-                right: MediaQuery.of(context).size.width*0.35,
+            Positioned.fill(
+                child:Align(
+                  alignment: Alignment(0,0.76),
         child:Container(
           decoration: BoxDecoration(
             color: HexColor('#e58149'),
@@ -220,7 +220,7 @@ class _ChangePasswordState extends State<ChangePassword> {
                             height: 65,                      
                         ),
         ))
-            ]
+             ) ]
           )
         ]),])
       ),
