@@ -78,7 +78,7 @@ void _getId() async{
         children: <Widget>[
           Container(
             margin: EdgeInsets.fromLTRB(20, 40, 20, 40) ,
-            child: Text("Additives present",
+            child: Text("Possible Additive Matches",
             style: TextStyle(
               color: HexColor('#72a633'),
               fontSize: 30,
