@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dio/dio.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:knowyourfood/registration.dart';
@@ -33,6 +34,7 @@ class _ShowOCRTextState extends State<ShowOCRText> {
   RecognisedText ocrText;
   bool buffering = true;
   Error errorMessage;
+  bool loggedIn = FirebaseAuth.instance.currentUser != null;
 
   TextEditingController _emailTextController = new TextEditingController();
   FocusNode _emailTextFocus = new FocusNode();
@@ -58,12 +60,17 @@ class _ShowOCRTextState extends State<ShowOCRText> {
     Dio dio = new Dio();
     var uploadURL = "http://34.123.192.200:8000/api/getRecognisedText/";
     String fileName = _image.path.split('/').last;
+    var userInfo = "";
+    if(loggedIn){
+      userInfo = FirebaseAuth.instance.currentUser.providerData[0].email;
+    }
     FormData formdata = new FormData.fromMap({
           "image":
               await MultipartFile.fromFile(_image.path, filename:fileName),
-          "deviceId":widget.deviceId    
+          "deviceId":widget.deviceId,
+          "user":userInfo    
       });
-    
+      
         dio.post(uploadURL, data: formdata, options: Options(
         method: 'POST',
         responseType: ResponseType.json // or ResponseType.JSON
@@ -127,8 +134,11 @@ class _ShowOCRTextState extends State<ShowOCRText> {
       });
       Dio dio = new Dio();
       var uploadURL = "http://34.123.192.200:8000/api/getAdditiveNames/";
-  
-      dio.post(uploadURL, data: {"name":text.trim(),"deviceId":widget.deviceId}, options: Options(
+      var userInfo = "";
+      if(loggedIn){
+        userInfo = FirebaseAuth.instance.currentUser.providerData[0].email;
+      }
+      dio.post(uploadURL, data: {"name":text.trim(),"deviceId":widget.deviceId,"user": userInfo}, options: Options(
       method: 'POST',
       responseType: ResponseType.json // or ResponseType.JSON
       ))
