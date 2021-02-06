@@ -314,7 +314,7 @@ class _SearchPageState extends State<SearchPage>
       print("Redirecting to additive page");
       Dio dio = new Dio();
       var uploadURL = "http://34.123.192.200:8000/api/search/";
-      var userInfo = "";
+      var userInfo = "null";
       if(loggedIn){
         userInfo = FirebaseAuth.instance.currentUser.providerData[0].email;
       }
