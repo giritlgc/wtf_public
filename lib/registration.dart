@@ -307,8 +307,9 @@ class _RegistrationState extends State<Registration> {
                                             .createUserWithEmailAndPassword(
                                                 email: _email.trim(),
                                                 password: _password.trim())
-                                            .then((currentUser) =>
-                                                Navigator.of(context).push(MaterialPageRoute(builder: (context) => Login())))
+                                            .then((currentUser) async =>{
+                                              await currentUser.user.updateProfile(displayName: _firstname +" "+ _surname), 
+                                                Navigator.of(context).push(MaterialPageRoute(builder: (context) => Login()))})
                                             .catchError((error) {
                                           print('Registration Failed!');
                                           if(error.code == 'email-already-in-use'){
