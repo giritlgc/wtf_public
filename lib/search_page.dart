@@ -313,7 +313,7 @@ class _SearchPageState extends State<SearchPage>
       });
       print("Redirecting to additive page");
       Dio dio = new Dio();
-      var uploadURL = "http://34.123.192.200:8000/api/search/";
+      var uploadURL = "http://35.223.112.99:8000/api/search/";
       var userInfo = "null";
       if(loggedIn){
         userInfo = FirebaseAuth.instance.currentUser.providerData[0].email;
@@ -434,7 +434,7 @@ decisionAlertDialog(BuildContext context) {
         buffering = true;
       });
       Dio dio = new Dio();
-      var uploadURL = "http://34.123.192.200:8000/api/additiveNameSuggestions/";
+      var uploadURL = "http://35.223.112.99:8000/api/additiveNameSuggestions/";
      
       await  dio.post(uploadURL, data: {"name":pattern.trim(),"deviceId":deviceId}, options: Options(
             method: 'POST',

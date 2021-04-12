@@ -27,7 +27,7 @@ class _AdditiveDetailState extends State<AdditiveDetail> {
     super.initState();
     buffering = true;
     Dio dio = new Dio();
-    var uploadURL = "http://34.123.192.200:8000/api/functionality/";
+    var uploadURL = "http://35.223.112.99:8000/api/functionality/";
     dio.post(uploadURL, data: {"name":widget.additive}, options: Options(
       method: 'POST',
       responseType: ResponseType.json // or ResponseType.JSON

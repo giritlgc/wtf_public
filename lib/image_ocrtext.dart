@@ -58,7 +58,7 @@ class _ShowOCRTextState extends State<ShowOCRText> {
 
   void  getRecognisedText(_image) async {
     Dio dio = new Dio();
-    var uploadURL = "http://34.123.192.200:8000/api/getRecognisedText/";
+    var uploadURL = "http://35.223.112.99:8000/api/getRecognisedText/";
     String fileName = _image.path.split('/').last;
     var userInfo = "null";
     if(loggedIn){
@@ -133,7 +133,7 @@ class _ShowOCRTextState extends State<ShowOCRText> {
       loading = true;
       });
       Dio dio = new Dio();
-      var uploadURL = "http://34.123.192.200:8000/api/getAdditiveNames/";
+      var uploadURL = "http://35.223.112.99:8000/api/getAdditiveNames/";
       var userInfo = "null";
       if(loggedIn){
         userInfo = FirebaseAuth.instance.currentUser.providerData[0].email;
