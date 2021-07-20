@@ -9,7 +9,7 @@ class Loading extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: HexColor('#72a633'),
+      color: HexColor('#5ca4b8'),
       child: Center(
         child:SpinKitChasingDots(
           color:Colors.white,
@@ -24,10 +24,10 @@ class Buffering extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: HexColor('#ebf3e3'),
+      color: HexColor('#eff7f9'),
       child: Center(
         child:SpinKitCircle(
-          color:HexColor('#72a633'),
+          color:HexColor('#5ca4b8'),
           size:50.0
         )
       ),
