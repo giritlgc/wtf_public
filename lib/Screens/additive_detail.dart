@@ -86,20 +86,20 @@ class _AdditiveDetailState extends State<AdditiveDetail> {
                 ),
               ),
               Container(
-      padding: EdgeInsets.fromLTRB(20, 10, 0, 10),
-      color: HexColor('#dbeaef'),
-      child: Row(
-        children: [
-          Text(
-            "Functionalities",
-            style: TextStyle(
-                fontSize: 18,
-                color: HexColor('#e58149'),
-                fontFamily: 'PlutoCondMedium'),
-          ),
-        ],
-      ),
-    ),
+                padding: EdgeInsets.fromLTRB(20, 10, 0, 10),
+                color: HexColor('#dbeaef'),
+                child: Row(
+                  children: [
+                    Text(
+                      "Functionalities",
+                      style: TextStyle(
+                          fontSize: 18,
+                          color: HexColor('#e58149'),
+                          fontFamily: 'PlutoCondMedium'),
+                    ),
+                  ],
+                ),
+              ),
               Expanded(
                   child: ListView(
                 children: buildList(dataList),

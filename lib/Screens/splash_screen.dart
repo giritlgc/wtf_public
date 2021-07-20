@@ -17,7 +17,7 @@ class _SplashScreenState extends State<SplashScreen> {
         Duration(seconds: 2),
         () => Navigator.of(context).pushReplacement(MaterialPageRoute(
             builder: (BuildContext context) => ShowCaseWidget(
-            builder: Builder(builder: (_) => SearchPage())))));
+                builder: Builder(builder: (_) => SearchPage())))));
   }
 
   @override

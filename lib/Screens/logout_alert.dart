@@ -6,7 +6,6 @@ import 'package:knowyourfood/Screens/search_screen.dart';
 import 'package:showcaseview/showcase_widget.dart';
 
 class LogoutAlert extends StatefulWidget {
-
   @override
   _LogoutAlertState createState() => _LogoutAlertState();
 }
@@ -126,17 +125,17 @@ class _LogoutAlertState extends State<LogoutAlert> {
                                 signOutUser().whenComplete(() => {
                                       setState(() {
                                         Navigator.of(context).pop();
-                                        Navigator.of(context)
-                                            .push(
-                                                MaterialPageRoute(
-                                                    builder: (context) =>
-                                                        ShowCaseWidget(
-            builder: Builder(builder: (_) => SearchPage()))));
-                                        Navigator.of(context)
-                                            .push(
-                                                MaterialPageRoute(
-                                                    builder: (context) =>
-                                                        LogoutMessage()));
+                                        Navigator.of(context).push(
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    ShowCaseWidget(
+                                                        builder: Builder(
+                                                            builder: (_) =>
+                                                                SearchPage()))));
+                                        Navigator.of(context).push(
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    LogoutMessage()));
                                       })
                                     });
                               },
@@ -153,9 +152,13 @@ class _LogoutAlertState extends State<LogoutAlert> {
                               ),
                               color: HexColor("#f38343"),
                               onPressed: () {
-                                Navigator.of(context).pushReplacement(MaterialPageRoute(
-            builder: (BuildContext context) => ShowCaseWidget(
-            builder: Builder(builder: (_) => SearchPage()))));
+                                Navigator.of(context).pushReplacement(
+                                    MaterialPageRoute(
+                                        builder: (BuildContext context) =>
+                                            ShowCaseWidget(
+                                                builder: Builder(
+                                                    builder: (_) =>
+                                                        SearchPage()))));
                               },
                             )
                           ]),

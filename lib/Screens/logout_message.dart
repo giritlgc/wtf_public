@@ -104,7 +104,8 @@ class _LogoutMessageState extends State<LogoutMessage> {
                           children: [
                             RaisedButton(
                               child: Padding(
-                                padding: const EdgeInsets.fromLTRB(45, 8, 45, 8),
+                                padding:
+                                    const EdgeInsets.fromLTRB(45, 8, 45, 8),
                                 child: Text(
                                   "Ok",
                                   style: TextStyle(
@@ -115,15 +116,20 @@ class _LogoutMessageState extends State<LogoutMessage> {
                               ),
                               color: HexColor('#5ca4b8'),
                               shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(15.0))),
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(15.0))),
                               onPressed: () {
                                 // Navigator.of(context).pushAndRemoveUntil(
                                 //     MaterialPageRoute(
                                 //         builder: (context) => SearchPage()),
                                 //     (Route<dynamic> route) => false);
-                                Navigator.of(context).pushReplacement(MaterialPageRoute(
-            builder: (BuildContext context) => ShowCaseWidget(
-            builder: Builder(builder: (_) => SearchPage()))));
+                                Navigator.of(context).pushReplacement(
+                                    MaterialPageRoute(
+                                        builder: (BuildContext context) =>
+                                            ShowCaseWidget(
+                                                builder: Builder(
+                                                    builder: (_) =>
+                                                        SearchPage()))));
                               },
                             ),
                           ]),

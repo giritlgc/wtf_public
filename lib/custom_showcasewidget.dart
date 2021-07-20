@@ -1,7 +1,6 @@
 import "package:flutter/material.dart";
 import 'package:showcaseview/showcaseview.dart';
 
-
 class CustomShowcaseWidget extends StatelessWidget {
   final Widget child;
   final String description;

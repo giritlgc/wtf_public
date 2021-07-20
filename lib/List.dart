@@ -61,4 +61,3 @@ class Error {
     return data;
   }
 }
-
