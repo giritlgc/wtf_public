@@ -5,7 +5,7 @@ import 'package:knowyourfood/custom_showcasewidget.dart';
 import 'package:showcaseview/showcase_widget.dart';
 
 import '../CommonComponents/common_functions.dart';
-import '../common_widget.dart';
+import '../CommonComponents/common_widget.dart';
 import 'login.dart';
 
 class ForgotPassword extends StatefulWidget {
@@ -119,127 +119,131 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                               ])),
                       Padding(
                         padding: EdgeInsets.only(top: 32),
-                        child:  CustomShowcaseWidget(
-                              description: "Enter your registered email",
-                              globalKey: keyOne,
-                              child:Container(
-                            height: 35,
-                            margin: EdgeInsets.symmetric(
-                                horizontal: 42.0, vertical: 2.0),
-                            decoration: _valid_email
-                                ? BoxDecoration(
-                                    color: HexColor('#edeef0'),
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(15.0)),
-                                  )
-                                : BoxDecoration(
-                                    color: HexColor('#edeef0'),
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(15.0)),
-                                    border: Border.all(color: Colors.red),
+                        child: CustomShowcaseWidget(
+                            description: "Enter your registered email",
+                            globalKey: keyOne,
+                            child: Container(
+                                height: 35,
+                                margin: EdgeInsets.symmetric(
+                                    horizontal: 42.0, vertical: 2.0),
+                                decoration: _valid_email
+                                    ? BoxDecoration(
+                                        color: HexColor('#edeef0'),
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(15.0)),
+                                      )
+                                    : BoxDecoration(
+                                        color: HexColor('#edeef0'),
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(15.0)),
+                                        border: Border.all(color: Colors.red),
+                                      ),
+                                child: TextFormField(
+                                  controller: _textController,
+                                  decoration: InputDecoration(
+                                    contentPadding:
+                                        EdgeInsets.fromLTRB(15, 0, 0, 10),
+                                    border: InputBorder.none,
+                                    hintText: "Email",
+                                    hintStyle: TextStyle(
+                                      color: HexColor('#e58149'),
+                                      fontSize: 18,
+                                      fontFamily: 'PlutoCondRegular',
+                                    ),
                                   ),
-                            child: TextFormField(
-                              controller: _textController,
-                              decoration: InputDecoration(
-                                contentPadding:
-                                    EdgeInsets.fromLTRB(15, 0, 0, 10),
-                                border: InputBorder.none,
-                                hintText: "Email",
-                                hintStyle: TextStyle(
-                                  color: HexColor('#e58149'),
-                                  fontSize: 18,
-                                  fontFamily: 'PlutoCondRegular',
-                                ),
-                              ),
-                              onChanged: (value) {
-                                _email = value;
-                              },
-                              validator: (value) {
-                                return null;
-                              },
-                            ))),
+                                  onChanged: (value) {
+                                    _email = value;
+                                  },
+                                  validator: (value) {
+                                    return null;
+                                  },
+                                ))),
                       ),
                       Container(
                           margin: EdgeInsets.fromLTRB(80, 32, 80, 20),
                           // padding: EdgeInsets.only(left:70,right:70),
                           decoration: BoxDecoration(),
-                          child:  CustomShowcaseWidget(
+                          child: CustomShowcaseWidget(
                               description: "Click on Submit",
                               globalKey: keyTwo,
-                              child:FlatButton(
-                            color: HexColor('#5ca4b8'),
-                            padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
-                            shape: new RoundedRectangleBorder(
-                                borderRadius: new BorderRadius.circular(15.0)),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Container(
-                                  child: Text(
-                                    'Submit',
-                                    style: TextStyle(
-                                      fontSize: 20,
-                                      fontFamily: 'PlutoCondMedium',
-                                      color: Colors.white,
-                                    ),
-                                  ),
-                                )
-                              ],
-                            ),
-                            onPressed: () => {
-                              if (_email == null)
-                                {
-                                  setState(() {
-                                    _valid_email = false;
-                                  })
+                              child: FlatButton(
+                                color: HexColor('#5ca4b8'),
+                                padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
+                                shape: new RoundedRectangleBorder(
+                                    borderRadius:
+                                        new BorderRadius.circular(15.0)),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Container(
+                                      child: Text(
+                                        'Submit',
+                                        style: TextStyle(
+                                          fontSize: 20,
+                                          fontFamily: 'PlutoCondMedium',
+                                          color: Colors.white,
+                                        ),
+                                      ),
+                                    )
+                                  ],
+                                ),
+                                onPressed: () => {
+                                  if (_email == null)
+                                    {
+                                      setState(() {
+                                        _valid_email = false;
+                                      })
+                                    },
+                                  if (_email.isNotEmpty &&
+                                      validateEmail(_email))
+                                    {
+                                      FirebaseAuth.instance
+                                          .sendPasswordResetEmail(email: _email)
+                                          .then((value) => {
+                                                showAlert(context,
+                                                    "Please check your email for instructions to reset your password"),
+                                                setState(() {
+                                                  _email = '';
+                                                  _valid_email = true;
+                                                  _textController.text = '';
+                                                })
+                                              })
+                                          .catchError((error) {
+                                        showAlert(context,
+                                            "Sorry, we could not find a user with email");
+                                      })
+                                    }
+                                  else
+                                    {
+                                      setState(() {
+                                        _valid_email = false;
+                                      })
+                                    }
                                 },
-                              if (_email.isNotEmpty && validateEmail(_email))
-                                {
-                                  FirebaseAuth.instance
-                                      .sendPasswordResetEmail(email: _email)
-                                      .then((value) => {
-                                            showAlert(context,
-                                                "Please check your email for instructions to reset your password"),
-                                            setState(() {
-                                              _email = '';
-                                              _valid_email = true;
-                                              _textController.text = '';
-                                            })
-                                          })
-                                      .catchError((error) {
-                                    showAlert(context,
-                                        "Sorry, we could not find a user with email");
-                                  })
-                                }
-                              else
-                                {
-                                  setState(() {
-                                    _valid_email = false;
-                                  })
-                                }
-                            },
-                          ))),
+                              ))),
                       Container(
                           padding: EdgeInsets.only(bottom: 60),
-                          child:  CustomShowcaseWidget(
+                          child: CustomShowcaseWidget(
                               description: "Go to Login Screen",
                               globalKey: keyThree,
-                              child:InkWell(
-                            child: Text(
-                              'Login',
-                              style: TextStyle(
-                                fontSize: 20,
-                                fontFamily: 'PlutoCondRegular',
-                                color: HexColor('#cfc8c5'),
-                                decoration: TextDecoration.underline,
-                              ),
-                            ),
-                            onTap: () {
-                              Navigator.of(context).pushReplacement(MaterialPageRoute(
-                                  builder: (context) => ShowCaseWidget(
-            builder: Builder(builder: (_) =>Login()))));
-                            },
-                          ))),
+                              child: InkWell(
+                                child: Text(
+                                  'Login',
+                                  style: TextStyle(
+                                    fontSize: 20,
+                                    fontFamily: 'PlutoCondRegular',
+                                    color: HexColor('#cfc8c5'),
+                                    decoration: TextDecoration.underline,
+                                  ),
+                                ),
+                                onTap: () {
+                                  Navigator.of(context).pushReplacement(
+                                      MaterialPageRoute(
+                                          builder: (context) => ShowCaseWidget(
+                                              builder: Builder(
+                                                  builder: (_) => Login()))));
+                                },
+                              ))),
                     ],
                   ),
                 ),
@@ -260,39 +264,32 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                         )))
               ]),
               Padding(
-                  padding: const EdgeInsets.only(bottom:20.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      RaisedButton(
-                        onPressed: () {
-                          ShowCaseWidget.of(context).startShowCase([
-                            keyOne,
-                            keyTwo,
-                            keyThree
-                          ]);
-                        },
-                        color: Colors.white,
-                        textColor: HexColor("#f38343"),
-                        child: Text(
-                          "?",
-                          style: TextStyle(
-                            fontSize: 32,
-                            fontWeight: FontWeight.bold,
-                            
-                          ),
-                        ),
-                        padding: EdgeInsets.all(8),
-                        shape: CircleBorder(
-                          side: BorderSide(
-                            color: HexColor("#f38343"),
-                            width: 5)
+                padding: const EdgeInsets.only(bottom: 20.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    RaisedButton(
+                      onPressed: () {
+                        ShowCaseWidget.of(context)
+                            .startShowCase([keyOne, keyTwo, keyThree]);
+                      },
+                      color: Colors.white,
+                      textColor: HexColor("#f38343"),
+                      child: Text(
+                        "?",
+                        style: TextStyle(
+                          fontSize: 32,
+                          fontWeight: FontWeight.bold,
                         ),
                       ),
-                    ],
-                  ),
-                )
-              
+                      padding: EdgeInsets.all(8),
+                      shape: CircleBorder(
+                          side:
+                              BorderSide(color: HexColor("#f38343"), width: 5)),
+                    ),
+                  ],
+                ),
+              )
             ]),
           ),
         )

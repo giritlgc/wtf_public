@@ -2,7 +2,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:showcaseview/showcase_widget.dart';
-import 'search_screen.dart';
+import 'package:knowyourfood/Screens/search_screen.dart';
 
 class SplashScreen extends StatefulWidget {
   @override
@@ -14,7 +14,7 @@ class _SplashScreenState extends State<SplashScreen> {
   void initState() {
     super.initState();
     Timer(
-        Duration(seconds: 3),
+        Duration(seconds: 2),
         () => Navigator.of(context).pushReplacement(MaterialPageRoute(
             builder: (BuildContext context) => ShowCaseWidget(
             builder: Builder(builder: (_) => SearchPage())))));

@@ -14,11 +14,11 @@ import 'package:knowyourfood/Screens/image_ocrtext.dart';
 import 'package:knowyourfood/Screens/logout_alert.dart';
 import 'package:knowyourfood/custom_showcasewidget.dart';
 
-import 'package:knowyourfood/loader.dart';
+import 'package:knowyourfood/CommonComponents/loader.dart';
 import 'package:showcaseview/showcase_widget.dart';
 
-import '../common_widget.dart';
-import '../custom_app_bar.dart';
+import '../CommonComponents/common_widget.dart';
+import '../CommonComponents/custom_app_bar.dart';
 import 'login.dart';
 import 'registration.dart';
 
@@ -66,13 +66,6 @@ class _SearchPageState extends State<SearchPage>
     _textFocus.addListener(onChange);
 
     _emailTextFocus.addListener(onChangeEmail);
-
-      // Future.delayed(Duration.zero, () => ShowCaseWidget.of(context).startShowCase([
-      //   keyOne,
-      //   keyTwo,
-      //   keyThree,
-      //   keyFour,
-      // ]));
   }
 
   @override
@@ -90,42 +83,35 @@ class _SearchPageState extends State<SearchPage>
               title: Text(
                 "From where do you want to take the photo?",
                 style: TextStyle(
-                  fontFamily: 'PlutoCondMedium',
-                  color: Colors.white
-                ),
+                    fontFamily: 'PlutoCondMedium', color: Colors.white),
               ),
               content: SingleChildScrollView(
                 child: ListBody(
                   children: <Widget>[
                     RaisedButton(
-                      color:HexColor('#76af2c'),
+                      color: HexColor('#76af2c'),
                       child: Text(
                         "Gallery",
                         style: TextStyle(
-                          fontFamily: 'PlutoCondMedium',
-                          color: Colors.white
-                        ),
+                            fontFamily: 'PlutoCondMedium', color: Colors.white),
                       ),
                       onPressed: () {
                         _openGallery(context);
                         Navigator.pop(context);
                       },
                     ),
-                    
-                   
-                      RaisedButton(
-                        color:HexColor('#76af2c'),
-                        child: Text(
-                          "Camera",
-                          style: TextStyle(fontFamily: 'PlutoCondMedium',
-                          color: Colors.white),
-                        ),
-                        onPressed: (){
+                    RaisedButton(
+                      color: HexColor('#76af2c'),
+                      child: Text(
+                        "Camera",
+                        style: TextStyle(
+                            fontFamily: 'PlutoCondMedium', color: Colors.white),
+                      ),
+                      onPressed: () {
                         _openCamera(context);
                         Navigator.pop(context);
                       },
-                      )
-                      
+                    )
                   ],
                 ),
               ));
@@ -142,8 +128,9 @@ class _SearchPageState extends State<SearchPage>
       return;
     } else {
       Navigator.of(context).push(MaterialPageRoute(
-          builder: (context) =>  ShowCaseWidget(
-            builder: Builder(builder: (_) => ShowOCRText(_image, deviceId)))));
+          builder: (context) => ShowCaseWidget(
+              builder:
+                  Builder(builder: (_) => ShowOCRText(_image, deviceId)))));
     }
   }
 
@@ -278,8 +265,9 @@ class _SearchPageState extends State<SearchPage>
                         color: HexColor('#e58149'),
                         onPressed: () {
                           Navigator.of(context).push(MaterialPageRoute(
-                                      builder: (context) =>  ShowCaseWidget(
-            builder: Builder(builder: (_) => Registration()))));
+                              builder: (context) => ShowCaseWidget(
+                                  builder: Builder(
+                                      builder: (_) => Registration()))));
                         })
                   ]),
             ]),
@@ -365,9 +353,10 @@ class _SearchPageState extends State<SearchPage>
                 else
                   {
                     Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) =>
-                            ShowCaseWidget(
-            builder: Builder(builder: (_) =>AdditivePage(dataList: additiveList.ingredients)))))
+                        builder: (context) => ShowCaseWidget(
+                            builder: Builder(
+                                builder: (_) => AdditivePage(
+                                    dataList: additiveList.ingredients)))))
                   }
               })
           .catchError((error) => {
@@ -685,13 +674,11 @@ class _SearchPageState extends State<SearchPage>
                               },
                             ))
                         : Container(
-                              padding: EdgeInsets.only(top: 30),
-                              child: 
-                              CustomShowcaseWidget(
+                            padding: EdgeInsets.only(top: 30),
+                            child: CustomShowcaseWidget(
                               description: "User Authentication.",
                               globalKey: keyFour,
-                              child: 
-                              RaisedButton(
+                              child: RaisedButton(
                                 child: Text(
                                   "Login",
                                   style: TextStyle(
@@ -707,12 +694,12 @@ class _SearchPageState extends State<SearchPage>
                                 )),
                                 onPressed: () {
                                   Navigator.of(context).push(MaterialPageRoute(
-                                      builder: (context) =>  ShowCaseWidget(
-            builder: Builder(builder: (_) => Login()))));
+                                      builder: (context) => ShowCaseWidget(
+                                          builder: Builder(
+                                              builder: (_) => Login()))));
                                 },
                               ),
-                              )
-                            ),
+                            )),
                   ],
                 ),
                 Container(
@@ -747,28 +734,27 @@ class _SearchPageState extends State<SearchPage>
                               ),
                             ),
                             CustomShowcaseWidget(
-                              description: 'Type additive name here',  
-                            globalKey: keyOne,
-                            child:
-                            Container(
-                                child: SizedBox(
-                              width: 160,
-                              child: TextFormField(
-                                controller: _textController,
-                                focusNode: _textFocus,
-                                decoration: InputDecoration(
-                                  contentPadding:
-                                      EdgeInsets.fromLTRB(0, 1, 0, 8),
-                                  border: InputBorder.none,
-                                  hintText: 'Search',
-                                  hintStyle: TextStyle(
-                                    color: HexColor('#e58149'),
-                                    fontSize: 18,
-                                    fontFamily: 'PlutoCondRegular',
+                              description: 'Type additive name here',
+                              globalKey: keyOne,
+                              child: Container(
+                                  child: SizedBox(
+                                width: 160,
+                                child: TextFormField(
+                                  controller: _textController,
+                                  focusNode: _textFocus,
+                                  decoration: InputDecoration(
+                                    contentPadding:
+                                        EdgeInsets.fromLTRB(0, 1, 0, 8),
+                                    border: InputBorder.none,
+                                    hintText: 'Search',
+                                    hintStyle: TextStyle(
+                                      color: HexColor('#e58149'),
+                                      fontSize: 18,
+                                      fontFamily: 'PlutoCondRegular',
+                                    ),
                                   ),
                                 ),
-                              ),
-                            )),
+                              )),
                             ),
                             Container(
                                 padding: EdgeInsets.only(right: 15),
@@ -776,19 +762,17 @@ class _SearchPageState extends State<SearchPage>
                                   onTap: () {
                                     _showSelectionDialog(context);
                                   },
-                                  child:
-                                   CustomShowcaseWidget(
-                                        description: "Upload or take a pictute of product label",
-                                        globalKey: keyThree,
-                                        child: 
-                                        Image.asset('images/camera.png',
+                                  child: CustomShowcaseWidget(
+                                    description:
+                                        "Upload or take a pictute of product label",
+                                    globalKey: keyThree,
+                                    child: Image.asset('images/camera.png',
                                         width: 30,
                                         height: 30,
                                         fit: BoxFit.cover,
                                         color: HexColor('#435839')),
                                   ),
-                                )
-                                ),
+                                )),
                           ],
                         ),
                       ),
@@ -796,40 +780,38 @@ class _SearchPageState extends State<SearchPage>
                           margin: EdgeInsets.fromLTRB(80, 150, 80, 50),
                           // padding: EdgeInsets.only(left:70,right:70),
                           decoration: BoxDecoration(),
-                          child:
-                           CustomShowcaseWidget(
-                                  description: "Click submit after typing additive name",
-                                  globalKey: keyTwo,
-                                  child:
-                                  FlatButton(
-                            color: HexColor('#5ca4b8'),
-                            padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
-                            shape: new RoundedRectangleBorder(
-                                borderRadius: new BorderRadius.circular(15.0)),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                 Container(
-                                    child: Text(
-                                      'Submit',
-                                      style: TextStyle(
-                                        fontSize: 20,
-                                        fontFamily: 'PlutoCondMedium',
-                                        color: Colors.white,
+                          child: CustomShowcaseWidget(
+                              description:
+                                  "Click submit after typing additive name",
+                              globalKey: keyTwo,
+                              child: FlatButton(
+                                color: HexColor('#5ca4b8'),
+                                padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
+                                shape: new RoundedRectangleBorder(
+                                    borderRadius:
+                                        new BorderRadius.circular(15.0)),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Container(
+                                      child: Text(
+                                        'Submit',
+                                        style: TextStyle(
+                                          fontSize: 20,
+                                          fontFamily: 'PlutoCondMedium',
+                                          color: Colors.white,
+                                        ),
                                       ),
                                     ),
-                                  ),
-                              
-                              ],
-                            ),
-                            onPressed: () => {_submit()},
-                       ) )
-                       )
+                                  ],
+                                ),
+                                onPressed: () => {_submit()},
+                              )))
                     ],
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.only(bottom:20.0),
+                  padding: const EdgeInsets.only(bottom: 20.0),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
@@ -849,15 +831,12 @@ class _SearchPageState extends State<SearchPage>
                           style: TextStyle(
                             fontSize: 32,
                             fontWeight: FontWeight.bold,
-                            
                           ),
                         ),
                         padding: EdgeInsets.all(8),
                         shape: CircleBorder(
-                          side: BorderSide(
-                            color: HexColor("#f38343"),
-                            width: 5)
-                        ),
+                            side: BorderSide(
+                                color: HexColor("#f38343"), width: 5)),
                       ),
                     ],
                   ),

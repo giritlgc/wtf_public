@@ -14,9 +14,9 @@ import 'package:showcaseview/showcase_widget.dart';
 
 import '../List.dart';
 import 'additives.dart';
-import '../common_widget.dart';
-import '../custom_app_bar.dart';
-import '../loader.dart';
+import '../CommonComponents/common_widget.dart';
+import '../CommonComponents/custom_app_bar.dart';
+import '../CommonComponents/loader.dart';
 
 class ShowOCRText extends StatefulWidget {
   ShowOCRText(this._image, this.deviceId);
@@ -171,8 +171,10 @@ class _ShowOCRTextState extends State<ShowOCRText> {
                   {
                     Navigator.of(context).push(MaterialPageRoute(
                         builder: (context) => ShowCaseWidget(
-            builder: Builder(builder: (_) => AdditivePage(
-                            dataList: additiveNameList.additiveNames)))))
+                            builder: Builder(
+                                builder: (_) => AdditivePage(
+                                    dataList:
+                                        additiveNameList.additiveNames)))))
                   }
               })
           .catchError((error) => {
@@ -258,8 +260,9 @@ class _ShowOCRTextState extends State<ShowOCRText> {
                         color: HexColor('#e58149'),
                         onPressed: () {
                           Navigator.of(context).push(MaterialPageRoute(
-                                      builder: (context) =>  ShowCaseWidget(
-            builder: Builder(builder: (_) => Registration()))));
+                              builder: (context) => ShowCaseWidget(
+                                  builder: Builder(
+                                      builder: (_) => Registration()))));
                         })
                   ]),
             ]),
@@ -485,18 +488,18 @@ class _ShowOCRTextState extends State<ShowOCRText> {
                                                       ),
                                                     ))
                                                 : CustomShowcaseWidget(
-                                                        description:
-                                                            'Click to edit the text',
-                                                        globalKey: keyOne,
-                                                        child:Container(
-                                                    decoration: BoxDecoration(
-                                                        color:
-                                                            HexColor('#f0dc47'),
-                                                        borderRadius:
-                                                            BorderRadius.all(
-                                                                Radius.circular(
-                                                                    100))),
-                                                    child:  IconButton(
+                                                    description:
+                                                        'Click to edit the text',
+                                                    globalKey: keyOne,
+                                                    child: Container(
+                                                        decoration: BoxDecoration(
+                                                            color: HexColor(
+                                                                '#f0dc47'),
+                                                            borderRadius:
+                                                                BorderRadius.all(
+                                                                    Radius.circular(
+                                                                        100))),
+                                                        child: IconButton(
                                                           icon:
                                                               Icon(Icons.edit),
                                                           iconSize: 30,
@@ -545,62 +548,65 @@ class _ShowOCRTextState extends State<ShowOCRText> {
                             // padding: EdgeInsets.only(left:70,right:70),
                             decoration: BoxDecoration(),
                             child: CustomShowcaseWidget(
-                                                        description:
-                                                            'Click Submit to find additives in text',
-                                                        globalKey: keyTwo,
-                                                        child:FlatButton(
-                              color: HexColor('#72a633'),
-                              padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
-                              shape: new RoundedRectangleBorder(
-                                  borderRadius:
-                                      new BorderRadius.circular(15.0)),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Container(
-                                    child: Text(
-                                      'Submit',
-                                      style: TextStyle(
-                                        fontSize: 20,
-                                        fontFamily: 'PlutoCondMedium',
-                                        color: Colors.white,
-                                      ),
-                                    ),
-                                  )
-                                ],
-                              ),
-                              onPressed: () => {
-                                print(initialText),
-                                _submit(),
-                              },
-                            ))),
-                        buffering ? Container():Padding(
-                          padding: const EdgeInsets.only(bottom: 20.0),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            children: [
-                              RaisedButton(
-                                onPressed: () {
-                                  ShowCaseWidget.of(context)
-                                      .startShowCase([keyOne,keyTwo]);
-                                },
-                                color: Colors.white,
-                                textColor: HexColor("#f38343"),
-                                child: Text(
-                                  "?",
-                                  style: TextStyle(
-                                    fontSize: 32,
-                                    fontWeight: FontWeight.bold,
+                                description:
+                                    'Click Submit to find additives in text',
+                                globalKey: keyTwo,
+                                child: FlatButton(
+                                  color: HexColor('#72a633'),
+                                  padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
+                                  shape: new RoundedRectangleBorder(
+                                      borderRadius:
+                                          new BorderRadius.circular(15.0)),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Container(
+                                        child: Text(
+                                          'Submit',
+                                          style: TextStyle(
+                                            fontSize: 20,
+                                            fontFamily: 'PlutoCondMedium',
+                                            color: Colors.white,
+                                          ),
+                                        ),
+                                      )
+                                    ],
                                   ),
+                                  onPressed: () => {
+                                    print(initialText),
+                                    _submit(),
+                                  },
+                                ))),
+                        buffering
+                            ? Container()
+                            : Padding(
+                                padding: const EdgeInsets.only(bottom: 20.0),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  children: [
+                                    RaisedButton(
+                                      onPressed: () {
+                                        ShowCaseWidget.of(context)
+                                            .startShowCase([keyOne, keyTwo]);
+                                      },
+                                      color: Colors.white,
+                                      textColor: HexColor("#f38343"),
+                                      child: Text(
+                                        "?",
+                                        style: TextStyle(
+                                          fontSize: 32,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                      padding: EdgeInsets.all(8),
+                                      shape: CircleBorder(
+                                          side: BorderSide(
+                                              color: HexColor("#f38343"),
+                                              width: 5)),
+                                    ),
+                                  ],
                                 ),
-                                padding: EdgeInsets.all(8),
-                                shape: CircleBorder(
-                                    side: BorderSide(
-                                        color: HexColor("#f38343"), width: 5)),
-                              ),
-                            ],
-                          ),
-                        )
+                              )
                       ],
                     ),
                   ),

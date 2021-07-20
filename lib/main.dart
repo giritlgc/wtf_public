@@ -1,6 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'search_page.dart';
+import 'Screens/splash_screen.dart';
 
 
 
@@ -17,6 +17,6 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         title: 'Know Your Food',
         theme: ThemeData(),
-        home: SearchPage());
+        home: SplashScreen());
   }
 }
