@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:knowyourfood/Screens/additive_detail.dart';
-import 'package:knowyourfood/custom_app_bar.dart';
+import 'package:knowyourfood/CommonComponents/custom_app_bar.dart';
 import 'package:knowyourfood/custom_showcasewidget.dart';
 import 'package:showcaseview/showcase_widget.dart';
 
@@ -24,21 +24,7 @@ class _AdditivePageState extends State<AdditivePage> {
 
   List<Widget> buildListView(context,dataList){
    var row;
-    List<Widget> list = [
-      CustomShowcaseWidget(
-                              description: 'Click on below additive names to know its functionality',  
-                            globalKey: keyOne,
-                            child:
-     Container(
-         padding: EdgeInsets.fromLTRB(20,10,0,10),
-         color: HexColor('#dbeaef'),
-         child: Text("Additive Name",
-         style: TextStyle(
-           fontSize:18,
-           color:HexColor('#e58149'),
-           fontFamily: 'PlutoCondMedium',
-         ),),
-       ))];
+    List<Widget> list = [];
    var f=0;
    for(var i=0;i<dataList.length;i++){
      if(f==0){
@@ -101,6 +87,24 @@ class _AdditivePageState extends State<AdditivePage> {
                   ),
                 ),
               ),
+              CustomShowcaseWidget(
+                              description: 'Click on below additive names to know its functionality',  
+                            globalKey: keyOne,
+                            child:
+     Container(
+         padding: EdgeInsets.fromLTRB(20,10,0,10),
+         color: HexColor('#dbeaef'),
+         child: Row(
+           children: [
+             Text("Additive Name",
+             style: TextStyle(
+               fontSize:18,
+               color:HexColor('#e58149'),
+               fontFamily: 'PlutoCondMedium',
+             ),),
+           ],
+         ),
+       )),
               Expanded(
                   child:   ListView(
                       children: buildListView(context, widget.dataList))),

@@ -4,8 +4,8 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:knowyourfood/FunctionalityList.dart';
-import 'package:knowyourfood/custom_app_bar.dart';
-import 'package:knowyourfood/loader.dart';
+import 'package:knowyourfood/CommonComponents/custom_app_bar.dart';
+import 'package:knowyourfood/CommonComponents/loader.dart';
 
 class AdditiveDetail extends StatefulWidget {
   final String additive;
@@ -62,6 +62,44 @@ class _AdditiveDetailState extends State<AdditiveDetail> {
                       fontFamily: 'PlutoCondMedium'),
                 ),
               ),
+              Container(
+                padding: EdgeInsets.fromLTRB(20, 10, 0, 10),
+                // color: HexColor('#dbeaef'),
+                child: Text(
+                  "Possible Effects",
+                  style: TextStyle(
+                      fontSize: 18,
+                      color: HexColor('#e58149'),
+                      fontFamily: 'PlutoCondMedium'),
+                ),
+              ),
+              Container(
+                padding: EdgeInsets.fromLTRB(20, 10, 0, 10),
+                // color: HexColor('#eff7f9'),
+                child: Text(
+                  "Known human lung and skin toxicity, May contribute to endogenous nitrosamine formation(CIR), Environmental and wildlife toxicity, Suspected liver and immunotoxicity (Scorecard), Skinsensitisation, Safe up to 0.1% with qualifications (CIR)",
+                  style: TextStyle(
+                    fontSize: 16,
+                    color: HexColor('#635950'),
+                    fontFamily: 'PlutoCondMedium',
+                  ),
+                ),
+              ),
+              Container(
+      padding: EdgeInsets.fromLTRB(20, 10, 0, 10),
+      color: HexColor('#dbeaef'),
+      child: Row(
+        children: [
+          Text(
+            "Functionalities",
+            style: TextStyle(
+                fontSize: 18,
+                color: HexColor('#e58149'),
+                fontFamily: 'PlutoCondMedium'),
+          ),
+        ],
+      ),
+    ),
               Expanded(
                   child: ListView(
                 children: buildList(dataList),
@@ -74,19 +112,7 @@ bool buffering = true;
 
 List<Widget> buildList(dataList) {
   var row;
-  List<Widget> list = [
-    Container(
-      padding: EdgeInsets.fromLTRB(20, 10, 0, 10),
-      color: HexColor('#dbeaef'),
-      child: Text(
-        "Functionalities",
-        style: TextStyle(
-            fontSize: 18,
-            color: HexColor('#e58149'),
-            fontFamily: 'PlutoCondMedium'),
-      ),
-    )
-  ];
+  List<Widget> list = [];
   var f = 0;
   for (var i = 0; i < dataList.length; i++) {
     if (f == 0) {
