@@ -143,8 +143,10 @@ class _SearchPageState extends State<SearchPage>
     if (_image == null) {
       return;
     } else {
-      Navigator.of(context).push(MaterialPageRoute(
-          builder: (context) => ShowOCRText(_image, deviceId)));
+       Navigator.of(context).push(MaterialPageRoute(
+          builder: (context) => ShowCaseWidget(
+              builder:
+                  Builder(builder: (_) => ShowOCRText(_image, deviceId)))));
     }
   }
 
