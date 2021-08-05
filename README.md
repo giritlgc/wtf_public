@@ -7,3 +7,4 @@ This application is very easy to use. You just upload a picture containing the i
 Users have the option to select an image from the gallery or can take a picture using the phone camera. There is one more feature that helps users search additives by name. Users can enter the additive name in the search bar and get all the matching additives.
 
 
+Flutter version 1.22.5 
