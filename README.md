@@ -1,4 +1,4 @@
-# Whatthefood
+# WhatTheFood
 
 Whatthefood is a  mobile application used to find out artificial additives present in food products.
 
