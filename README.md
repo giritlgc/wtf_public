@@ -1,16 +1,9 @@
-# knowyourfood
+# Whatthefood
 
-A new Flutter project.
+Whatthefood is a  mobile application used to find out artificial additives present in food products.
 
-## Getting Started
+This application is very easy to use. You just upload a picture containing the ingredients section of the food products. Our application will bring out all the additives present in it.
 
-This project is a starting point for a Flutter application.
+Users have the option to select an image from the gallery or can take a picture using the phone camera. There is one more feature that helps users search additives by name. Users can enter the additive name in the search bar and get all the matching additives.
 
-A few resources to get you started if this is your first Flutter project:
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
-
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
